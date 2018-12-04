@@ -4,10 +4,7 @@
     "slug": "bicycly-front-end",
     "privacy": "public",
     "sdkVersion": "31.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,11 +16,11 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "Bicycly: Peer-to-peer bike rentals. Mobile app projet made in React Native.",
+    "githubUrl": "https://github.com/jonathanevn/bicycly-front-end"
   }
 }
