@@ -1,4 +1,5 @@
 import React from "react";
+import SearchBar from "../components/SearchBar";
 import {
   Platform,
   StyleSheet,
@@ -8,7 +9,6 @@ import {
 } from "react-native";
 import { MapView } from "expo";
 import { height, width } from "../constants/Layout";
-/* import AppNavigation from "../navigation/AppNavigation"; */
 import { text, button } from "../constants/Styles";
 
 export default class HomeScreen extends React.Component {
@@ -27,7 +27,6 @@ export default class HomeScreen extends React.Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
-        console.log(position);
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -63,30 +62,23 @@ export default class HomeScreen extends React.Component {
               description={"La formation des champions !"}
             />
           </MapView>
-
-          {/* <TouchableOpacity
-          onPress={() => {
-            this.props.navigation.navigate("Filters");
-          }}
-        >
-          <Text>Filtre</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => {
-            this.props.navigation.navigate("Calendar");
-          }}
-        >
-          <Text>Calendrier</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => {
-            this.props.navigation.navigate("List");
-          }}
-        >
-          <Text>Voir liste</Text>
-        </TouchableOpacity> */}
+          <View style={styles.content}>
+            <SearchBar />
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("Filters");
+              }}
+            >
+              <Text>Filtre</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("List");
+              }}
+            >
+              <Text>Voir liste</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       );
     }
@@ -102,5 +94,9 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
     width: "100%"
+  },
+  content: {
+    position: "absolute",
+    top: 60
   }
 });
