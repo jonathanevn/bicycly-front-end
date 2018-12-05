@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 class SignIn extends React.Component {
   static navigationOptions = {
@@ -10,6 +10,13 @@ class SignIn extends React.Component {
     return (
       <View style={styles.container}>
         <Text>This is the SignIn screen</Text>
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate("Home");
+          }}
+        >
+          <Text>Valider</Text>
+        </TouchableOpacity>
       </View>
     );
   }

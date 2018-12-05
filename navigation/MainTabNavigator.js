@@ -5,6 +5,7 @@ import {
   createBottomTabNavigator
 } from "react-navigation";
 
+// ---- SREENS IMPORTS ----//
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
 import ReservationScreen from "../screens/ReservationScreen";
@@ -17,7 +18,7 @@ import EndRent from "../screens/EndRent";
 import Filters from "../screens/Filters";
 import List from "../screens/List";
 import LogIn from "../screens/LogIn";
-import LogInOrSignIn from "../screens/LogInOrSignIn";
+import AuthLoadingScreen from "../screens/AuthLoadingScreen";
 import MyAccountInfo from "../screens/MyAccountInfo";
 import PaymentMethods from "../screens/PaymentMethods";
 import BikeDetails from "../screens/BikeDetails";
@@ -26,17 +27,19 @@ import StartRent from "../screens/StartRent";
 import Tchat from "../screens/Tchat";
 import UserProfile from "../screens/UserProfile";
 
+// ---- COMPONENTS IMPORTS ----//
+import CyclistIcon from "../components/CyclistIcon";
+
+// ---- HOME ----//
+
 const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+  Home: { screen: HomeScreen, navigationOptions: { header: null } },
   Filters: { screen: Filters },
   Calendar: { screen: Calendar, navigationOptions: { header: null } },
   List: { screen: List, navigationOptions: { header: null } },
   BikeDetails: { screen: BikeDetails },
   UserProfile: { screen: UserProfile },
-  Tchat: { screen: Tchat },
-  LogInOrSignIn: { screen: LogInOrSignIn },
-  LogIn: { screen: LogIn },
-  SignIn: { screen: SignIn }
+  Tchat: { screen: Tchat }
 });
 
 HomeStack.navigationOptions = {
@@ -50,6 +53,8 @@ HomeStack.navigationOptions = {
     />
   )
 };
+
+// ---- RESERVATION ----//
 
 const ReservationStack = createStackNavigator({
   Reservation: ReservationScreen,
@@ -71,6 +76,8 @@ ReservationStack.navigationOptions = {
   )
 };
 
+// ---- MY BIKES ----//
+
 const MyBikesStack = createStackNavigator({
   MyBikes: MyBikesScreen,
   AddBike: { screen: AddBike },
@@ -86,36 +93,32 @@ MyBikesStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+      name={Platform.OS === "ios" ? "ios-calendar" : "ios-calendar"}
     />
   )
 };
 
+// ---- ACCOUNT ----//
+
 const AccountStack = createStackNavigator({
-  Settings: AccountScreen,
+  AccountScreen: AccountScreen,
   MyAccountInfo: { screen: MyAccountInfo },
   AddPayementMethod: { screen: AddPayementMethod },
-  PaymentMethods: { screen: PaymentMethods },
-  LogInOrSignIn: { screen: LogInOrSignIn },
-  LogIn: { screen: LogIn },
-  SignIn: { screen: SignIn }
+  PaymentMethods: { screen: PaymentMethods }
 });
 
 AccountStack.navigationOptions = {
   tabBarOptions: {
     showLabel: false
   },
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
-    />
-  )
+  tabBarIcon: ({ focused }) => <CyclistIcon focused={focused} />
 };
 
-export default createBottomTabNavigator({
+const BottomTabNavigator = createBottomTabNavigator({
   HomeStack,
   ReservationStack,
   MyBikesStack,
   AccountStack
 });
+
+export default BottomTabNavigator;

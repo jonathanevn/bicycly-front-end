@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 class LogIn extends React.Component {
   static navigationOptions = {
@@ -10,6 +10,13 @@ class LogIn extends React.Component {
     return (
       <View style={styles.container}>
         <Text>This is the LogIn screen</Text>
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate("Home");
+          }}
+        >
+          <Text>Valider</Text>
+        </TouchableOpacity>
       </View>
     );
   }
