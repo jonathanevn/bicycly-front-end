@@ -9,8 +9,7 @@ import {
 } from "react-native";
 import { WebBrowser } from "expo";
 /* import AppNavigation from "../navigation/AppNavigation"; */
-
-import { MonoText } from "../components/StyledText";
+import { text, button } from "../constants/Styles";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -25,7 +24,18 @@ export default class HomeScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.welcomeContainer}>
-            <Text>This is the Home screen with the map</Text>
+            <Text style={text.h1}>This is the Home screen with the map</Text>
+            <Text style={text.h2}>This is the Home screen with the map</Text>
+            <Text style={text.h3}>This is the Home screen with the map</Text>
+            <Text style={text.p}>This is the Home screen with the map</Text>
+            <TouchableOpacity style={button.primary}>
+              <Text style={text.textButton}>button primary</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={button.secondary}>
+              <Text style={text.textButton}>button secondary</Text>
+            </TouchableOpacity>
+
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("Filters");

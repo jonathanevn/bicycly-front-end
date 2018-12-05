@@ -24,6 +24,14 @@ class BikeDetails extends React.Component {
         >
           <Text>Demande de location</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate("Auth");
+          }}
+        >
+          <Text>Demande de location (pas authentifié)</Text>
+        </TouchableOpacity>
       </View>
     );
   }
