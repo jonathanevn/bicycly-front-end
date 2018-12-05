@@ -33,16 +33,13 @@ import CyclistIcon from "../components/CyclistIcon";
 // ---- HOME ----//
 
 const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+  Home: { screen: HomeScreen, navigationOptions: { header: null } },
   Filters: { screen: Filters },
   Calendar: { screen: Calendar, navigationOptions: { header: null } },
   List: { screen: List, navigationOptions: { header: null } },
   BikeDetails: { screen: BikeDetails },
   UserProfile: { screen: UserProfile },
-  Tchat: { screen: Tchat },
-  AuthLoadingScreen: { screen: AuthLoadingScreen },
-  LogIn: { screen: LogIn },
-  SignIn: { screen: SignIn }
+  Tchat: { screen: Tchat }
 });
 
 HomeStack.navigationOptions = {
@@ -107,10 +104,7 @@ const AccountStack = createStackNavigator({
   AccountScreen: AccountScreen,
   MyAccountInfo: { screen: MyAccountInfo },
   AddPayementMethod: { screen: AddPayementMethod },
-  PaymentMethods: { screen: PaymentMethods },
-  AuthLoadingScreen: { screen: AuthLoadingScreen },
-  LogIn: { screen: LogIn },
-  SignIn: { screen: SignIn }
+  PaymentMethods: { screen: PaymentMethods }
 });
 
 AccountStack.navigationOptions = {
@@ -120,9 +114,11 @@ AccountStack.navigationOptions = {
   tabBarIcon: ({ focused }) => <CyclistIcon focused={focused} />
 };
 
-export default createBottomTabNavigator({
+const BottomTabNavigator = createBottomTabNavigator({
   HomeStack,
   ReservationStack,
   MyBikesStack,
   AccountStack
 });
+
+export default BottomTabNavigator;
