@@ -1,14 +1,12 @@
 import React from "react";
-import { createSwitchNavigator } from "react-navigation";
+import { createSwitchNavigator, createStackNavigator } from "react-navigation";
 
 import MainTabNavigator from "./MainTabNavigator";
 
-import AuthLoadingScreen from "../screens/AuthLoadingScreen";
 import LogIn from "../screens/LogIn";
 import SignIn from "../screens/SignIn";
 
 const AuthStack = createStackNavigator({
-  AuthLoadingScreen: { screen: AuthLoadingScreen },
   LogIn: { screen: LogIn },
   SignIn: { screen: SignIn }
 });

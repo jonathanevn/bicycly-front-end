@@ -27,7 +27,7 @@ class BikeDetails extends React.Component {
 
         <TouchableOpacity
           onPress={() => {
-            this.props.navigation.navigate("Auth");
+            this.props.navigation.navigate("AuthLoadingScreen");
           }}
         >
           <Text>Demande de location (pas authentifié)</Text>

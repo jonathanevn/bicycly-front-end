@@ -39,6 +39,14 @@ export default class AccountScreen extends React.Component {
             >
               <Text>Moyens de paiement enregistrés</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("AuthLoadingScreen");
+              }}
+            >
+              <Text>S'inscrire ou se connecter</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>

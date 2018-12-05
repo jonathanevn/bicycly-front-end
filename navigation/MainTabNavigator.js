@@ -96,7 +96,7 @@ MyBikesStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "bicycle" : "bicycle"}
+      name={Platform.OS === "ios" ? "ios-calendar" : "ios-calendar"}
     />
   )
 };
@@ -104,7 +104,7 @@ MyBikesStack.navigationOptions = {
 // ---- ACCOUNT ----//
 
 const AccountStack = createStackNavigator({
-  Settings: AccountScreen,
+  AccountScreen: AccountScreen,
   MyAccountInfo: { screen: MyAccountInfo },
   AddPayementMethod: { screen: AddPayementMethod },
   PaymentMethods: { screen: PaymentMethods },

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 class AuthLoadingScreen extends React.Component {
   static navigationOptions = {

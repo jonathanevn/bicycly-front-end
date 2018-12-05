@@ -41,8 +41,7 @@ class CyclistIcon extends React.Component {
 const styles = StyleSheet.create({
   icon: {
     width: 22,
-    height: 21,
-    color: "#c2c2c2"
+    height: 21
   }
 });
 
