@@ -12,7 +12,7 @@ import {
 import { text } from "../constants/Styles";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
-import window from "../constants/Layout";
+import { width, height, isSmallDevice } from "../constants/Layout";
 
 class SearchBar extends React.Component {
   state = {
@@ -29,6 +29,7 @@ class SearchBar extends React.Component {
   }
 
   render() {
+    console.log(width, height, isSmallDevice);
     return (
       <View>
         <Modal
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
   },
 
   searchDateSection: {
-    borderLeftWidth: 0.3,
+    borderLeftWidth: 0.5,
     borderLeftColor: "#c2c2c2",
     paddingLeft: 15,
     height: 30,

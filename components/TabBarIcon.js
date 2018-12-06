@@ -1,14 +1,17 @@
 import React from "react";
-import { Icon } from "expo";
+import { Font } from "expo";
+import { createIconSetFromIcoMoon } from "@expo/vector-icons";
+import icoMoonConfig from "../assets/fonts/selection.json";
 
 import Colors from "../constants/Colors";
+const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 
 export default class TabBarIcon extends React.Component {
   render() {
     return (
-      <Icon.Ionicons
+      <Icon
         name={this.props.name}
-        size={26}
+        size={this.props.size}
         style={{ marginBottom: -3 }}
         color={
           this.props.focused ? Colors.tabIconSelected : Colors.tabIconDefault
