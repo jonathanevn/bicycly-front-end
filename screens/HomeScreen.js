@@ -7,24 +7,33 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import { MapView } from "expo";
+import { MapView, Permissions } from "expo";
 import { height, width } from "../constants/Layout";
 import { text, button } from "../constants/Styles";
+
+const EXAMPLES = [
+  "1 Hacker Way",
+  { latitude: 49.28, longitude: -123.12 },
+  "Palo Alto Caltrain Station (this one will error)",
+  "Rogers Arena, Vancouver",
+  { latitude: 0, longitude: 0 }
+];
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      latitude: null,
-      longitude: null,
-      error: null
-    };
-  }
+  state = {
+    latitude: null,
+    longitude: null,
+    error: null,
+    selectedExample: EXAMPLES[0],
+    result: "",
+    inProgress: false
+  };
 
   componentDidMount() {
+    Permissions.askAsync(Permissions.LOCATION);
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -39,6 +48,7 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
+    let { selectedExample } = this.state;
     if (this.state.latitude === null) {
       return <Text>Loading...</Text>;
     } else {
