@@ -13,7 +13,7 @@ import { text } from "../constants/Styles";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
-import { width, height, isSmallDevice } from "../constants/Layout";
+import { width, height } from "../constants/Layout";
 
 const homePlace = {
   description: "Home",
@@ -24,12 +24,18 @@ const workPlace = {
   geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }
 };
 
+const ASPECT_RATIO = width / height;
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
 class SearchBar extends React.Component {
   state = {
     modalAddressVisible: false,
     modalDateVisible: false,
-    latitude: null,
-    longitude: null,
+    latitudeSelected: null,
+    longitudeSelected: null,
+    latDeltaSelected: LATITUDE_DELTA,
+    longDeltaSelected: LONGITUDE_DELTA,
     addressSelected: null,
     citySelected: null
   };
@@ -53,15 +59,37 @@ class SearchBar extends React.Component {
         fetchDetails={true}
         renderDescription={row => row.description} // custom description render
         onPress={(data, details = null) => {
-          this.setState({
-            latitude: details.geometry.location.lat,
-            longitude: details.geometry.location.lng,
-            addressSelected: details.name,
-            citySelected: details.vicinity
-          });
+          this.setState(
+            /* console.log("latDeltaSelected", LATITUDE_DELTA), */
+            {
+              latitudeSelected: details.geometry.location.lat,
+              longitudeSelected: details.geometry.location.lng,
+              addressSelected: details.name,
+              citySelected: details.vicinity
+            },
+            () => {
+              this.props.onLocationChange({
+                region: {
+                  latitude: this.state.latitudeSelected,
+                  longitude: this.state.longitudeSelected,
+                  latitudeDelta: this.state.latDeltaSelected,
+                  longitudeDelta: this.state.longDeltaSelected
+                }
+              });
+            }
+          );
           this.setModalAddressVisible(!this.state.modalAddressVisible);
           // 'details' is provided when fetchDetails = true
-          console.log("data", data, "details", details);
+          console.log(
+            "data",
+            data,
+            "details",
+            details,
+            "latitudeDelta",
+            LATITUDE_DELTA,
+            "longitudeDelta",
+            LONGITUDE_DELTA
+          );
         }}
         getDefaultValue={() => ""}
         query={{
@@ -188,7 +216,13 @@ class SearchBar extends React.Component {
                 ) : (
                   <Text style={text.h3}>{this.state.addressSelected}</Text>
                 )}
-                <Text style={text.pricePerDay}>Paris</Text>
+                {this.state.citySelected === null ? (
+                  <Text style={text.pricePerDay}>Paris</Text>
+                ) : (
+                  <Text style={text.pricePerDay}>
+                    {this.state.citySelected}
+                  </Text>
+                )}
               </View>
             </TouchableOpacity>
           </View>

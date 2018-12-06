@@ -11,25 +11,24 @@ import { MapView, Permissions } from "expo";
 import { height, width } from "../constants/Layout";
 import { text, button } from "../constants/Styles";
 
-const EXAMPLES = [
-  "1 Hacker Way",
-  { latitude: 49.28, longitude: -123.12 },
-  "Palo Alto Caltrain Station (this one will error)",
-  "Rogers Arena, Vancouver",
-  { latitude: 0, longitude: 0 }
-];
+const ASPECT_RATIO = width / height;
+const LATITUDE = 0;
+const LONGITUDE = 0;
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
   state = {
-    latitude: null,
-    longitude: null,
-    error: null,
-    selectedExample: EXAMPLES[0],
-    result: "",
-    inProgress: false
+    region: {
+      latitude: LATITUDE,
+      longitude: LONGITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    },
+    error: null
   };
 
   componentDidMount() {
@@ -37,9 +36,12 @@ export default class HomeScreen extends React.Component {
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          error: null
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
+          }
         });
       },
       error => this.setState({ error: error.message }),
@@ -47,8 +49,11 @@ export default class HomeScreen extends React.Component {
     );
   }
 
+  onRegionChange = region => {
+    this.setState({ region });
+  };
+
   render() {
-    let { selectedExample } = this.state;
     if (this.state.latitude === null) {
       return <Text>Loading...</Text>;
     } else {
@@ -57,23 +62,25 @@ export default class HomeScreen extends React.Component {
           <MapView
             style={styles.map}
             region={{
-              latitude: this.state.latitude,
-              longitude: this.state.longitude,
-              latitudeDelta: 0.1,
-              longitudeDelta: 0.1
+              latitude: this.state.region.latitude,
+              longitude: this.state.region.longitude,
+              latitudeDelta: this.state.region.latitudeDelta,
+              longitudeDelta: this.state.region.longitudeDelta
             }}
+            /* onRegionChange={region => this.setState({ region })}
+            onRegionChangeComplete={region => this.setState({ region })} */
           >
             <MapView.Marker
               coordinate={{
-                latitude: this.state.latitude,
-                longitude: this.state.longitude
+                latitude: this.state.region.latitudeDelta,
+                longitude: this.state.region.longitudeDelta
               }}
               title={"Le Reacteur"}
               description={"La formation des champions !"}
             />
           </MapView>
           <View style={styles.content}>
-            <SearchBar />
+            <SearchBar onLocationChange={this.onRegionChange} />
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("Filters");
