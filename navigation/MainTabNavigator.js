@@ -24,9 +24,6 @@ import StartRent from "../screens/StartRent";
 import Tchat from "../screens/Tchat";
 import UserProfile from "../screens/UserProfile";
 
-// ---- COMPONENTS IMPORTS ----//
-import CyclistIcon from "../components/CyclistIcon";
-
 // ---- HOME ----//
 
 const HomeStack = createStackNavigator({

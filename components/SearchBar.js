@@ -28,7 +28,10 @@ class SearchBar extends React.Component {
   state = {
     modalAddressVisible: false,
     modalDateVisible: false,
-    address: null
+    latitude: null,
+    longitude: null,
+    addressSelected: null,
+    citySelected: null
   };
 
   setModalAddressVisible(visible) {
@@ -50,8 +53,15 @@ class SearchBar extends React.Component {
         fetchDetails={true}
         renderDescription={row => row.description} // custom description render
         onPress={(data, details = null) => {
+          this.setState({
+            latitude: details.geometry.location.lat,
+            longitude: details.geometry.location.lng,
+            addressSelected: details.name,
+            citySelected: details.vicinity
+          });
+          this.setModalAddressVisible(!this.state.modalAddressVisible);
           // 'details' is provided when fetchDetails = true
-          console.log(data, details);
+          console.log("data", data, "details", details);
         }}
         getDefaultValue={() => ""}
         query={{
@@ -110,15 +120,13 @@ class SearchBar extends React.Component {
   };
 
   render() {
+    console.log();
     return (
       <View>
         <Modal
           animationType="slide"
           transparent={false}
           visible={this.state.modalAddressVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-          }}
         >
           <View style={styles.containerAddressModal}>
             <TouchableOpacity
@@ -175,7 +183,11 @@ class SearchBar extends React.Component {
               }}
             >
               <View style={styles.searchAddress}>
-                <Text style={text.h3}>Position actuelle</Text>
+                {this.state.addressSelected === null ? (
+                  <Text style={text.h3}>Position actuelle</Text>
+                ) : (
+                  <Text style={text.h3}>{this.state.addressSelected}</Text>
+                )}
                 <Text style={text.pricePerDay}>Paris</Text>
               </View>
             </TouchableOpacity>
