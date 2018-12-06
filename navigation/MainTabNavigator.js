@@ -13,7 +13,6 @@ import MyBikesScreen from "../screens/MyBikes";
 import AddBike from "../screens/AddBike";
 import AddPayementMethod from "../screens/AddPayementMethod";
 import AccountScreen from "../screens/AccountScreen";
-import Calendar from "../screens/Calendar";
 import EndRent from "../screens/EndRent";
 import Filters from "../screens/Filters";
 import List from "../screens/List";
@@ -32,7 +31,6 @@ import CyclistIcon from "../components/CyclistIcon";
 const HomeStack = createStackNavigator({
   Home: { screen: HomeScreen, navigationOptions: { header: null } },
   Filters: { screen: Filters },
-  Calendar: { screen: Calendar, navigationOptions: { header: null } },
   List: { screen: List, navigationOptions: { header: null } },
   BikeDetails: { screen: BikeDetails },
   UserProfile: { screen: UserProfile },

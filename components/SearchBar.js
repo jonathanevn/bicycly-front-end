@@ -9,10 +9,12 @@ import {
   DatePickerIOS,
   TouchableOpacity
 } from "react-native";
+
 import { text } from "../constants/Styles";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import window from "../constants/Layout";
+import Calendar from "./Calendar";
 
 class SearchBar extends React.Component {
   state = {
@@ -81,8 +83,8 @@ class SearchBar extends React.Component {
                 name={Platform.OS === "ios" ? "ios-close" : "md-close"}
               />
             </TouchableOpacity>
-
-            <Text>Choisir une date</Text>
+            <Calendar />
+            {/* <Text>Choisir une date</Text> */}
           </View>
         </Modal>
 
