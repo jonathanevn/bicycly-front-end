@@ -6,6 +6,7 @@ import {
   TextInput,
   Platform,
   Modal,
+  DatePickerIOS,
   TouchableOpacity
 } from "react-native";
 import { text } from "../constants/Styles";
