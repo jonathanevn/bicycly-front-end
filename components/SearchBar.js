@@ -83,8 +83,8 @@ class SearchBar extends React.Component {
                 name={Platform.OS === "ios" ? "ios-close" : "md-close"}
               />
             </TouchableOpacity>
-            <Calendar />
             {/* <Text>Choisir une date</Text> */}
+            <Calendar />
           </View>
         </Modal>
 
