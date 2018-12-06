@@ -110,14 +110,16 @@ class SearchBar extends React.Component {
               this.setModalDateVisible(true);
             }}
           >
-            <View style={styles.searchDate}>
-              <Ionicons
-                size={16}
-                style={styles.iconCalendar}
-                color={Colors.darkGrey}
-                name={Platform.OS === "ios" ? "ios-calendar" : "md-calendar"}
-              />
-              <Text style={text.h3}>Quand ?</Text>
+            <View style={styles.searchDateSection}>
+              <View style={styles.searchDate}>
+                <Ionicons
+                  size={16}
+                  style={styles.iconCalendar}
+                  color={Colors.darkGrey}
+                  name={Platform.OS === "ios" ? "ios-calendar" : "md-calendar"}
+                />
+                <Text style={text.h3}>Quand ?</Text>
+              </View>
             </View>
           </TouchableOpacity>
         </View>
@@ -149,6 +151,14 @@ const styles = StyleSheet.create({
 
   searchAddress: {
     paddingLeft: 10
+  },
+
+  searchDateSection: {
+    borderLeftWidth: 0.3,
+    borderLeftColor: "#c2c2c2",
+    paddingLeft: 15,
+    height: 30,
+    justifyContent: "center"
   },
 
   searchDate: {
