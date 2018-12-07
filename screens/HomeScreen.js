@@ -29,7 +29,7 @@ export default class HomeScreen extends React.Component {
       longitude: LONGITUDE,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
-      bikes: null
+      bikes: []
     },
     error: null
   };
@@ -38,33 +38,60 @@ export default class HomeScreen extends React.Component {
     Permissions.askAsync(Permissions.LOCATION);
     navigator.geolocation.getCurrentPosition(
       position => {
-        this.setState({
-          region: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA
+        this.setState(
+          {
+            region: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA
+            }
+          },
+          () => {
+            axios
+              .get("http://localhost:3100/api/bike/around", {
+                params: {
+                  longitude: this.state.region.longitude,
+                  latitude: this.state.region.latitude
+                }
+              })
+              .then(response => {
+                if (response.data) {
+                  console.log("longitude", this.state.region.longitude);
+                  console.log("response.data", response.data);
+                  this.setState({ bikes: response.data.bikes });
+                }
+              })
+              .catch(error => {
+                console.log(error.response);
+              });
           }
-        });
+        );
       },
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-    axios
-      .get("http://localhost:3100/around")
-      .then(response => {
-        if (response.data) {
-          console.log(response.data);
-          this.setState({ bikes: response.data.bikes });
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
   }
 
   onRegionChange = region => {
-    this.setState(region);
+    this.setState(region, () =>
+      axios
+        .get("http://localhost:3100/api/bike/around", {
+          params: {
+            longitude: this.state.region.longitude,
+            latitude: this.state.region.latitude
+          }
+        })
+        .then(response => {
+          if (response.data) {
+            console.log("response.data", response.data);
+            this.setState({ bikes: response.data.bikes });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    );
   };
 
   render() {
