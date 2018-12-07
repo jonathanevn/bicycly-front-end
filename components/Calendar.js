@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import CalendarPicker from "react-native-calendar-picker";
 import { width, height } from "../constants/Layout";
 import { button, text } from "../constants/Styles";
-import moment from "moment";
+import moment from "moment/min/moment-with-locales";
 
 export default class Calendar extends Component {
   constructor(props) {
@@ -53,7 +53,9 @@ export default class Calendar extends Component {
             <Text>
               {this.state.selectedEndDate === null
                 ? "Veuillez choisir une date"
-                : moment(endDate).format("ll")}
+                : moment(endDate)
+                    .locale("fr")
+                    .format("ll")}
             </Text>
           </View>
         </View>
