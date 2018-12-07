@@ -7,11 +7,16 @@ import {
   Modal,
   TouchableOpacity
 } from "react-native";
+
 import { text } from "../constants/Styles";
 import apiKey from "../apiKey";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+
+import window from "../constants/Layout";
+import Calendar from "./Calendar";
+
 import { width, height } from "../constants/Layout";
 
 const homePlace = {
@@ -26,6 +31,7 @@ const workPlace = {
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
 
 class SearchBar extends React.Component {
   state = {
@@ -191,8 +197,8 @@ class SearchBar extends React.Component {
                 name={Platform.OS === "ios" ? "ios-close" : "md-close"}
               />
             </TouchableOpacity>
-
-            <Text>Choisir une date</Text>
+            {/* <Text>Choisir une date</Text> */}
+            <Calendar />
           </View>
         </Modal>
 
@@ -309,7 +315,7 @@ const styles = StyleSheet.create({
 
   containerDateModal: {
     backgroundColor: "white",
-    padding: 22,
+    // padding: 22,
     alignItems: "center",
     justifyContent: "flex-start",
     marginTop: 300,
