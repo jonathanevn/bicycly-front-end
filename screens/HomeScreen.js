@@ -28,10 +28,10 @@ export default class HomeScreen extends React.Component {
       latitude: LATITUDE,
       longitude: LONGITUDE,
       latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA,
-      bikes: []
+      longitudeDelta: LONGITUDE_DELTA
     },
-    error: null
+    error: null,
+    bikes: []
   };
 
   componentDidMount() {
@@ -49,7 +49,7 @@ export default class HomeScreen extends React.Component {
           },
           () => {
             axios
-              .get("http://localhost:3100/api/bike/around", {
+              .get("http://192.168.86.249:3100/api/bike/around", {
                 params: {
                   longitude: this.state.region.longitude,
                   latitude: this.state.region.latitude
@@ -57,9 +57,7 @@ export default class HomeScreen extends React.Component {
               })
               .then(response => {
                 if (response.data) {
-                  console.log("longitude", this.state.region.longitude);
-                  console.log("response.data", response.data);
-                  this.setState({ bikes: response.data.bikes });
+                  this.setState({ bikes: response.data });
                 }
               })
               .catch(error => {
@@ -76,7 +74,7 @@ export default class HomeScreen extends React.Component {
   onRegionChange = region => {
     this.setState(region, () =>
       axios
-        .get("http://localhost:3100/api/bike/around", {
+        .get("http://192.168.86.249:3100/api/bike/around", {
           params: {
             longitude: this.state.region.longitude,
             latitude: this.state.region.latitude
@@ -84,8 +82,10 @@ export default class HomeScreen extends React.Component {
         })
         .then(response => {
           if (response.data) {
-            console.log("response.data", response.data);
-            this.setState({ bikes: response.data.bikes });
+            this.setState({
+              isLoading: false,
+              bikes: response.data
+            });
           }
         })
         .catch(error => {
@@ -94,7 +94,22 @@ export default class HomeScreen extends React.Component {
     );
   };
 
+  getMarkers(bikes) {
+    const bikesMarkers = [];
+    bikes.map(item => {
+      bikesMarkers.push(
+        <MapView.Marker
+          coordinate={{ latitude: item.loc.lat, longitude: item.loc.lon }}
+          title={"Le Reacteur"}
+          description={"La formation des champions !"}
+        />
+      );
+    });
+    return bikesMarkers;
+  }
+
   render() {
+    console.log("this.state.bikes", this.state.bikes);
     if (this.state.latitude === null) {
       return <Text>Loading...</Text>;
     } else {
@@ -102,20 +117,12 @@ export default class HomeScreen extends React.Component {
         <View style={styles.container}>
           <MapView
             style={styles.map}
-            /*            provider={PROVIDER_GOOGLE} */
             region={this.state.region}
             onRegionChange={region => this.setState({ region })}
           >
-            <MapView.Marker
-              coordinate={{
-                latitude: this.state.region.latitude,
-                longitude: this.state.region.longitude
-              }}
-              tracksViewChanges={false}
-              title={"Le Reacteur"}
-              description={"La formation des champions !"}
-            />
+            {this.getMarkers(this.state.bikes)}
           </MapView>
+
           <View style={styles.content}>
             <SearchBar onLocationChange={this.onRegionChange} />
             <TouchableOpacity
