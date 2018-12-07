@@ -1,5 +1,6 @@
 import React from "react";
 import SearchBar from "../components/SearchBar";
+import axios from "axios";
 import {
   Platform,
   StyleSheet,
@@ -27,7 +28,8 @@ export default class HomeScreen extends React.Component {
       latitude: LATITUDE,
       longitude: LONGITUDE,
       latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
+      longitudeDelta: LONGITUDE_DELTA,
+      bikes: null
     },
     error: null
   };
@@ -48,6 +50,17 @@ export default class HomeScreen extends React.Component {
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
+    axios
+      .get("http://localhost:3100/around")
+      .then(response => {
+        if (response.data) {
+          console.log(response.data);
+          this.setState({ bikes: response.data.bikes });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   onRegionChange = region => {
