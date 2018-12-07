@@ -212,7 +212,9 @@ class SearchBar extends React.Component {
                 {this.state.addressSelected === null ? (
                   <Text style={text.h3}>Position actuelle</Text>
                 ) : (
-                  <Text style={text.h3}>{this.state.addressSelected}</Text>
+                  <Text numberOfLines={1} style={text.h3}>
+                    {this.state.addressSelected}
+                  </Text>
                 )}
                 {this.state.citySelected === null ? (
                   <Text style={text.pricePerDay}>Paris</Text>
@@ -270,7 +272,8 @@ const styles = StyleSheet.create({
   },
 
   searchAddress: {
-    paddingLeft: 10
+    paddingLeft: 10,
+    width: 160
   },
 
   searchDateSection: {

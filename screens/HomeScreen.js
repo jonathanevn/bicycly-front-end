@@ -8,6 +8,7 @@ import {
   View
 } from "react-native";
 import { MapView, Permissions } from "expo";
+/* import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps"; */
 import { height, width } from "../constants/Layout";
 import { text, button } from "../constants/Styles";
 
@@ -50,16 +51,10 @@ export default class HomeScreen extends React.Component {
   }
 
   onRegionChange = region => {
-    console.log("pokemon", region);
     this.setState(region);
   };
 
   render() {
-    console.log("sofianooo", this.state.region);
-    console.log("pikaachu", {
-      latitude: this.state.region.latitude,
-      longitude: this.state.region.longitude
-    });
     if (this.state.latitude === null) {
       return <Text>Loading...</Text>;
     } else {
@@ -67,15 +62,16 @@ export default class HomeScreen extends React.Component {
         <View style={styles.container}>
           <MapView
             style={styles.map}
+            /*            provider={PROVIDER_GOOGLE} */
             region={this.state.region}
             onRegionChange={region => this.setState({ region })}
-            onRegionChangeComplete={region => this.setState({ region })}
           >
             <MapView.Marker
               coordinate={{
                 latitude: this.state.region.latitude,
                 longitude: this.state.region.longitude
               }}
+              tracksViewChanges={false}
               title={"Le Reacteur"}
               description={"La formation des champions !"}
             />
