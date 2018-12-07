@@ -1,77 +1,118 @@
-import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  DatePickerIOS,
-  TouchableOpacity
-} from "react-native";
+import React, { Component } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import CalendarPicker from "react-native-calendar-picker";
 
 import { button, text } from "../constants/Styles";
+import moment from "moment";
 
-export default class Calendar extends React.Component {
+export default class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { chosenDate: new Date() };
-    this.setDate = this.setDate.bind(this);
+    this.state = {
+      selectedStartDate: null,
+      selectedEndDate: null
+    };
+    this.onDateChange = this.onDateChange.bind(this);
   }
 
-  setDate(newDate) {
-    this.setState({ chosenDate: newDate });
+  onDateChange(date, type) {
+    if (type === "END_DATE") {
+      this.setState({
+        selectedEndDate: date
+      });
+    } else {
+      this.setState({
+        selectedStartDate: date,
+        selectedEndDate: null
+      });
+    }
   }
 
   render() {
+    const { selectedStartDate, selectedEndDate } = this.state;
+    const minDate = new Date(); // Today
+    // const maxDate = new Date(2027, 6, 3);
+    const startDate = selectedStartDate ? selectedStartDate.toString() : "";
+    const endDate = selectedEndDate ? selectedEndDate.toString() : "";
+
+    let now = moment().format("ll");
+    console.log("ici", now);
+    moment().format("ll");
+    console.log(startDate);
+
     return (
       <View style={styles.container}>
-        <View style={styles.buttonTop}>
-          <TouchableOpacity style={button.primary}>
-            <Text>Début</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={button.secondary}>
-            <Text>Fin</Text>
-          </TouchableOpacity>
+        <View style={styles.date}>
+          <View>
+            <Text style={text.textButton}>Début</Text>
+            <Text>{startDate}</Text>
+          </View>
+          <View>
+            <Text style={text.textButton}>Fin</Text>
+            <Text>{endDate}</Text>
+          </View>
         </View>
-
         <View style={styles.calendar}>
-          <DatePickerIOS
-            mode="datetime"
-            date={this.state.chosenDate}
-            minuteInterval="10"
-            onDateChange={this.setDate}
-            locale="fr"
+          <CalendarPicker
+            style={text.textButton}
+            startFromMonday={true}
+            allowRangeSelection={true}
+            minDate={minDate} //   maxDate={maxDate}
+            previousTitle="<"
+            nextTitle=">"
+            weekdays={["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]}
+            months={[
+              "Janvier",
+              "Février",
+              "Mars",
+              "Avril",
+              "Mai",
+              "Juin",
+              "Juillet",
+              "Août",
+              "Septembre",
+              "Octobre",
+              "Novembre",
+              "Décembre"
+            ]} //   todayBackgroundColor="#f2e6ff"
+            selectedDayColor="#ffc200"
+            selectedDayTextColor="#FFFFFF"
+            textStyle={text.inputCompleted}
+            customDatesStyles={[
+              {
+                date: moment(startDate).format("DD-MM-YY")
+              }
+            ]}
+            onDateChange={this.onDateChange}
           />
         </View>
-        <TouchableOpacity style={button.primary}>
-          <Text>Confirmer</Text>
-        </TouchableOpacity>
+        <View style={styles.confirmed}>
+          <TouchableOpacity style={button.primary}>
+            <Text style={text.textButton} onPress={this.onPress}>
+              Confirmer
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 }
-
+// moment().format("ll");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: 500,
-    alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: "#FFFFFF"
+    // marginTop: 100
   },
-  buttonTop: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    flex: 1,
+  date: {
     flexDirection: "row",
-    width: "100%"
+    justifyContent: "space-between"
   },
-  buttonLeft:{
-      backgroundColor: "#ffc200"
-  },
-  buttonRight:{
-      borderColor: "#ffc200",
-      borderWidth: 1
-  }
   calendar: {
-    flex: 1,
-    width: "100%"
+    marginTop: 10
+  },
+  confirmed: {
+    alignItems: "center",
+    marginTop: 15
   }
 });

@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
 
   containerDateModal: {
     backgroundColor: "white",
-    padding: 22,
+    // padding: 22,
     alignItems: "center",
     justifyContent: "flex-start",
     marginTop: 300,
