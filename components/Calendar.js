@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import CalendarPicker from "react-native-calendar-picker";
-
+import { width, height } from "../constants/Layout";
 import { button, text } from "../constants/Styles";
 import moment from "moment";
 
@@ -28,6 +28,8 @@ export default class Home extends Component {
     }
   }
 
+  onPress = () => {};
+
   render() {
     const { selectedStartDate, selectedEndDate } = this.state;
     const minDate = new Date(); // Today
@@ -35,21 +37,26 @@ export default class Home extends Component {
     const startDate = selectedStartDate ? selectedStartDate.toString() : "";
     const endDate = selectedEndDate ? selectedEndDate.toString() : "";
 
-    let now = moment().format("ll");
-    console.log("ici", now);
-    moment().format("ll");
-    console.log(startDate);
-
     return (
       <View style={styles.container}>
         <View style={styles.date}>
-          <View>
+          <View style={styles.startDate}>
             <Text style={text.textButton}>Début</Text>
-            <Text>{startDate}</Text>
+            <Text>
+              {this.state.selectedStartDate === null
+                ? "Veuillez choisir une date"
+                : moment(startDate)
+                    .locale("fr")
+                    .format("ll")}
+            </Text>
           </View>
-          <View>
+          <View style={styles.endDate}>
             <Text style={text.textButton}>Fin</Text>
-            <Text>{endDate}</Text>
+            <Text>
+              {this.state.selectedEndDate === null
+                ? "Veuillez choisir une date"
+                : moment(endDate).format("ll")}
+            </Text>
           </View>
         </View>
         <View style={styles.calendar}>
@@ -78,11 +85,6 @@ export default class Home extends Component {
             selectedDayColor="#ffc200"
             selectedDayTextColor="#FFFFFF"
             textStyle={text.inputCompleted}
-            customDatesStyles={[
-              {
-                date: moment(startDate).format("DD-MM-YY")
-              }
-            ]}
             onDateChange={this.onDateChange}
           />
         </View>
@@ -114,5 +116,15 @@ const styles = StyleSheet.create({
   confirmed: {
     alignItems: "center",
     marginTop: 15
+  },
+  startDate: {
+    width: width / 2,
+    justifyContent: "flex-start",
+    alignItems: "flex-start"
+  },
+  endDate: {
+    width: width / 2,
+    justifyContent: "flex-end",
+    alignItems: "flex-end"
   }
 });
