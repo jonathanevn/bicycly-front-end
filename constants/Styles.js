@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 
 const button = StyleSheet.create({
   primary: {
-    // flex: 1,
+    flex: 1,
     height: 50,
     width: 240,
     backgroundColor: "#ffc200",
