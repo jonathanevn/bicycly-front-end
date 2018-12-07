@@ -24,9 +24,6 @@ import StartRent from "../screens/StartRent";
 import Tchat from "../screens/Tchat";
 import UserProfile from "../screens/UserProfile";
 
-// ---- COMPONENTS IMPORTS ----//
-import CyclistIcon from "../components/CyclistIcon";
-
 // ---- HOME ----//
 
 const HomeStack = createStackNavigator({
@@ -44,10 +41,7 @@ HomeStack.navigationOptions = {
     showLabel: false
   },
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-search" : "md-search"}
-    />
+    <TabBarIcon focused={focused} size={21} name="search" />
   )
 };
 
@@ -66,10 +60,7 @@ ReservationStack.navigationOptions = {
     showLabel: false
   },
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-calendar" : "md-calendar"}
-    />
+    <TabBarIcon focused={focused} size={23} name="calendar" />
   )
 };
 
@@ -88,10 +79,7 @@ MyBikesStack.navigationOptions = {
     showLabel: false
   },
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-calendar" : "ios-calendar"}
-    />
+    <TabBarIcon focused={focused} size={37} name="bike" />
   )
 };
 
@@ -108,7 +96,9 @@ AccountStack.navigationOptions = {
   tabBarOptions: {
     showLabel: false
   },
-  tabBarIcon: ({ focused }) => <CyclistIcon focused={focused} />
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon size={24} focused={focused} name="cyclist" />
+  )
 };
 
 const BottomTabNavigator = createBottomTabNavigator({

@@ -17,6 +17,7 @@ class BikeDetails extends React.Component {
         >
           <Text>Voir le profil du locataire</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => {
             this.props.navigation.navigate("Tchat");

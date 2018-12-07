@@ -1,7 +1,10 @@
 import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
-import { AppLoading, Asset, Font, Icon } from "expo";
+import { AppLoading, Asset, Font } from "expo";
+
 import AppNavigator from "./navigation/AppNavigator";
+import { createIconSetFromIcoMoon } from "@expo/vector-icons";
+import icoMoonConfig from "./assets/fonts/selection.json";
 
 export default class App extends React.Component {
   state = {
@@ -31,15 +34,11 @@ export default class App extends React.Component {
     return Promise.all([
       Asset.loadAsync([require("./assets/images/cyclist.png")]),
       Font.loadAsync({
-        // This is the font that we are using for our tab bar
-        ...Icon.Ionicons.font,
-        // We include SpaceMono because we use it in HomeScreen.js. Feel free
-        // to remove this if you are not using it in your app
-        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
         "Karla-Bold": require("./assets/fonts/Karla-Bold.ttf"),
         "Karla-Bold-Italic": require("./assets/fonts/Karla-BoldItalic.ttf"),
         "Karla-Regular": require("./assets/fonts/Karla-Regular.ttf"),
-        "Karla-Italic": require("./assets/fonts/Karla-Italic.ttf")
+        "Karla-Italic": require("./assets/fonts/Karla-Italic.ttf"),
+        icomoon: require("./assets/fonts/icomoon.ttf")
       })
     ]);
   };
