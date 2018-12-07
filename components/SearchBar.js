@@ -13,6 +13,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { width, height } from "../constants/Layout";
+import Calendar from "./Calendar";
 
 const homePlace = {
   description: "Home",
@@ -192,7 +193,7 @@ class SearchBar extends React.Component {
               />
             </TouchableOpacity>
 
-            <Text>Choisir une date</Text>
+            <Calendar />
           </View>
         </Modal>
 
@@ -309,7 +310,7 @@ const styles = StyleSheet.create({
 
   containerDateModal: {
     backgroundColor: "white",
-    padding: 22,
+    // padding: 22,
     alignItems: "center",
     justifyContent: "flex-start",
     marginTop: 300,

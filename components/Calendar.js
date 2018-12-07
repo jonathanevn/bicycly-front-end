@@ -5,7 +5,7 @@ import { width, height } from "../constants/Layout";
 import { button, text } from "../constants/Styles";
 import moment from "moment";
 
-export default class Home extends Component {
+export default class Calendar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF"
+
     // marginTop: 100
   },
   date: {
@@ -118,11 +119,13 @@ const styles = StyleSheet.create({
   startDate: {
     width: width / 2,
     justifyContent: "flex-start",
-    alignItems: "flex-start"
+    alignItems: "flex-start",
+    paddingLeft: 10
   },
   endDate: {
     width: width / 2,
     justifyContent: "flex-end",
-    alignItems: "flex-end"
+    alignItems: "flex-end",
+    paddingRight: 10
   }
 });
