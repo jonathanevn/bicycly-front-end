@@ -3,13 +3,12 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   Platform,
   Modal,
-  DatePickerIOS,
   TouchableOpacity
 } from "react-native";
 import { text } from "../constants/Styles";
+import apiKey from "../apiKey";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
@@ -62,39 +61,39 @@ class SearchBar extends React.Component {
           this.setState(
             /* console.log("latDeltaSelected", LATITUDE_DELTA), */
             {
-              latitudeSelected: details.geometry.location.lat,
-              longitudeSelected: details.geometry.location.lng,
               addressSelected: details.name,
               citySelected: details.vicinity
             },
             () => {
               this.props.onLocationChange({
                 region: {
-                  latitude: this.state.latitudeSelected,
-                  longitude: this.state.longitudeSelected,
+                  latitude: details.geometry.location.lat,
+                  longitude: details.geometry.location.lng,
                   latitudeDelta: this.state.latDeltaSelected,
                   longitudeDelta: this.state.longDeltaSelected
                 }
               });
             }
           );
+          // console.log(
+          //   "data",
+          //   data,
+          //   "details",
+          //   details,
+          //   "latitudeDelta",
+          //   this.state.latDeltaSelected,
+          //   "longitudeDelta",
+          //   this.state.longDeltaSelected,
+          //   "latitude",
+          //   this.state.latitudeSelected
+          // );
           this.setModalAddressVisible(!this.state.modalAddressVisible);
           // 'details' is provided when fetchDetails = true
-          console.log(
-            "data",
-            data,
-            "details",
-            details,
-            "latitudeDelta",
-            LATITUDE_DELTA,
-            "longitudeDelta",
-            LONGITUDE_DELTA
-          );
         }}
         getDefaultValue={() => ""}
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
-          key: process.env.GOOGlE_API_KEY,
+          key: "AIzaSyChBhCJi-Dg_aDGRuBFO3zDKlhx918kPuQ",
           language: "fr", // language of the results
           types: ["(address)", "(regions)", "geocode"] // default: 'geocode'
         }}
@@ -148,7 +147,6 @@ class SearchBar extends React.Component {
   };
 
   render() {
-    console.log();
     return (
       <View>
         <Modal

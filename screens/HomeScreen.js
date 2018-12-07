@@ -50,10 +50,16 @@ export default class HomeScreen extends React.Component {
   }
 
   onRegionChange = region => {
-    this.setState({ region });
+    console.log("pokemon", region);
+    this.setState(region);
   };
 
   render() {
+    console.log("sofianooo", this.state.region);
+    console.log("pikaachu", {
+      latitude: this.state.region.latitude,
+      longitude: this.state.region.longitude
+    });
     if (this.state.latitude === null) {
       return <Text>Loading...</Text>;
     } else {
@@ -61,19 +67,14 @@ export default class HomeScreen extends React.Component {
         <View style={styles.container}>
           <MapView
             style={styles.map}
-            region={{
-              latitude: this.state.region.latitude,
-              longitude: this.state.region.longitude,
-              latitudeDelta: this.state.region.latitudeDelta,
-              longitudeDelta: this.state.region.longitudeDelta
-            }}
-            /* onRegionChange={region => this.setState({ region })}
-            onRegionChangeComplete={region => this.setState({ region })} */
+            region={this.state.region}
+            onRegionChange={region => this.setState({ region })}
+            onRegionChangeComplete={region => this.setState({ region })}
           >
             <MapView.Marker
               coordinate={{
-                latitude: this.state.region.latitudeDelta,
-                longitude: this.state.region.longitudeDelta
+                latitude: this.state.region.latitude,
+                longitude: this.state.region.longitude
               }}
               title={"Le Reacteur"}
               description={"La formation des champions !"}
