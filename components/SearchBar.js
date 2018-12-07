@@ -94,7 +94,7 @@ class SearchBar extends React.Component {
         getDefaultValue={() => ""}
         query={{
           // available options: https://developers.google.com/places/web-service/autocomplete
-          key: "AIzaSyChBhCJi-Dg_aDGRuBFO3zDKlhx918kPuQ",
+          key: process.env.GOOGlE_API_KEY,
           language: "fr", // language of the results
           types: ["(address)", "(regions)", "geocode"] // default: 'geocode'
         }}
