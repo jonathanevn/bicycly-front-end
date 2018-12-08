@@ -13,11 +13,12 @@ import { MapView, Permissions } from "expo";
 import { height, width } from "../constants/Layout";
 import { text, button } from "../constants/Styles";
 import { ListButton, FilterButton } from "../components/SquareButton";
+import BikeCard from "../components/BikeCard";
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 0;
 const LONGITUDE = 0;
-const LATITUDE_DELTA = 0.009;
+const LATITUDE_DELTA = 0.09;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default class HomeScreen extends React.Component {
@@ -72,27 +73,27 @@ export default class HomeScreen extends React.Component {
     );
   }
 
-  onRegionChange = region => {
-    this.setState(region, () =>
-      axios
-        .get("http://192.168.86.249:3100/api/bike/around", {
-          params: {
-            longitude: this.state.region.longitude,
-            latitude: this.state.region.latitude
-          }
-        })
-        .then(response => {
-          if (response.data) {
-            this.setState({
-              isLoading: false,
-              bikes: response.data
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
-    );
+  onLocationChange = region => {
+    this.setState(region),
+      () =>
+        axios
+          .get("http://192.168.86.249:3100/api/bike/around", {
+            params: {
+              longitude: this.state.region.longitude,
+              latitude: this.state.region.latitude
+            }
+          })
+          .then(response => {
+            if (response.data) {
+              this.setState({
+                isLoading: false,
+                bikes: response.data
+              });
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
   };
 
   getMarkers(bikes) {
@@ -131,7 +132,7 @@ export default class HomeScreen extends React.Component {
           </MapView>
 
           <View style={styles.searchBar}>
-            <SearchBar onLocationChange={this.onRegionChange} />
+            <SearchBar onLocationChange={this.onLocationChange} />
           </View>
           <View style={styles.filterButton}>
             <TouchableOpacity
@@ -168,9 +169,9 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   radius: {
-    height: 15,
-    width: 15,
-    borderRadius: 15 / 2,
+    height: 25,
+    width: 25,
+    borderRadius: 25 / 2,
     overflow: "hidden",
     backgroundColor: "rgba(255,194,0,0.1)",
     borderWidth: 1,
@@ -180,11 +181,11 @@ const styles = StyleSheet.create({
   },
 
   marker: {
-    height: 6,
-    width: 6,
+    height: 10,
+    width: 10,
     borderWidth: 1,
     borderColor: "white",
-    borderRadius: 6 / 2,
+    borderRadius: 10 / 2,
     overflow: "hidden",
     backgroundColor: "rgb(255,194,0)"
   },
@@ -196,13 +197,13 @@ const styles = StyleSheet.create({
 
   filterButton: {
     position: "absolute",
-    top: height / 2.1,
+    top: 380,
     right: 70
   },
 
   listButton: {
     position: "absolute",
-    top: height / 1.8,
+    top: 450,
     right: 70
   }
 });

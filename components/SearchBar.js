@@ -261,11 +261,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    borderRadius: 10,
+    borderRadius: 12,
     shadowColor: "rgba(93, 93, 93, 0.25)",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.9,
-    shadowRadius: 15,
+    shadowRadius: 12,
     elevation: 1
   },
 

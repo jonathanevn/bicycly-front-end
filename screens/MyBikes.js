@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity
 } from "react-native";
+import BikeCard from "../components/BikeCard";
 
 export default class MyBikesScreen extends React.Component {
   static navigationOptions = {
@@ -32,6 +33,7 @@ export default class MyBikesScreen extends React.Component {
         >
           <View style={styles.welcomeContainer}>
             <Text>This is the My Bikes screen with the map</Text>
+            <BikeCard />
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("StartRent");
