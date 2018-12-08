@@ -7,7 +7,7 @@ import {
   Modal,
   TouchableOpacity
 } from "react-native";
-import { text } from "../constants/Styles";
+import { text, button } from "../constants/Styles";
 import apiKey from "../apiKey";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -37,7 +37,11 @@ class SearchBar extends React.Component {
     latDeltaSelected: LATITUDE_DELTA,
     longDeltaSelected: LONGITUDE_DELTA,
     addressSelected: null,
-    citySelected: null
+    citySelected: null,
+    selectedDate: {
+      startDateSelected: null,
+      endDateSelected: null
+    }
   };
 
   setModalAddressVisible(visible) {
@@ -147,6 +151,10 @@ class SearchBar extends React.Component {
     );
   };
 
+  onDateSelected = selectedDate => {
+    this.setState(selectedDate);
+  };
+
   render() {
     return (
       <View>
@@ -193,7 +201,15 @@ class SearchBar extends React.Component {
               />
             </TouchableOpacity>
 
-            <Calendar />
+            <Calendar dateSelected={this.onDateSelected} />
+            <View style={styles.confirmed}>
+              <TouchableOpacity style={button.primary}>
+                <Text style={text.textButton} onPress={this.onPress}>
+                  Confirmer
+                  {/* {console.log(this.onPress)} */}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </Modal>
 
@@ -241,7 +257,16 @@ class SearchBar extends React.Component {
                   color={Colors.darkGrey}
                   name={Platform.OS === "ios" ? "ios-calendar" : "md-calendar"}
                 />
-                <Text style={text.h3}>Quand ?</Text>
+                {this.state.selectedDate.startDateSelected === null &&
+                this.state.selectedDate.endDateSelected === null ? (
+                  <Text style={text.h3}>Quand ?</Text>
+                ) : (
+                  <Text>
+                    {this.state.selectedDate.startDateSelected}
+                    {this.state.selectedDate.endDateSelected}
+                  </Text>
+                )}
+                {console.log(this.state.selectedDate.startDateSelected)}
               </View>
             </View>
           </TouchableOpacity>
@@ -315,6 +340,11 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     marginTop: 300,
     flex: 1
+  },
+  confirmed: {
+    alignItems: "center",
+    marginBottom: 30
+    // marginTop: 15
   }
 });
 

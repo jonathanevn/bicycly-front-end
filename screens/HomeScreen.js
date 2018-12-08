@@ -31,6 +31,10 @@ export default class HomeScreen extends React.Component {
       longitudeDelta: LONGITUDE_DELTA,
       bikes: null
     },
+    date: {
+      startDate: null,
+      endDate: null
+    },
     error: null
   };
 
@@ -67,6 +71,10 @@ export default class HomeScreen extends React.Component {
     this.setState(region);
   };
 
+  //   onDateChange = date => {
+  //     this.setState(date);
+  //   };
+
   render() {
     if (this.state.latitude === null) {
       return <Text>Loading...</Text>;
@@ -90,7 +98,10 @@ export default class HomeScreen extends React.Component {
             />
           </MapView>
           <View style={styles.content}>
-            <SearchBar onLocationChange={this.onRegionChange} />
+            <SearchBar
+              onLocationChange={this.onRegionChange}
+              //   dateChange={this.onDateChange}
+            />
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("Filters");

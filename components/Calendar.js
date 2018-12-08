@@ -27,6 +27,14 @@ export default class Calendar extends Component {
       });
     }
   }
+  onPress = () => {
+    this.props.dateSelected({
+      selectedDate: {
+        startDateSelected: this.state.selectedStartDate,
+        endDateSelected: this.state.selectedEndDate
+      }
+    });
+  };
 
   render() {
     const { selectedStartDate, selectedEndDate } = this.state;
@@ -87,13 +95,6 @@ export default class Calendar extends Component {
             textStyle={text.inputCompleted}
             onDateChange={this.onDateChange}
           />
-        </View>
-        <View style={styles.confirmed}>
-          <TouchableOpacity style={button.primary}>
-            <Text style={text.textButton} onPress={this.onPress}>
-              Confirmer
-            </Text>
-          </TouchableOpacity>
         </View>
       </View>
     );
