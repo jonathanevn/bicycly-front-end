@@ -16,7 +16,7 @@ import { text, button } from "../constants/Styles";
 const ASPECT_RATIO = width / height;
 const LATITUDE = 0;
 const LONGITUDE = 0;
-const LATITUDE_DELTA = 0.0922;
+const LATITUDE_DELTA = 0.009;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default class HomeScreen extends React.Component {
@@ -102,7 +102,11 @@ export default class HomeScreen extends React.Component {
           coordinate={{ latitude: item.loc.lat, longitude: item.loc.lon }}
           title={"Le Reacteur"}
           description={"La formation des champions !"}
-        />
+        >
+          <View style={styles.radius}>
+            <View style={styles.marker} />
+          </View>
+        </MapView.Marker>
       );
     });
     return bikesMarkers;
@@ -118,6 +122,8 @@ export default class HomeScreen extends React.Component {
           <MapView
             style={styles.map}
             region={this.state.region}
+            provider={MapView.PROVIDER_GOOGLE}
+            customMapStyle={generatedMapStyle}
             onRegionChange={region => this.setState({ region })}
           >
             {this.getMarkers(this.state.bikes)}
@@ -156,8 +162,279 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%"
   },
+  radius: {
+    height: 15,
+    width: 15,
+    borderRadius: 15 / 2,
+    overflow: "hidden",
+    backgroundColor: "rgba(255,194,0,0.1)",
+    borderWidth: 1,
+    borderColor: "rgba(255,194,0,0.3)",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+
+  marker: {
+    height: 6,
+    width: 6,
+    borderWidth: 1,
+    borderColor: "white",
+    borderRadius: 6 / 2,
+    overflow: "hidden",
+    backgroundColor: "rgb(255,194,0)"
+  },
+
   content: {
     position: "absolute",
     top: 60
   }
 });
+
+const generatedMapStyle = [
+  {
+    featureType: "administrative",
+    elementType: "labels.text.fill",
+    stylers: [
+      {
+        color: "#585858"
+      },
+      {
+        visibility: "off"
+      }
+    ]
+  },
+  {
+    featureType: "administrative.locality",
+    elementType: "labels",
+    stylers: [
+      {
+        visibility: "simplified"
+      },
+      {
+        gamma: "3.04"
+      },
+      {
+        lightness: "-27"
+      }
+    ]
+  },
+  {
+    featureType: "landscape",
+    elementType: "all",
+    stylers: [
+      {
+        color: "#f2f2f2"
+      },
+      {
+        visibility: "simplified"
+      }
+    ]
+  },
+  {
+    featureType: "poi",
+    elementType: "all",
+    stylers: [
+      {
+        visibility: "on"
+      }
+    ]
+  },
+  {
+    featureType: "poi",
+    elementType: "geometry",
+    stylers: [
+      {
+        visibility: "simplified"
+      },
+      {
+        saturation: "-65"
+      },
+      {
+        lightness: "45"
+      },
+      {
+        gamma: "1.78"
+      }
+    ]
+  },
+  {
+    featureType: "poi",
+    elementType: "labels",
+    stylers: [
+      {
+        visibility: "off"
+      }
+    ]
+  },
+  {
+    featureType: "poi",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        visibility: "off"
+      }
+    ]
+  },
+  {
+    featureType: "poi.park",
+    elementType: "geometry.fill",
+    stylers: [
+      {
+        color: "#83efda"
+      }
+    ]
+  },
+  {
+    featureType: "road",
+    elementType: "all",
+    stylers: [
+      {
+        saturation: -100
+      },
+      {
+        lightness: 45
+      }
+    ]
+  },
+  {
+    featureType: "road",
+    elementType: "labels",
+    stylers: [
+      {
+        visibility: "on"
+      }
+    ]
+  },
+  {
+    featureType: "road",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        visibility: "off"
+      }
+    ]
+  },
+  {
+    featureType: "road.highway",
+    elementType: "all",
+    stylers: [
+      {
+        visibility: "simplified"
+      }
+    ]
+  },
+  {
+    featureType: "road.highway",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        visibility: "off"
+      }
+    ]
+  },
+  {
+    featureType: "road.arterial",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        visibility: "off"
+      }
+    ]
+  },
+  {
+    featureType: "transit.line",
+    elementType: "geometry",
+    stylers: [
+      {
+        saturation: "-33"
+      },
+      {
+        lightness: "22"
+      },
+      {
+        gamma: "2.08"
+      }
+    ]
+  },
+  {
+    featureType: "transit.station.airport",
+    elementType: "geometry",
+    stylers: [
+      {
+        gamma: "2.08"
+      },
+      {
+        hue: "#ffa200"
+      }
+    ]
+  },
+  {
+    featureType: "transit.station.airport",
+    elementType: "labels",
+    stylers: [
+      {
+        visibility: "off"
+      }
+    ]
+  },
+  {
+    featureType: "transit.station.bus",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        visibility: "off"
+      }
+    ]
+  },
+  {
+    featureType: "transit.station.rail",
+    elementType: "geometry",
+    stylers: [
+      {
+        visibility: "off"
+      }
+    ]
+  },
+  {
+    featureType: "transit.station.rail",
+    elementType: "labels.text",
+    stylers: [
+      {
+        visibility: "off"
+      }
+    ]
+  },
+  {
+    featureType: "transit.station.rail",
+    elementType: "labels.icon",
+    stylers: [
+      {
+        visibility: "off"
+      },
+      {
+        saturation: "-55"
+      },
+      {
+        lightness: "-2"
+      },
+      {
+        gamma: "1.88"
+      },
+      {
+        hue: "#ffab00"
+      }
+    ]
+  },
+  {
+    featureType: "water",
+    elementType: "all",
+    stylers: [
+      {
+        color: "#ace3f9"
+      },
+      {
+        visibility: "simplified"
+      }
+    ]
+  }
+];
