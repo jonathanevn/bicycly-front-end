@@ -6,7 +6,9 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Animated,
+  Image
 } from "react-native";
 import { MapView, Permissions } from "expo";
 /* import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps"; */
@@ -18,8 +20,10 @@ import BikeCard from "../components/BikeCard";
 const ASPECT_RATIO = width / height;
 const LATITUDE = 0;
 const LONGITUDE = 0;
-const LATITUDE_DELTA = 0.09;
+const LATITUDE_DELTA = 0.04;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const CARD_HEIGHT = 180;
+const CARD_WIDTH = 350;
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -35,6 +39,11 @@ export default class HomeScreen extends React.Component {
     error: null,
     bikes: []
   };
+
+  componentWillMount() {
+    this.index = 0;
+    this.animation = new Animated.Value(0);
+  }
 
   componentDidMount() {
     Permissions.askAsync(Permissions.LOCATION);
@@ -71,51 +80,77 @@ export default class HomeScreen extends React.Component {
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
+    this.animation.addListener(({ value }) => {
+      let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
+      if (index >= this.state.bikes.length) {
+        index = this.state.bikes.length - 1;
+      }
+      if (index <= 0) {
+        index = 0;
+      }
+
+      clearTimeout(this.regionTimeout);
+      this.regionTimeout = setTimeout(() => {
+        if (this.index !== index) {
+          this.index = index;
+          const { loc } = this.state.bikes[index];
+          this.map.animateToRegion(
+            {
+              ...loc,
+              latitudeDelta: this.state.region.latitudeDelta,
+              longitudeDelta: this.state.region.longitudeDelta
+            },
+            350
+          );
+        }
+      }, 10);
+    });
   }
 
   onLocationChange = region => {
-    this.setState(region),
-      () =>
-        axios
-          .get("http://192.168.86.249:3100/api/bike/around", {
-            params: {
-              longitude: this.state.region.longitude,
-              latitude: this.state.region.latitude
-            }
-          })
-          .then(response => {
-            if (response.data) {
-              this.setState({
-                isLoading: false,
-                bikes: response.data
-              });
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
+    this.setState(region, () =>
+      axios
+        .get("http://192.168.86.249:3100/api/bike/around", {
+          params: {
+            longitude: this.state.region.longitude,
+            latitude: this.state.region.latitude
+          }
+        })
+        .then(response => {
+          if (response.data) {
+            this.setState({
+              isLoading: false,
+              bikes: response.data
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    );
   };
 
-  getMarkers(bikes) {
-    const bikesMarkers = [];
-    bikes.map(item => {
-      bikesMarkers.push(
-        <MapView.Marker
-          coordinate={{ latitude: item.loc.lat, longitude: item.loc.lon }}
-          title={"Le Reacteur"}
-          description={"La formation des champions !"}
-        >
-          <View style={styles.radius}>
-            <View style={styles.marker} />
-          </View>
-        </MapView.Marker>
-      );
-    });
-    return bikesMarkers;
-  }
-
   render() {
-    console.log("this.state.bikes", this.state.bikes);
+    const interpolations = this.state.bikes.map((bikes, index) => {
+      const inputRange = [
+        (index - 1) * CARD_WIDTH,
+        index * CARD_WIDTH,
+        (index + 1) * CARD_WIDTH
+      ];
+      const scale = this.animation.interpolate({
+        inputRange,
+        outputRange: [1, 2.5, 1],
+        extrapolate: "clamp"
+      });
+      const opacity = this.animation.interpolate({
+        inputRange,
+        outputRange: [0.5, 1, 0.5],
+        extrapolate: "clamp"
+      });
+      return { scale, opacity };
+    });
+
+    /* console.log("this.state.bikes", this.state.bikes); */
     if (this.state.latitude === null) {
       return <Text>Loading...</Text>;
     } else {
@@ -125,11 +160,71 @@ export default class HomeScreen extends React.Component {
             style={styles.map}
             region={this.state.region}
             provider={MapView.PROVIDER_GOOGLE}
+            zoomEnabled={true}
             customMapStyle={generatedMapStyle}
+            ref={map => (this.map = map)}
             onRegionChange={region => this.setState({ region })}
           >
-            {this.getMarkers(this.state.bikes)}
+            {this.state.bikes.map((bikes, index) => {
+              const scaleStyle = {
+                transform: [
+                  {
+                    scale: interpolations[index].scale
+                  }
+                ]
+              };
+              const opacityStyle = {
+                opacity: interpolations[index].opacity
+              };
+
+              return (
+                <MapView.Marker
+                  key={index}
+                  coordinate={{
+                    latitude: bikes.loc.lat,
+                    longitude: bikes.loc.lon
+                  }}
+                >
+                  <Animated.View style={[styles.markerWrap, opacityStyle]}>
+                    <Animated.View style={[styles.ring, scaleStyle]} />
+                    <View style={styles.marker} />
+                  </Animated.View>
+                </MapView.Marker>
+              );
+            })}
           </MapView>
+
+          <Animated.ScrollView
+            horizontal
+            scrollEventThrottle={1}
+            showsHorizontalScrollIndicator={false}
+            snapToInterval={CARD_WIDTH}
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: {
+                      x: this.animation
+                    }
+                  }
+                }
+              ],
+              { useNativeDriver: true }
+            )}
+            style={styles.scrollView}
+            contentContainerStyle={styles.startEndPadding}
+          >
+            {this.state.bikes.map((bikes, index) => (
+              <View style={styles.card} key={index}>
+                <BikeCard
+                  brand={bikes.bikeBrand}
+                  model={bikes.bikeModel}
+                  category={bikes.bikeCategory}
+                  pricePerDay={bikes.pricePerDay}
+                />
+              </View>
+            ))}
+          </Animated.ScrollView>
 
           <View style={styles.searchBar}>
             <SearchBar onLocationChange={this.onLocationChange} />
@@ -166,18 +261,36 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
-    width: "100%"
+    width: width
   },
-  radius: {
-    height: 25,
-    width: 25,
-    borderRadius: 25 / 2,
-    overflow: "hidden",
-    backgroundColor: "rgba(255,194,0,0.1)",
-    borderWidth: 1,
-    borderColor: "rgba(255,194,0,0.3)",
+
+  scrollView: {
+    position: "absolute",
+    bottom: 15,
+    left: 0,
+    right: 0,
+    margin: "auto",
+    paddingVertical: 3
+  },
+
+  startEndPadding: {
+    paddingLeft: 10,
+    paddingRight: width - CARD_WIDTH
+  },
+
+  markerWrap: {
     alignItems: "center",
     justifyContent: "center"
+  },
+
+  ring: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    backgroundColor: "rgba(255,194,0,0.3)",
+    borderWidth: 1,
+    borderColor: "rgba(255,194,0,0.5)",
+    position: "absolute"
   },
 
   marker: {
@@ -186,7 +299,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "white",
     borderRadius: 10 / 2,
-    overflow: "hidden",
     backgroundColor: "rgb(255,194,0)"
   },
 

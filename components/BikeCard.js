@@ -11,24 +11,25 @@ class BikeCard extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {/*  <Text>{this.props.bikeBrand}</Text>
-                <Text>{this.props.brandModel}</Text>
-                <Text>{this.props.pricePerDay}</Text>
-                <Text>{this.props.category}</Text>
-                <Text>{this.props.location}</Text> */}
         <View style={styles.card}>
           <View style={styles.photoPrice}>
             <View style={styles.photo} />
             <View style={styles.priceAvatar}>
               <Text style={text.fullPrice}>30€</Text>
-              <Text style={text.pricePerDay}>10€/jour</Text>
+              <Text style={text.pricePerDay}>
+                {this.props.pricePerDay}€ /jour
+              </Text>
             </View>
           </View>
 
           <View style={styles.content}>
             <View style={styles.bikeBrandModel}>
-              <Text style={text.h3}>Marque du vélo</Text>
-              <Text style={text.h3}> Modèle</Text>
+              <Text numberOfLines={1} style={text.h3}>
+                {this.props.brand} {""}
+              </Text>
+              <Text numberOfLines={1} style={text.h3}>
+                {this.props.model}
+              </Text>
             </View>
 
             <View style={styles.bikeCategoryLoc}>
@@ -39,7 +40,7 @@ class BikeCard extends React.Component {
                   color={Colors.yellow}
                   style={{ paddingRight: 8 }}
                 />
-                <Text style={text.bikeCategory}>Catégorie</Text>
+                <Text style={text.bikeCategory}>{this.props.category}</Text>
               </View>
               <View style={styles.locTextIcon}>
                 <Icon
@@ -67,22 +68,29 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "white",
     alignItems: "flex-start",
-    height: 200,
-    width: 300,
+    height: 180,
+    width: 350,
     borderRadius: 12,
     shadowColor: "rgba(93, 93, 93, 0.25)",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.9,
-    shadowRadius: 12
+    shadowRadius: 12,
+    /*   marginHorizontal: 8, */
+    elevation: 4,
+    overflow: "hidden",
+    marginHorizontal: 10
   },
 
   content: {
-    paddingHorizontal: 20,
-    paddingVertical: 15
+    alignItems: "flex-start",
+    justifyContent: "flex-end",
+    width: 350,
+    marginTop: 5,
+    marginLeft: 15
   },
 
   photo: {
-    width: 300,
+    width: 350,
     height: 130,
     backgroundColor: "grey",
     justifyContent: "flex-start",
