@@ -3,7 +3,16 @@ import { StyleSheet, Text, View } from "react-native";
 
 class Tchat extends React.Component {
   static navigationOptions = {
-    title: "Message au propriétaire"
+    title: "Message au propriétaire",
+    headerTitleStyle: {
+      fontFamily: "Karla-Bold",
+      fontSize: 18,
+      color: "#262626"
+    },
+    headerStyle: {
+      backgroundColor: "#f8f8f8",
+      borderBottomColor: "#f8f8f8"
+    }
   };
 
   render() {

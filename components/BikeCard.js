@@ -1,10 +1,10 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import { text, button } from "../constants/Styles";
 import { createIconSetFromIcoMoon } from "@expo/vector-icons";
 import icoMoonConfig from "../assets/fonts/selection.json";
 import Colors from "../constants/Colors";
-
+import { height, width } from "../constants/Layout";
 const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 
 class BikeCard extends React.Component {
@@ -13,7 +13,11 @@ class BikeCard extends React.Component {
       <View style={styles.container}>
         <View style={styles.card}>
           <View style={styles.photoPrice}>
-            <View style={styles.photo} />
+            <Image
+              source={{ uri: this.props.picture }}
+              style={styles.photo}
+              resizeMode="cover"
+            />
             <View style={styles.priceAvatar}>
               <Text style={text.fullPrice}>30€</Text>
               <Text style={text.pricePerDay}>
@@ -69,14 +73,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "flex-start",
     height: 180,
-    width: 350,
+    width: width - 40,
     borderRadius: 12,
     shadowColor: "rgba(93, 93, 93, 0.25)",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.9,
     shadowRadius: 12,
     /*   marginHorizontal: 8, */
-    elevation: 4,
+    elevation: 3,
     overflow: "hidden",
     marginHorizontal: 10
   },
@@ -84,17 +88,14 @@ const styles = StyleSheet.create({
   content: {
     alignItems: "flex-start",
     justifyContent: "flex-end",
-    width: 350,
-    marginTop: 5,
-    marginLeft: 15
+    width: 150,
+    marginLeft: 15,
+    marginTop: 7
   },
 
   photo: {
     width: 350,
-    height: 130,
-    backgroundColor: "grey",
-    justifyContent: "flex-start",
-    position: "relative"
+    height: 130
   },
 
   priceAvatar: {
@@ -102,11 +103,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "white",
     position: "absolute",
-    height: 70,
-    width: 70,
-    borderRadius: 70 / 2,
+    height: 66,
+    width: 66,
+    borderRadius: 66 / 2,
     bottom: -35,
-    right: 8
+    right: 40
   },
 
   bikeBrandModel: {

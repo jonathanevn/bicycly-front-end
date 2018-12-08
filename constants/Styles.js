@@ -58,12 +58,12 @@ const text = StyleSheet.create({
 
   bikeCategory: {
     fontFamily: "Karla-Regular",
-    fontSize: 14,
+    fontSize: 13,
     color: "#ffc200"
   },
   localisation: {
     fontFamily: "Karla-Regular",
-    fontSize: 14,
+    fontSize: 13,
     color: "#c2c2c2"
   },
   rate: {

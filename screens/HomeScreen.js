@@ -23,7 +23,7 @@ const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.04;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const CARD_HEIGHT = 180;
-const CARD_WIDTH = 350;
+const CARD_WIDTH = width - 20;
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -219,6 +219,7 @@ export default class HomeScreen extends React.Component {
                 <BikeCard
                   brand={bikes.bikeBrand}
                   model={bikes.bikeModel}
+                  picture={bikes.photos[0]}
                   category={bikes.bikeCategory}
                   pricePerDay={bikes.pricePerDay}
                 />
@@ -309,13 +310,13 @@ const styles = StyleSheet.create({
 
   filterButton: {
     position: "absolute",
-    top: 380,
+    top: 200,
     right: 70
   },
 
   listButton: {
     position: "absolute",
-    top: 450,
+    top: 270,
     right: 70
   }
 });

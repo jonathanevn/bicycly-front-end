@@ -30,7 +30,6 @@ export default class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     return Promise.all([
-      Asset.loadAsync([require("./assets/images/cyclist.png")]),
       Font.loadAsync({
         "Karla-Bold": require("./assets/fonts/Karla-Bold.ttf"),
         "Karla-Bold-Italic": require("./assets/fonts/Karla-BoldItalic.ttf"),
