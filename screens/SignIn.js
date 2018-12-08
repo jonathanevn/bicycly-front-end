@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 class SignIn extends React.Component {
   static navigationOptions = {
-    title: "S'incrire"
+    title: "S'incrire",
+    headerTintColor: "black"
   };
 
   render() {

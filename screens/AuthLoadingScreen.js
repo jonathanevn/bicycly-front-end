@@ -7,7 +7,8 @@ import { button, text, background } from "../constants/Styles";
 
 class AuthLoadingScreen extends React.Component {
   static navigationOptions = {
-    title: "Se connecter ou s'inscrire"
+    title: "Se connecter ou s'inscrire",
+    headerBackTitle: null
   };
 
   render() {
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f8f8f8"
+    backgroundColor: "#f9f9f9"
   },
   text: {
     flex: 1,
