@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import Header from "../components/Header";
 
-import { button, text, background } from "../constants/Styles";
+import { button, text } from "../constants/Styles";
 
 class AuthLoadingScreen extends React.Component {
   static navigationOptions = {
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f9f9f9"
+    backgroundColor: "#f8f8f8"
   },
   text: {
     flex: 1,
