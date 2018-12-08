@@ -3,8 +3,6 @@ import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { AppLoading, Asset, Font } from "expo";
 
 import AppNavigator from "./navigation/AppNavigator";
-import { createIconSetFromIcoMoon } from "@expo/vector-icons";
-import icoMoonConfig from "./assets/fonts/selection.json";
 
 export default class App extends React.Component {
   state = {

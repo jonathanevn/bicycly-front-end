@@ -12,6 +12,7 @@ import { MapView, Permissions } from "expo";
 /* import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps"; */
 import { height, width } from "../constants/Layout";
 import { text, button } from "../constants/Styles";
+import { ListButton, FilterButton } from "../components/SquareButton";
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 0;
@@ -129,21 +130,25 @@ export default class HomeScreen extends React.Component {
             {this.getMarkers(this.state.bikes)}
           </MapView>
 
-          <View style={styles.content}>
+          <View style={styles.searchBar}>
             <SearchBar onLocationChange={this.onRegionChange} />
+          </View>
+          <View style={styles.filterButton}>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("Filters");
               }}
             >
-              <Text>Filtre</Text>
+              <FilterButton name="equalizer" size={20} label="Filtres" />
             </TouchableOpacity>
+          </View>
+          <View style={styles.listButton}>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("List");
               }}
             >
-              <Text>Voir liste</Text>
+              <ListButton name="list" size={25} label="Liste" />
             </TouchableOpacity>
           </View>
         </View>
@@ -184,9 +189,21 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(255,194,0)"
   },
 
-  content: {
+  searchBar: {
     position: "absolute",
     top: 60
+  },
+
+  filterButton: {
+    position: "absolute",
+    top: height / 2.1,
+    right: 70
+  },
+
+  listButton: {
+    position: "absolute",
+    top: height / 1.8,
+    right: 70
   }
 });
 
