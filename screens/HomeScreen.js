@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   Animated,
+  FlatList,
   Image
 } from "react-native";
 import { MapView, Permissions } from "expo";
@@ -23,7 +24,8 @@ const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.04;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const CARD_HEIGHT = 180;
-const CARD_WIDTH = width - 40;
+const CARD_WIDTH = width - 20;
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -37,18 +39,20 @@ export default class HomeScreen extends React.Component {
       longitudeDelta: LONGITUDE_DELTA
     },
     error: null,
-    bikes: []
+    bikes: [],
+    bikeSelected: false,
+    bikeSelectedIndex: null
   };
 
-  /*   componentWillMount() {
+  componentWillMount() {
     this.index = 0;
     this.animation = new Animated.Value(0);
   }
- */
+
   componentDidMount() {
     Permissions.askAsync(Permissions.LOCATION);
-    this.index = 0;
-    this.animation = new Animated.Value(0);
+    /*   this.index = 0;
+    this.animation = new Animated.Value(0); */
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState(
@@ -82,37 +86,9 @@ export default class HomeScreen extends React.Component {
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-    this.animation.addListener(({ value }) => {
-      console.log("value", value);
-      let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-      if (index >= this.state.bikes.length) {
-        index = this.state.bikes.length - 1;
-      }
-      if (index <= 0) {
-        index = 0;
-      }
-
-      clearTimeout(this.regionTimeout);
-      this.regionTimeout = setTimeout(() => {
-        if (this.index !== index) {
-          this.index = index;
-          /*           const { loc } = this.state.bikes[index]; */
-          this.map.animateToRegion(
-            {
-              /*    ...loc, */
-              latitude: this.state.bikes[index].loc.lat,
-              longitude: this.state.bikes[index].loc.lon,
-              latitudeDelta: this.state.region.latitudeDelta,
-              longitudeDelta: this.state.region.longitudeDelta
-            },
-            1000
-          );
-        }
-      }, 10);
-    });
   }
 
-  onRegionChange = region => {
+  onLocationChange = region => {
     this.setState(region, () =>
       axios
         .get("http://192.168.86.249:3100/api/bike/around", {
@@ -134,6 +110,54 @@ export default class HomeScreen extends React.Component {
         })
     );
   };
+
+  onPressMarker = (markerData, index) => {
+    console.log("markerData, index", markerData, index);
+    this.setState({ bikeSelected: true }, () =>
+      this.setState({ bikeSelectedId: index })
+    );
+    console.log(
+      "bikeSelected",
+      this.state.bikeSelected,
+      "bikeSelectedId",
+      this.state.bikeSelectedId
+    );
+    this.flatListRef.scrollToIndex({ animated: true, index: index });
+    this.animation.addListener(({ value }) => {
+      console.log("value", value);
+      let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
+      if (index >= this.state.bikes.length) {
+        index = this.state.bikes.length - 1;
+      }
+      if (index <= 0) {
+        index = 0;
+      }
+
+      clearTimeout(this.regionTimeout);
+      this.regionTimeout = setTimeout(() => {
+        if (this.index !== index) {
+          this.index = index;
+          /*           const { loc } = this.state.bikes[index]; */
+          this.map.animateToRegion(
+            {
+              /*    ...loc, */
+              latitude: markerData.coordinate.latitude,
+              longitude: markerData.coordinate.longitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA
+            },
+            1000
+          );
+        }
+      }, 10);
+    });
+  };
+
+  getItemLayout = (data, index) => ({
+    length: 180,
+    offset: 180 * index,
+    index
+  });
 
   render() {
     const interpolations = this.state.bikes.map((bikes, index) => {
@@ -191,10 +215,12 @@ export default class HomeScreen extends React.Component {
                     latitude: bikes.loc.lat,
                     longitude: bikes.loc.lon
                   }}
-                  onPress={() => this.markerPress}
+                  onPress={e => this.onPressMarker(e.nativeEvent, index)}
                 >
-                  <Animated.View style={[styles.markerWrap, opacityStyle]}>
-                    <Animated.View style={[styles.ring, scaleStyle]} />
+                  <Animated.View
+                    style={[styles.markerWrap, opacityStyle, scaleStyle]}
+                  >
+                    {/* <Animated.View style={[styles.ring, scaleStyle]} /> */}
                     <View style={styles.marker} />
                   </Animated.View>
                 </MapView.Marker>
@@ -202,7 +228,50 @@ export default class HomeScreen extends React.Component {
             })}
           </MapView>
 
-          <Animated.ScrollView
+          <AnimatedFlatList
+            data={this.state.bikes}
+            horizontal={true}
+            scrollEventThrottle={1}
+            getItemLayout={this.getItemLayout}
+            showsHorizontalScrollIndicator={false}
+            ref={ref => {
+              this.flatListRef = ref;
+            }}
+            snapToInterval={CARD_WIDTH}
+            scrollToIndex
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: {
+                      x: this.animation
+                    }
+                  }
+                }
+              ],
+              { useNativeDriver: true }
+            )}
+            keyExtractor={(item, i) => item._id}
+            style={styles.scrollView}
+            contentContainerStyle={styles.startEndPadding}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("BikeDetails", item);
+                }}
+              >
+                <BikeCard
+                  brand={item.bikeBrand}
+                  model={item.bikeModel}
+                  picture={item.photos[0]}
+                  category={item.bikeCategory}
+                  pricePerDay={item.pricePerDay}
+                />
+              </TouchableOpacity>
+            )}
+          />
+
+          {/* <Animated.ScrollView
             horizontal
             scrollEventThrottle={1}
             showsHorizontalScrollIndicator={false}
@@ -222,21 +291,23 @@ export default class HomeScreen extends React.Component {
             style={styles.scrollView}
             contentContainerStyle={styles.startEndPadding}
           >
-            {this.state.bikes.map((bikes, index) => (
-              <View key={index}>
-                <BikeCard
-                  brand={bikes.bikeBrand}
-                  model={bikes.bikeModel}
-                  picture={bikes.photos[0]}
-                  category={bikes.bikeCategory}
-                  pricePerDay={bikes.pricePerDay}
-                />
-              </View>
-            ))}
-          </Animated.ScrollView>
+            {this.state.bikeSelected === true
+              ? console.log(this.state.bikes[this.state.bikeSelectedIndex])
+              : this.state.bikes.map((bikes, index) => (
+                  <View key={index}>
+                    <BikeCard
+                      brand={bikes.bikeBrand}
+                      model={bikes.bikeModel}
+                      picture={bikes.photos[0]}
+                      category={bikes.bikeCategory}
+                      pricePerDay={bikes.pricePerDay}
+                    />
+                  </View>
+                ))}
+          </Animated.ScrollView> */}
 
           <View style={styles.searchBar}>
-            <SearchBar onLocationChange={this.onRegionChange} />
+            <SearchBar onLocationChange={this.onLocationChange} />
           </View>
           <View style={styles.filterButton}>
             <TouchableOpacity
@@ -293,21 +364,20 @@ const styles = StyleSheet.create({
   },
 
   ring: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
+    height: 20,
+    width: 20,
+    borderRadius: 20 / 2,
     backgroundColor: "rgba(255,194,0,0.3)",
     borderWidth: 1,
-    borderColor: "rgba(255,194,0,0.5)",
-    position: "absolute"
+    borderColor: "rgba(255,194,0,0.5)"
   },
 
   marker: {
-    height: 10,
-    width: 10,
+    height: 12,
+    width: 12,
     borderWidth: 1,
     borderColor: "white",
-    borderRadius: 10 / 2,
+    borderRadius: 12 / 2,
     backgroundColor: "rgb(255,194,0)"
   },
 
