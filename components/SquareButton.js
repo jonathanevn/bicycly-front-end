@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "rgba(93, 93, 93, 0.2)",
-    shadowOffset: { width: 2, height: 2 },
+    shadowColor: "rgba(93, 93, 93, 0.5)",
+    shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 0.9,
     shadowRadius: 8
   },

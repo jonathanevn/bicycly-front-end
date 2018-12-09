@@ -238,7 +238,6 @@ export default class HomeScreen extends React.Component {
               this.flatListRef = ref;
             }}
             snapToInterval={CARD_WIDTH}
-            scrollToIndex
             onScroll={Animated.event(
               [
                 {
@@ -251,7 +250,7 @@ export default class HomeScreen extends React.Component {
               ],
               { useNativeDriver: true }
             )}
-            keyExtractor={(item, i) => item._id}
+            keyExtractor={(item, index) => item._id}
             style={styles.scrollView}
             contentContainerStyle={styles.startEndPadding}
             renderItem={({ item }) => (
@@ -321,7 +320,10 @@ export default class HomeScreen extends React.Component {
           <View style={styles.listButton}>
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate("List");
+                this.props.navigation.navigate("List", {
+                  region: this.state.region,
+                  bikes: this.state.bikes
+                });
               }}
             >
               <ListButton name="list" size={25} label="Liste" />
