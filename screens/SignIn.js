@@ -4,17 +4,41 @@ import {
   Text,
   View,
   TouchableOpacity,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  TextInput
 } from "react-native";
+import axios from "axios";
 
 import { button, text } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
-import { TextInput, ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 
 class SignIn extends React.Component {
   static navigationOptions = {
     title: "S'incrire",
     headerTintColor: "black"
+  };
+  state = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: ""
+  };
+
+  onPress = () => {
+    const { firstName, lastName, email, password } = this.state;
+    axios
+      .post("http://localhost:3100/api/user/sign_up", {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password
+      })
+      .then(response => {
+        console.log(response.data);
+
+        this.props.navigation.navigate("Home");
+      });
   };
 
   render() {
@@ -27,20 +51,39 @@ class SignIn extends React.Component {
               <TextInput
                 style={[styles.textInput, { borderBottomWidth: 0 }]}
                 placeholder="Prénom"
-              />
-              <TextInput style={styles.textInput} placeholder="Nom" />
-            </View>
-            <View style={{ marginBottom: 40 }}>
-              <TextInput
-                style={[styles.textInput, { borderBottomWidth: 0 }]}
-                placeholder="Adresse email"
-                keyboardType="email-address"
-                autoCapitalize="none"
+                value={this.state.firstName}
+                onChangeText={value => {
+                  this.setState({ firstName: value });
+                }}
               />
               <TextInput
                 style={styles.textInput}
+                placeholder="Nom"
+                value={this.state.lastName}
+                onChangeText={value => {
+                  this.setState({ lastName: value });
+                }}
+              />
+            </View>
+            <View style={{ marginBottom: 40 }}>
+              <TextInput
+                style={[styles.textInput, { borderBottomWidth: 0.5 }]}
+                placeholder="Adresse email"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                value={this.state.email}
+                onChangeText={value => {
+                  this.setState({ email: value });
+                }}
+              />
+              <TextInput
+                style={[styles.textInput, { borderTopWidth: 0.5 }]}
                 secureTextEntry={true}
                 placeholder="Mot de passe"
+                value={this.state.password}
+                onChangeText={value => {
+                  this.setState({ password: value });
+                }}
               />
             </View>
 
@@ -48,12 +91,7 @@ class SignIn extends React.Component {
               En vous inscrivant, vous acceptez nos conditions générales
               d’utilisation et notre politique de confidentialité.
             </Text>
-            <TouchableOpacity
-              style={button.primary}
-              onPress={() => {
-                this.props.navigation.navigate("Home");
-              }}
-            >
+            <TouchableOpacity style={button.primary} onPress={this.onPress}>
               <Text style={text.textButton}>Inscription</Text>
             </TouchableOpacity>
             <View style={styles.footer}>
