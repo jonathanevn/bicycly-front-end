@@ -18,7 +18,10 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyChBhCJi-Dg_aDGRuBFO3zDKlhx918kPuQ"
+      }
     },
     "description": "Bicycly: Peer-to-peer bike rentals. Mobile app projet made in React Native.",
     "githubUrl": "https://github.com/jonathanevn/bicycly-front-end"

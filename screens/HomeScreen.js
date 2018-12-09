@@ -23,7 +23,7 @@ const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.04;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const CARD_HEIGHT = 180;
-const CARD_WIDTH = width - 20;
+const CARD_WIDTH = width - 40;
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -40,13 +40,15 @@ export default class HomeScreen extends React.Component {
     bikes: []
   };
 
-  componentWillMount() {
+  /*   componentWillMount() {
     this.index = 0;
     this.animation = new Animated.Value(0);
   }
-
+ */
   componentDidMount() {
     Permissions.askAsync(Permissions.LOCATION);
+    this.index = 0;
+    this.animation = new Animated.Value(0);
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState(
@@ -81,6 +83,7 @@ export default class HomeScreen extends React.Component {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
     this.animation.addListener(({ value }) => {
+      console.log("value", value);
       let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
       if (index >= this.state.bikes.length) {
         index = this.state.bikes.length - 1;
@@ -93,21 +96,23 @@ export default class HomeScreen extends React.Component {
       this.regionTimeout = setTimeout(() => {
         if (this.index !== index) {
           this.index = index;
-          const { loc } = this.state.bikes[index];
+          /*           const { loc } = this.state.bikes[index]; */
           this.map.animateToRegion(
             {
-              ...loc,
+              /*    ...loc, */
+              latitude: this.state.bikes[index].loc.lat,
+              longitude: this.state.bikes[index].loc.lon,
               latitudeDelta: this.state.region.latitudeDelta,
               longitudeDelta: this.state.region.longitudeDelta
             },
-            350
+            1000
           );
         }
       }, 10);
     });
   }
 
-  onLocationChange = region => {
+  onRegionChange = region => {
     this.setState(region, () =>
       axios
         .get("http://192.168.86.249:3100/api/bike/around", {
@@ -162,8 +167,10 @@ export default class HomeScreen extends React.Component {
             provider={MapView.PROVIDER_GOOGLE}
             zoomEnabled={true}
             customMapStyle={generatedMapStyle}
+            showsUserLocation={true}
             ref={map => (this.map = map)}
             onRegionChange={region => this.setState({ region })}
+            /* onRegionChangeComplete={region => this.setState({ region })} */
           >
             {this.state.bikes.map((bikes, index) => {
               const scaleStyle = {
@@ -184,6 +191,7 @@ export default class HomeScreen extends React.Component {
                     latitude: bikes.loc.lat,
                     longitude: bikes.loc.lon
                   }}
+                  onPress={() => this.markerPress}
                 >
                   <Animated.View style={[styles.markerWrap, opacityStyle]}>
                     <Animated.View style={[styles.ring, scaleStyle]} />
@@ -215,7 +223,7 @@ export default class HomeScreen extends React.Component {
             contentContainerStyle={styles.startEndPadding}
           >
             {this.state.bikes.map((bikes, index) => (
-              <View style={styles.card} key={index}>
+              <View key={index}>
                 <BikeCard
                   brand={bikes.bikeBrand}
                   model={bikes.bikeModel}
@@ -228,7 +236,7 @@ export default class HomeScreen extends React.Component {
           </Animated.ScrollView>
 
           <View style={styles.searchBar}>
-            <SearchBar onLocationChange={this.onLocationChange} />
+            <SearchBar onLocationChange={this.onRegionChange} />
           </View>
           <View style={styles.filterButton}>
             <TouchableOpacity
@@ -257,7 +265,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center"
   },
   map: {
