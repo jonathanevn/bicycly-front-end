@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   AsyncStorage
 } from "react-native";
-import { ExpoConfigView } from "@expo/samples";
+
+import { button, text } from "../constants/Styles";
+import { width, height } from "../constants/Layout";
 
 export default class AccountScreen extends React.Component {
   static navigationOptions = {
@@ -23,55 +25,51 @@ export default class AccountScreen extends React.Component {
     // }
   };
 
+  state = {};
+
   render() {
-    /* Go ahead and delete ExpoConfigView and replace it with your
-     * content, we just wanted to give you a quick view of your config */
     return (
       <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
-          <View style={styles.welcomeContainer}>
-            <Text>This is the Account screen with the map</Text>
+        <Text>This is the Account screen with the map</Text>
 
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("MyAccountInfo");
-              }}
-            >
-              <Text>Mes infos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text>Mes paiements</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("PaymentMethods");
-              }}
-            >
-              <Text>Moyens de paiement enregistrés</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text>Aide</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text>Contact</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text>A propos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                AsyncStorage.removeItem("token").then(() => {
-                  this.props.navigation.navigate("AuthLoadingScreen");
-                });
-              }}
-            >
-              <Text>Se déconnecter</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+        <TouchableOpacity
+          style={[styles.textInput, { marginVertical: 20 }]}
+          onPress={() => {
+            this.props.navigation.navigate("MyAccountInfo");
+          }}
+        >
+          <Text style={[text.placeholder]}>Mes infos</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.textInput, { borderBottomWidth: 0 }]}>
+          <Text style={[text.placeholder]}>Mes paiements</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.textInput, { marginBottom: 20 }]}
+          onPress={() => {
+            this.props.navigation.navigate("PaymentMethods");
+          }}
+        >
+          <Text style={[text.placeholder]}>Moyens de paiement enregistrés</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.textInput, { borderBottomWidth: 0 }]}>
+          <Text style={[text.placeholder]}>Aide</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.textInput, { borderBottomWidth: 0 }]}>
+          <Text style={[text.placeholder]}>Contact</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.textInput, { marginBottom: 30 }]}>
+          <Text style={[text.placeholder]}>A propos</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            AsyncStorage.removeItem("token").then(() => {
+              this.props.navigation.navigate("AuthLoadingScreen");
+            });
+          }}
+        >
+          <Text style={[text.p2, styles.deconnexion]}>Se déconnecter</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -79,7 +77,22 @@ export default class AccountScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
     paddingTop: 15,
     backgroundColor: "#f8f8f8"
+  },
+  textInput: {
+    borderWidth: 1,
+    width: width,
+    height: 50,
+    paddingLeft: 15,
+    justifyContent: "center",
+    borderColor: "#f1f1f1",
+    backgroundColor: "#FFFFFF"
+  },
+  deconnexion: {
+    color: "red",
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
