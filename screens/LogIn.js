@@ -54,46 +54,48 @@ class LogIn extends React.Component {
   render() {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-        <View style={styles.container}>
-          <Text style={[text.company, styles.title]}>bicycly</Text>
-          <View style={{ marginBottom: 40 }}>
-            <TextInput
-              style={[styles.textInput, { borderBottomWidth: 0.5 }]}
-              placeholder="Adresse email"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={this.state.email}
-              onChangeText={value => {
-                this.setState({ email: value });
-              }}
-            />
-            <TextInput
-              style={[styles.textInput, { borderTopWidth: 0.5 }]}
-              secureTextEntry={true}
-              placeholder="Mot de passe"
-              value={this.state.password}
-              onChangeText={value => {
-                this.setState({ password: value });
-              }}
-            />
-          </View>
-          <TouchableOpacity style={button.primary} onPress={this.onPress}>
-            <Text style={text.textButton}>Connexion</Text>
-          </TouchableOpacity>
-          <Text style={[text.p2, { marginTop: 30 }]}>
-            Mot de passe oublié ?
-          </Text>
-          <View style={styles.footer}>
-            <Text style={text.p2}>Pas encore de compte sur bicycly ?</Text>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("SignIn");
-              }}
-            >
-              <Text style={[text.p2, { marginTop: 10 }]}>Inscription</Text>
+        <ScrollView>
+          <View style={styles.container}>
+            <Text style={[text.company, styles.title]}>bicycly</Text>
+            <View style={{ marginBottom: 40 }}>
+              <TextInput
+                style={[styles.textInput, { borderBottomWidth: 0.5 }]}
+                placeholder="Adresse email"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                value={this.state.email}
+                onChangeText={value => {
+                  this.setState({ email: value });
+                }}
+              />
+              <TextInput
+                style={[styles.textInput, { borderTopWidth: 0.5 }]}
+                secureTextEntry={true}
+                placeholder="Mot de passe"
+                value={this.state.password}
+                onChangeText={value => {
+                  this.setState({ password: value });
+                }}
+              />
+            </View>
+            <TouchableOpacity style={button.primary} onPress={this.onPress}>
+              <Text style={text.textButton}>Connexion</Text>
             </TouchableOpacity>
+            <Text style={[text.p2, { marginTop: 30 }]}>
+              Mot de passe oublié ?
+            </Text>
+            <View style={styles.footer}>
+              <Text style={text.p2}>Pas encore de compte sur bicycly ?</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("SignIn");
+                }}
+              >
+                <Text style={[text.p2, { marginTop: 10 }]}>Inscription</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     );
   }
