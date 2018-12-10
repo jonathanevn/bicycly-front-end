@@ -12,7 +12,6 @@ import {
   Image
 } from "react-native";
 import { MapView, Permissions } from "expo";
-/* import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps"; */
 import { height, width } from "../constants/Layout";
 import { text, button } from "../constants/Styles";
 import { ListButton, FilterButton } from "../components/SquareButton";
@@ -139,7 +138,7 @@ export default class HomeScreen extends React.Component {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA
             },
-            500
+            250
           );
         }
       }, 10);
@@ -173,161 +172,119 @@ export default class HomeScreen extends React.Component {
       return { scale, opacity };
     });
 
-    /* console.log("this.state.bikes", this.state.bikes); */
-    if (this.state.latitude === null) {
-      return <Text>Loading...</Text>;
-    } else {
-      return (
-        <View style={styles.container}>
-          <MapView
-            style={styles.map}
-            region={this.state.region}
-            provider={MapView.PROVIDER_GOOGLE}
-            zoomEnabled={true}
-            customMapStyle={generatedMapStyle}
-            showsUserLocation={true}
-            ref={map => (this.map = map)}
-            /* onRegionChange={region => this.setState({ region })} */
-            /* onRegionChangeComplete={region =>
+    return (
+      <View style={styles.container}>
+        <MapView
+          style={styles.map}
+          region={this.state.region}
+          provider={MapView.PROVIDER_GOOGLE}
+          zoomEnabled={true}
+          customMapStyle={generatedMapStyle}
+          showsUserLocation={true}
+          ref={map => (this.map = map)}
+          /* onRegionChange={region => this.setState({ region })} */
+          /* onRegionChangeComplete={region =>
               this.setState({ region }, () => console.log(this.state.region))
             } */
-          >
-            {this.state.bikes.map((bikes, index) => {
-              const scaleStyle = {
-                transform: [
-                  {
-                    scale: interpolations[index].scale
-                  }
-                ]
-              };
-              const opacityStyle = {
-                opacity: interpolations[index].opacity
-              };
-
-              return (
-                <MapView.Marker
-                  key={index}
-                  coordinate={{
-                    latitude: bikes.loc.lat,
-                    longitude: bikes.loc.lon
-                  }}
-                  onPress={e => this.onPressMarker(e.nativeEvent, index)}
-                >
-                  <Animated.View style={[styles.markerWrap, opacityStyle]}>
-                    <Animated.View style={[styles.ring, scaleStyle]} />
-                    <Animated.View style={[styles.marker, scaleStyle]} />
-                  </Animated.View>
-                </MapView.Marker>
-              );
-            })}
-          </MapView>
-
-          <FlatList
-            data={this.state.bikes}
-            horizontal={true}
-            scrollEventThrottle={1}
-            getItemLayout={this.getItemLayout}
-            showsHorizontalScrollIndicator={false}
-            ref={ref => {
-              this.flatListRef = ref;
-            }}
-            snapToInterval={
-              CARD_WIDTH
-            } /*
-            onScroll={Animated.event(
-              [
+        >
+          {this.state.bikes.map((bikes, index) => {
+            const scaleStyle = {
+              transform: [
                 {
-                  nativeEvent: {
-                    contentOffset: {
-                      x: this.animation
-                    }
-                  }
+                  scale: interpolations[index].scale
                 }
-              ],
-              { useNativeDriver: true }
-            )} */
-            keyExtractor={(item, index) => item._id}
-            style={styles.scrollView}
-            contentContainerStyle={styles.startEndPadding}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate("BikeDetails", item);
+              ]
+            };
+            const opacityStyle = {
+              opacity: interpolations[index].opacity
+            };
+
+            return (
+              <MapView.Marker
+                key={index}
+                coordinate={{
+                  latitude: bikes.loc.lat,
+                  longitude: bikes.loc.lon
                 }}
+                onPress={e => this.onPressMarker(e.nativeEvent, index)}
               >
-                <BikeCard
-                  brand={item.bikeBrand}
-                  model={item.bikeModel}
-                  picture={item.photos[0]}
-                  category={item.bikeCategory}
-                  pricePerDay={item.pricePerDay}
-                />
-              </TouchableOpacity>
-            )}
-          />
+                <Animated.View style={[styles.markerWrap, opacityStyle]}>
+                  <Animated.View style={[styles.ring, scaleStyle]} />
+                  <Animated.View style={[styles.marker, scaleStyle]} />
+                </Animated.View>
+              </MapView.Marker>
+            );
+          })}
+        </MapView>
 
-          {/* <Animated.ScrollView
-            horizontal
-            scrollEventThrottle={1}
-            showsHorizontalScrollIndicator={false}
-            snapToInterval={CARD_WIDTH}
-            onScroll={Animated.event(
-              [
-                {
-                  nativeEvent: {
-                    contentOffset: {
-                      x: this.animation
-                    }
+        <FlatList
+          data={this.state.bikes}
+          horizontal={true}
+          scrollEventThrottle={1}
+          getItemLayout={this.getItemLayout}
+          showsHorizontalScrollIndicator={false}
+          ref={ref => {
+            this.flatListRef = ref;
+          }}
+          snapToInterval={CARD_WIDTH}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    x: this.animation
                   }
                 }
-              ],
-              { useNativeDriver: true }
-            )}
-            style={styles.scrollView}
-            contentContainerStyle={styles.startEndPadding}
-          >
-            {this.state.bikeSelected === true
-              ? console.log(this.state.bikes[this.state.bikeSelectedIndex])
-              : this.state.bikes.map((bikes, index) => (
-                  <View key={index}>
-                    <BikeCard
-                      brand={bikes.bikeBrand}
-                      model={bikes.bikeModel}
-                      picture={bikes.photos[0]}
-                      category={bikes.bikeCategory}
-                      pricePerDay={bikes.pricePerDay}
-                    />
-                  </View>
-                ))}
-          </Animated.ScrollView> */}
+              }
+            ]
+            /*       { useNativeDriver: true } */
+          )}
+          keyExtractor={(item, index) => item._id}
+          style={styles.scrollView}
+          contentContainerStyle={styles.startEndPadding}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("BikeDetails", item);
+              }}
+            >
+              <BikeCard
+                brand={item.bikeBrand}
+                model={item.bikeModel}
+                picture={item.photos[0]}
+                category={item.bikeCategory}
+                pricePerDay={item.pricePerDay}
+              />
+            </TouchableOpacity>
+          )}
+        />
 
-          <View style={styles.searchBar}>
-            <SearchBar onLocationChange={this.onLocationChange} />
-          </View>
-          <View style={styles.filterButton}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("Filters");
-              }}
-            >
-              <FilterButton name="equalizer" size={20} label="Filtres" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.listButton}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("List", {
-                  region: this.state.region,
-                  bikes: this.state.bikes
-                });
-              }}
-            >
-              <ListButton name="list" size={25} label="Liste" />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.searchBar}>
+          <SearchBar onLocationChange={this.onLocationChange} />
         </View>
-      );
-    }
+        <View style={styles.filterButton}>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate("Filters");
+            }}
+          >
+            <FilterButton name="equalizer" size={20} label="Filtres" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.listButton}>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate("List", {
+                region: this.state.region,
+                bikes: this.state.bikes
+              });
+            }}
+          >
+            <ListButton name="list" size={25} label="Liste" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
   }
 }
 
