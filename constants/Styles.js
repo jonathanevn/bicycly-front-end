@@ -72,24 +72,24 @@ const text = StyleSheet.create({
     color: "#262626"
   },
   textButton: {
-    fontFamily: "Karla-Regular",
+    fontFamily: "Karla-Bold",
     fontSize: 18,
     color: "#262626"
   },
 
   bikeCategory: {
     fontFamily: "Karla-Regular",
-    fontSize: 13,
+    fontSize: 14,
     color: "#ffc200"
   },
   localisation: {
     fontFamily: "Karla-Regular",
-    fontSize: 13,
+    fontSize: 14,
     color: "#c2c2c2"
   },
   rate: {
     fontFamily: "Karla-Regular",
-    fontSize: 15,
+    fontSize: 14,
     color: "#c2c2c2"
   },
   placeholder: {

@@ -7,7 +7,7 @@ import {
   Image,
   ScrollView
 } from "react-native";
-import { text, button } from "../constants/Styles";
+import { text, button, avatar } from "../constants/Styles";
 import { createIconSetFromIcoMoon } from "@expo/vector-icons";
 import icoMoonConfig from "../assets/fonts/selection.json";
 import Colors from "../constants/Colors";
@@ -18,7 +18,9 @@ const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 class BikeDetails extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title:
-      navigation.state.params.bikeBrand + navigation.state.params.bikeModel,
+      navigation.state.params.bikeBrand +
+      " " +
+      navigation.state.params.bikeModel,
     headerTitleStyle: {
       fontFamily: "Karla-Bold",
       fontSize: 18,
@@ -33,19 +35,20 @@ class BikeDetails extends React.Component {
 
   state = {
     bike: [],
-    user: []
+    user: [],
+    isLoading: false
   };
 
   componentDidMount() {
     axios
       .get(
-        "http://192.168.86.249:3100/api/bike/" +
+        "http://192.168.1.79:3100/api/bike/" +
           this.props.navigation.state.params.bikeId
       )
       .then(response => {
         if (response.data) {
-          console.log("response.data", response.data);
-          this.setState({ bike: response.data });
+          /*           console.log("response.data", response.data); */
+          this.setState({ bike: response.data, isLoading: true });
         }
       })
       .catch(error => {
@@ -55,86 +58,104 @@ class BikeDetails extends React.Component {
 
   render() {
     const { bike } = this.state;
-
-    return (
-      <ScrollView style={styles.contentContainer}>
-        <View style={styles.photoPrice}>
-          {/*  <Image source={{ uri: bike.photos[0] }} style={styles.photo} /> */}
-          <View style={styles.priceAvatar}>
-            <Text style={text.fullPrice}>30€</Text>
-            <Text style={text.pricePerDay}>{bike.pricePerDay}€ /jour</Text>
-          </View>
-        </View>
-
-        <View style={styles.content}>
-          <View style={styles.bikeBrandModel}>
-            <Text numberOfLines={1} style={text.h1}>
-              {bike.bikeBrand} {""}
-            </Text>
-            <Text numberOfLines={1} style={text.h1}>
-              {bike.bikeModel}
-            </Text>
-          </View>
-
-          <View style={styles.bikeCategoryLoc}>
-            <View style={styles.categoryTextIcon}>
-              <Icon
-                name="bike"
-                size={12}
-                color={Colors.yellow}
-                style={{ paddingRight: 8 }}
-              />
-              <Text style={text.bikeCategory}>{bike.bikeCategory}</Text>
-            </View>
-            <View style={styles.locTextIcon}>
-              <Icon
-                name="location"
-                size={12}
-                color={Colors.lightGrey}
-                style={{ paddingRight: 8, paddingLeft: 20 }}
-              />
-              <Text style={text.localisation}>300m</Text>
+    if (this.state.isLoading === false) {
+      return <Text>isLoading...</Text>;
+    } else {
+      return (
+        <ScrollView style={styles.contentContainer}>
+          <View style={styles.photoPrice}>
+            <Image source={{ uri: bike.photos[0] }} style={styles.photo} />
+            <View style={styles.priceAvatar}>
+              <Text style={text.fullPrice}>30€</Text>
+              <Text style={text.pricePerDay}>{bike.pricePerDay}€ /jour</Text>
             </View>
           </View>
 
-          <View style={styles.profileUser}>
-            {/* <Image
-              source={{ uri: bike.user.photo[0] }}
-              style={styles.photoUser}
-            /> */}
-            <Text>{bike.user.firstName}</Text>
-            <Text>{bike.user.lastName}</Text>
-            <Text>{bike.user.ratingValue}</Text>
-            <Text>{bike.user.reviews} avis</Text>
-          </View>
+          <View style={styles.content}>
+            <View style={styles.bikeBrandModel}>
+              <Text numberOfLines={1} style={text.h1}>
+                {bike.bikeBrand} {""}
+              </Text>
+              <Text numberOfLines={1} style={text.h1}>
+                {bike.bikeModel}
+              </Text>
+            </View>
 
-          <Text style={[text.h2, styles.accessoriesSection]}>Accessoires</Text>
-          <View>
-            {bike.accessories.map((item, index) => (
-              <View key={index}>
-                <Text style={text.p}>{item}</Text>
+            <View style={styles.bikeCategoryLoc}>
+              <View style={styles.categoryTextIcon}>
+                <Icon
+                  name="bike"
+                  size={12}
+                  color={Colors.yellow}
+                  style={{ paddingRight: 8 }}
+                />
+                <Text style={text.bikeCategory}>{bike.bikeCategory}</Text>
               </View>
-            ))}
+              <View style={styles.locTextIcon}>
+                <Icon
+                  name="location"
+                  size={12}
+                  color={Colors.lightGrey}
+                  style={{ paddingRight: 8, paddingLeft: 20 }}
+                />
+                <Text style={text.localisation}>300m</Text>
+              </View>
+            </View>
+
+            <View style={styles.profileUser}>
+              <Image
+                source={{ uri: bike.user.photo[0] }}
+                style={avatar.medium}
+              />
+              <View style={styles.profileUserInfo}>
+                <View style={styles.username}>
+                  <Text style={styles.firstname}>{bike.user.firstName}</Text>
+                  <Text style={styles.lastname}>
+                    {" "}
+                    {""}
+                    {bike.user.lastName}
+                  </Text>
+                </View>
+                <View style={styles.ratingReview}>
+                  <Text>{bike.user.ratingValue}</Text>
+                  <Text style={text.rate}>{bike.user.reviews} avis</Text>
+                </View>
+                <Text style={styles.acceptation}>Taux d'acceptation : bon</Text>
+              </View>
+            </View>
+
+            <Text style={[text.h2, styles.accessoriesSection]}>
+              Accessoires
+            </Text>
+            <View>
+              {bike.accessories.map((item, index) => (
+                <View key={index}>
+                  <Text style={text.p}>{item}</Text>
+                </View>
+              ))}
+            </View>
+
+            <Text style={[text.h2, styles.descriptionSection]}>
+              Description
+            </Text>
+
+            <Text style={text.p}>{this.state.bike.description}</Text>
           </View>
-
-          <Text style={[text.h2, styles.descriptionSection]}>Description</Text>
-
-          <Text style={text.p}>{this.state.bike.description}</Text>
-        </View>
-        <View style={styles.buttonSection}>
-          <TouchableOpacity
-            style={button.primary}
-            onPress={() => {
-              this.props.navigation.navigate("Tchat", {
-                // bikeId: this.state.params.navigate.bikeId
-              });
-            }}
-          >
-            <Text style={text.textButton}>Demande de location</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    );
+          <View style={styles.buttonSection}>
+            <TouchableOpacity
+              style={button.primary}
+              onPress={() => {
+                this.props.navigation.navigate("Tchat", {
+                  // bikeId: this.state.params.navigate.bikeId
+                });
+              }}
+            >
+              <Text style={text.textButton}>Demande de location</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      );
+    }
   }
 }
 
@@ -169,7 +190,7 @@ const styles = StyleSheet.create({
 
   bikeBrandModel: {
     flexDirection: "row",
-    paddingBottom: 5
+    paddingBottom: 8
   },
   bikeCategoryLoc: {
     flexDirection: "row"
@@ -184,13 +205,45 @@ const styles = StyleSheet.create({
   },
 
   profileUser: {
-    backgroundColor: "red",
-    width: width
+    flexDirection: "row",
+    marginTop: 30,
+    paddingVertical: 10,
+    borderBottomColor: Colors.lightGrey,
+    borderTopColor: Colors.lightGrey,
+    borderTopWidth: 0.2,
+    borderBottomWidth: 0.2,
+    width: width - 40
   },
 
-  photoUser: {
-    height: 30,
-    width: 30
+  profileUserInfo: {
+    marginLeft: 15
+  },
+
+  username: {
+    flexDirection: "row"
+  },
+
+  firstname: {
+    fontFamily: "Karla-Bold",
+    fontSize: 16,
+    color: "#585858"
+  },
+
+  lastname: {
+    fontFamily: "Karla-Bold",
+    fontSize: 16,
+    color: "#585858"
+  },
+
+  ratingReview: {
+    flexDirection: "row",
+    marginVertical: 5
+  },
+
+  acceptation: {
+    fontFamily: "Karla-Italic",
+    fontSize: 14,
+    color: "#585858"
   },
 
   accessoriesSection: {
