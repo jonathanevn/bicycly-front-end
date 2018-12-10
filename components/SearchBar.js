@@ -18,6 +18,7 @@ import {
 import icoMoonConfig from "../assets/fonts/selection.json";
 import Colors from "../constants/Colors";
 import { width, height } from "../constants/Layout";
+import Calendar from "./Calendar";
 
 const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 
@@ -199,7 +200,7 @@ class SearchBar extends React.Component {
               />
             </TouchableOpacity>
 
-            <Text>Choisir une date</Text>
+            <Calendar />
           </View>
         </Modal>
 
@@ -312,7 +313,7 @@ const styles = StyleSheet.create({
 
   containerDateModal: {
     backgroundColor: "white",
-    padding: 22,
+    // padding: 22,
     alignItems: "center",
     justifyContent: "flex-start",
     marginTop: 300,

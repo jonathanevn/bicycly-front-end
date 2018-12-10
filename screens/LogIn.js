@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 class LogIn extends React.Component {
   static navigationOptions = {
-    title: "Se connecter"
+    title: "Se connecter",
+    headerTintColor: "black"
   };
 
   render() {
