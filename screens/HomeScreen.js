@@ -39,9 +39,7 @@ export default class HomeScreen extends React.Component {
       longitudeDelta: LONGITUDE_DELTA
     },
     error: null,
-    bikes: [],
-    bikeSelected: false,
-    bikeSelectedIndex: null
+    bikes: []
   };
 
   componentWillMount() {
@@ -52,8 +50,7 @@ export default class HomeScreen extends React.Component {
   componentDidMount() {
     console.log("did mount");
     Permissions.askAsync(Permissions.LOCATION);
-    /*   this.index = 0;
-    this.animation = new Animated.Value(0); */
+
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState(
@@ -118,23 +115,10 @@ export default class HomeScreen extends React.Component {
     this.flatListRef.scrollToIndex({
       animated: true,
       index,
-      viewOffset: 100,
+      viewOffset: CARD_WIDTH,
       viewPosition: 0.5
     });
-    /* this.setState({ bikeSelected: true, bikeSelectedId: index }, () => {
-      this.flatListRef.scrollToIndex({
-        animated: true,
-        index: this.state.bikeSelectedId
-      });
-      console.log(
-        "bikeSelected",
-        this.state.bikeSelected,
-        "bikeSelectedId",
-        this.state.bikeSelectedId
-      );
-    }); */
-
-    /* this.animation.addListener(({ value }) => {
+    this.animation.addListener(({ value }) => {
       console.log("value", value);
       let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
       if (index >= this.state.bikes.length) {
@@ -143,7 +127,6 @@ export default class HomeScreen extends React.Component {
       if (index <= 0) {
         index = 0;
       }
-
       clearTimeout(this.regionTimeout);
       this.regionTimeout = setTimeout(() => {
         if (this.index !== index) {
@@ -156,16 +139,16 @@ export default class HomeScreen extends React.Component {
               latitudeDelta: LATITUDE_DELTA,
               longitudeDelta: LONGITUDE_DELTA
             },
-            1000
+            500
           );
         }
       }, 10);
-    }); */
+    });
   };
 
   getItemLayout = (data, index) => ({
-    length: 180,
-    offset: 180 * index,
+    length: CARD_WIDTH,
+    offset: CARD_WIDTH * index,
     index
   });
 
@@ -179,7 +162,7 @@ export default class HomeScreen extends React.Component {
       ];
       const scale = this.animation.interpolate({
         inputRange,
-        outputRange: [1, 2.5, 1],
+        outputRange: [1, 2, 1],
         extrapolate: "clamp"
       });
       const opacity = this.animation.interpolate({
@@ -199,7 +182,6 @@ export default class HomeScreen extends React.Component {
           <MapView
             style={styles.map}
             region={this.state.region}
-            /* initialRegion={this.state.region} */
             provider={MapView.PROVIDER_GOOGLE}
             zoomEnabled={true}
             customMapStyle={generatedMapStyle}
@@ -232,8 +214,8 @@ export default class HomeScreen extends React.Component {
                   onPress={e => this.onPressMarker(e.nativeEvent, index)}
                 >
                   <Animated.View style={[styles.markerWrap, opacityStyle]}>
-                    {/* <Animated.View style={[styles.ring, scaleStyle]} /> */}
-                    <View style={styles.marker} />
+                    <Animated.View style={[styles.ring, scaleStyle]} />
+                    <Animated.View style={[styles.marker, scaleStyle]} />
                   </Animated.View>
                 </MapView.Marker>
               );
@@ -249,8 +231,10 @@ export default class HomeScreen extends React.Component {
             ref={ref => {
               this.flatListRef = ref;
             }}
-            snapToInterval={CARD_WIDTH}
-            /* onScroll={Animated.event(
+            snapToInterval={
+              CARD_WIDTH
+            } /*
+            onScroll={Animated.event(
               [
                 {
                   nativeEvent: {
@@ -374,24 +358,28 @@ const styles = StyleSheet.create({
 
   markerWrap: {
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    height: 50,
+    width: 50
   },
 
   ring: {
-    height: 20,
-    width: 20,
-    borderRadius: 20 / 2,
+    height: 14,
+    width: 14,
+    borderRadius: 14 / 2,
     backgroundColor: "rgba(255,194,0,0.3)",
     borderWidth: 1,
-    borderColor: "rgba(255,194,0,0.5)"
+    borderColor: "rgba(255,194,0,0.5)",
+    position: "relative"
   },
 
   marker: {
-    height: 12,
-    width: 12,
+    height: 8,
+    width: 8,
     borderWidth: 1,
     borderColor: "white",
-    borderRadius: 12 / 2,
+    borderRadius: 8 / 2,
+    position: "absolute",
     backgroundColor: "rgb(255,194,0)"
   },
 
