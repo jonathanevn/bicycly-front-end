@@ -19,7 +19,6 @@ class BikeDetails extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>This is the BikeDetails screen</Text>
         <TouchableOpacity
           onPress={() => {
             this.props.navigation.navigate("UserProfile");
@@ -31,7 +30,7 @@ class BikeDetails extends React.Component {
         <TouchableOpacity
           onPress={() => {
             this.props.navigation.navigate("Tchat", {
-              bikeId: this.state.params.navigate.bikeId
+              // bikeId: this.state.params.navigate.bikeId
             });
           }}
         >
