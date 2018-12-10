@@ -72,7 +72,7 @@ const text = StyleSheet.create({
     color: "#262626"
   },
   textButton: {
-    fontFamily: "Karla-Bold",
+    fontFamily: "Karla-Regular",
     fontSize: 18,
     color: "#262626"
   },

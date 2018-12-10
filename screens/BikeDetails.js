@@ -12,6 +12,7 @@ import { createIconSetFromIcoMoon } from "@expo/vector-icons";
 import icoMoonConfig from "../assets/fonts/selection.json";
 import Colors from "../constants/Colors";
 import axios from "axios";
+import StarRating from "react-native-star-rating";
 import { height, width } from "../constants/Layout";
 const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 
@@ -117,8 +118,19 @@ class BikeDetails extends React.Component {
                   </Text>
                 </View>
                 <View style={styles.ratingReview}>
-                  <Text>{bike.user.ratingValue}</Text>
-                  <Text style={text.rate}>{bike.user.reviews} avis</Text>
+                  <StarRating
+                    disabled={false}
+                    maxStars={5}
+                    starSize={13}
+                    fullStarColor="#ffc200"
+                    emptyStarColor="#ffc200"
+                    rating={bike.user.ratingValue}
+                  />
+                  <Text style={text.rate}>
+                    {" "}
+                    {"  "}
+                    {bike.user.reviews} avis
+                  </Text>
                 </View>
                 <Text style={styles.acceptation}>Taux d'acceptation : bon</Text>
               </View>
@@ -207,7 +219,7 @@ const styles = StyleSheet.create({
   profileUser: {
     flexDirection: "row",
     marginTop: 30,
-    paddingVertical: 10,
+    paddingVertical: 15,
     borderBottomColor: Colors.lightGrey,
     borderTopColor: Colors.lightGrey,
     borderTopWidth: 0.2,
@@ -237,7 +249,8 @@ const styles = StyleSheet.create({
 
   ratingReview: {
     flexDirection: "row",
-    marginVertical: 5
+    marginVertical: 5,
+    alignItems: "center"
   },
 
   acceptation: {
