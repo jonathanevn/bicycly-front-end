@@ -60,7 +60,11 @@ const text = StyleSheet.create({
     color: "#585858",
     lineHeight: 18
   },
-
+  p2: {
+    fontFamily: "Karla-Regular",
+    fontSize: 16,
+    color: "#262626"
+  },
   textButton: {
     fontFamily: "Karla-Regular",
     fontSize: 20,
@@ -103,6 +107,12 @@ const text = StyleSheet.create({
     fontFamily: "Karla-Italic",
     fontSize: 13,
     color: "#c2c2c2",
+    justifyContent: "center"
+  },
+  cgvText: {
+    fontFamily: "Karla-Regular",
+    fontSize: 12,
+    color: "#262626",
     justifyContent: "center"
   }
 });

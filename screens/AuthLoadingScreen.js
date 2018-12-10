@@ -1,9 +1,16 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  AsyncStorage
+} from "react-native";
 
 import Header from "../components/Header";
 
-import { button, text, background } from "../constants/Styles";
+import { button, text } from "../constants/Styles";
+import { width, height } from "../constants/Layout";
 
 class AuthLoadingScreen extends React.Component {
   static navigationOptions = {
@@ -11,7 +18,14 @@ class AuthLoadingScreen extends React.Component {
     headerBackTitle: null
   };
 
+  state = {
+    isAuthenticated: false
+  };
+
   render() {
+    if (this.state.isAuthenticated === true) {
+      return this.props.navigation.navigate("Home");
+    }
     return (
       <View style={styles.container}>
         <View style={styles.text}>
@@ -42,6 +56,18 @@ class AuthLoadingScreen extends React.Component {
       </View>
     );
   }
+
+  //   this.state.navigate.params.token
+  componentDidMount() {
+    // console.log(token);
+    AsyncStorage.getItem("token").then(value => {
+      if (value) {
+        this.setState({
+          isAuthenticated: true
+        });
+      }
+    });
+  }
 }
 
 const styles = StyleSheet.create({
@@ -49,8 +75,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#f8f8f8",
+    width: width,
+    height: height
 
-    backgroundColor: "#f9f9f9"
   },
   text: {
     flex: 1,
