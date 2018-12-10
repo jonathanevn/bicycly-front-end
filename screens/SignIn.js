@@ -15,8 +15,13 @@ import { ScrollView } from "react-native-gesture-handler";
 
 class SignIn extends React.Component {
   static navigationOptions = {
-    title: "S'incrire",
-    headerTintColor: "black"
+    title: "S'inscrire",
+    headerTintColor: "black",
+    headerTitleStyle: {
+      fontFamily: "Karla-Bold",
+      color: "#262626",
+      fontSize: 18
+    }
   };
   state = {
     firstName: "",
@@ -146,7 +151,8 @@ const styles = StyleSheet.create({
   footer: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 30
+    marginTop: 30,
+    marginBottom: 30
   }
 });
 
