@@ -18,6 +18,7 @@ import { ScrollView } from "react-native-gesture-handler";
 class LogIn extends React.Component {
   static navigationOptions = {
     title: "Se connecter",
+    headerBackTitle: null,
     headerTintColor: "black",
     headerTitleStyle: {
       fontFamily: "Karla-Bold",
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 60,
-    marginBottom: 120
+    marginBottom: 220
   },
   input: {
     marginTop: 20,

@@ -17,6 +17,7 @@ import { ScrollView } from "react-native-gesture-handler";
 class SignIn extends React.Component {
   static navigationOptions = {
     title: "S'inscrire",
+    headerBackTitle: null,
     headerTintColor: "black",
     headerTitleStyle: {
       fontFamily: "Karla-Bold",
