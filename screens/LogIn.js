@@ -5,7 +5,8 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  AsyncStorage
 } from "react-native";
 
 import axios from "axios";
@@ -31,7 +32,7 @@ class LogIn extends React.Component {
   };
 
   onPress = () => {
-    const { firstName, lastName, email, password } = this.state;
+    const { email, password } = this.state;
     axios
       .post("http://localhost:3100/api/user/log_in", {
         email: email,
@@ -39,8 +40,13 @@ class LogIn extends React.Component {
       })
       .then(response => {
         console.log(response.data);
-
-        this.props.navigation.navigate("Home");
+        if (response.data.token) {
+          AsyncStorage.setItem("token", response.data.token).then(() => {
+            this.props.navigation.navigate("Home", {
+              token: response.data.token
+            });
+          });
+        }
       });
   };
 
@@ -96,13 +102,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
     backgroundColor: "#f8f8f8",
     height: height
   },
   title: {
-    marginTop: 30,
-    marginBottom: 30
+    marginTop: 60,
+    marginBottom: 120
   },
   input: {
     marginTop: 20,

@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  AsyncStorage
+} from "react-native";
 
 import Header from "../components/Header";
 
@@ -12,7 +18,14 @@ class AuthLoadingScreen extends React.Component {
     headerBackTitle: null
   };
 
+  state = {
+    isAuthenticated: false
+  };
+
   render() {
+    if (this.state.isAuthenticated === true) {
+      return this.props.navigation.navigate("Home");
+    }
     return (
       <View style={styles.container}>
         <View style={styles.text}>
@@ -42,6 +55,18 @@ class AuthLoadingScreen extends React.Component {
         </View>
       </View>
     );
+  }
+
+  //   this.state.navigate.params.token
+  componentDidMount() {
+    // console.log(token);
+    AsyncStorage.getItem("token").then(value => {
+      if (value) {
+        this.setState({
+          isAuthenticated: true
+        });
+      }
+    });
   }
 }
 

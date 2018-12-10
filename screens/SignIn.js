@@ -5,7 +5,8 @@ import {
   View,
   TouchableOpacity,
   KeyboardAvoidingView,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from "react-native";
 import axios from "axios";
 
@@ -41,7 +42,13 @@ class SignIn extends React.Component {
       })
       .then(response => {
         console.log(response.data);
-
+        if (response.data.token) {
+          AsyncStorage.setItem("token", response.data.token).then(() => {
+            this.props.navigation.navigate("Home", {
+              token: response.data.token
+            });
+          });
+        }
         this.props.navigation.navigate("Home");
       });
   };
@@ -152,7 +159,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 30,
-    marginBottom: 30
+    marginBottom: 50
   }
 });
 
