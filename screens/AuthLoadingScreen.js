@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8f8f8",
     width: width,
     height: height
+
   },
   text: {
     flex: 1,
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
   },
   connect: {
     marginBottom: 40
+
   }
 });
 

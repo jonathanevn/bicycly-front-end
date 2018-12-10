@@ -6,11 +6,20 @@ import {
   Text,
   TouchableOpacity
 } from "react-native";
-import { ExpoConfigView } from "@expo/samples";
+import BikeCard from "../components/BikeCard";
 
 export default class MyBikesScreen extends React.Component {
   static navigationOptions = {
-    title: "Mes vélos"
+    title: "Mes vélos",
+    headerTitleStyle: {
+      fontFamily: "Karla-Bold",
+      fontSize: 18,
+      color: "#262626"
+    },
+    headerStyle: {
+      backgroundColor: "#f8f8f8",
+      borderBottomColor: "#f8f8f8"
+    }
   };
 
   render() {
@@ -24,6 +33,7 @@ export default class MyBikesScreen extends React.Component {
         >
           <View style={styles.welcomeContainer}>
             <Text>This is the My Bikes screen with the map</Text>
+            <BikeCard />
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("StartRent");
@@ -62,6 +72,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: "#fff"
+    backgroundColor: "#f8f8f8"
   }
 });

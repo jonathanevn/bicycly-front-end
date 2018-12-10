@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 30,
     marginBottom: 50
+
   }
 });
 

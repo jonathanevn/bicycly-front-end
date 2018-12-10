@@ -6,11 +6,20 @@ import {
   Text,
   TouchableOpacity
 } from "react-native";
-import { ExpoLinksView } from "@expo/samples";
+import { text } from "../constants/Styles";
 
 export default class ReservationScreen extends React.Component {
   static navigationOptions = {
-    title: "Mes reservations"
+    title: "Mes reservations",
+    headerTitleStyle: {
+      fontFamily: "Karla-Bold",
+      fontSize: 18,
+      color: "#262626"
+    },
+    headerStyle: {
+      backgroundColor: "#f8f8f8",
+      borderBottomColor: "#f8f8f8"
+    }
   };
 
   render() {
@@ -55,6 +64,7 @@ export default class ReservationScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15
+    paddingTop: 15,
+    backgroundColor: "#f8f8f8"
   }
 });
