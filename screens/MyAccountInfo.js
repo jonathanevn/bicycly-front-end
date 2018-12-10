@@ -4,15 +4,18 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 class MyAccountInfo extends React.Component {
   static navigationOptions = {
     title: "Mes informations",
+    headerBackTitle: null,
+    headerTintColor: "black",
     headerTitleStyle: {
       fontFamily: "Karla-Bold",
       fontSize: 18,
       color: "#262626"
-    },
-    headerStyle: {
-      backgroundColor: "#f8f8f8",
-      borderBottomColor: "#f8f8f8"
     }
+
+    // headerStyle: {
+    //   backgroundColor: "#f8f8f8",
+    //   borderBottomColor: "#f8f8f8"
+    // }
   };
 
   render() {

@@ -4,7 +4,8 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from "react-native";
 import { ExpoConfigView } from "@expo/samples";
 
@@ -15,11 +16,11 @@ export default class AccountScreen extends React.Component {
       fontFamily: "Karla-Bold",
       fontSize: 18,
       color: "#262626"
-    },
-    headerStyle: {
-      backgroundColor: "#f8f8f8",
-      borderBottomColor: "#f8f8f8"
     }
+    // headerStyle: {
+    //   backgroundColor: "#f8f8f8",
+    //   borderBottomColor: "#f8f8f8"
+    // }
   };
 
   render() {
@@ -41,12 +42,33 @@ export default class AccountScreen extends React.Component {
             >
               <Text>Mes infos</Text>
             </TouchableOpacity>
+            <TouchableOpacity>
+              <Text>Mes paiements</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("PaymentMethods");
               }}
             >
               <Text>Moyens de paiement enregistrés</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text>Aide</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text>Contact</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text>A propos</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                AsyncStorage.removeItem("token").then(() => {
+                  this.props.navigation.navigate("AuthLoadingScreen");
+                });
+              }}
+            >
+              <Text>Se déconnecter</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
