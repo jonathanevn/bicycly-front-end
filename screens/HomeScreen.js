@@ -50,6 +50,7 @@ export default class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
+    console.log("did mount");
     Permissions.askAsync(Permissions.LOCATION);
     /*   this.index = 0;
     this.animation = new Animated.Value(0); */
@@ -89,6 +90,7 @@ export default class HomeScreen extends React.Component {
   }
 
   onLocationChange = region => {
+    console.log("onLocationChange");
     this.setState(region, () =>
       axios
         .get("http://192.168.86.249:3100/api/bike/around", {
@@ -113,17 +115,26 @@ export default class HomeScreen extends React.Component {
 
   onPressMarker = (markerData, index) => {
     console.log("markerData, index", markerData, index);
-    this.setState({ bikeSelected: true }, () =>
-      this.setState({ bikeSelectedId: index })
-    );
-    console.log(
-      "bikeSelected",
-      this.state.bikeSelected,
-      "bikeSelectedId",
-      this.state.bikeSelectedId
-    );
-    this.flatListRef.scrollToIndex({ animated: true, index: index });
-    this.animation.addListener(({ value }) => {
+    this.flatListRef.scrollToIndex({
+      animated: true,
+      index,
+      viewOffset: 100,
+      viewPosition: 0.5
+    });
+    /* this.setState({ bikeSelected: true, bikeSelectedId: index }, () => {
+      this.flatListRef.scrollToIndex({
+        animated: true,
+        index: this.state.bikeSelectedId
+      });
+      console.log(
+        "bikeSelected",
+        this.state.bikeSelected,
+        "bikeSelectedId",
+        this.state.bikeSelectedId
+      );
+    }); */
+
+    /* this.animation.addListener(({ value }) => {
       console.log("value", value);
       let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
       if (index >= this.state.bikes.length) {
@@ -137,10 +148,9 @@ export default class HomeScreen extends React.Component {
       this.regionTimeout = setTimeout(() => {
         if (this.index !== index) {
           this.index = index;
-          /*           const { loc } = this.state.bikes[index]; */
+          //const { loc } = this.state.bikes[index]
           this.map.animateToRegion(
             {
-              /*    ...loc, */
               latitude: markerData.coordinate.latitude,
               longitude: markerData.coordinate.longitude,
               latitudeDelta: LATITUDE_DELTA,
@@ -150,7 +160,7 @@ export default class HomeScreen extends React.Component {
           );
         }
       }, 10);
-    });
+    }); */
   };
 
   getItemLayout = (data, index) => ({
@@ -160,6 +170,7 @@ export default class HomeScreen extends React.Component {
   });
 
   render() {
+    console.log("render");
     const interpolations = this.state.bikes.map((bikes, index) => {
       const inputRange = [
         (index - 1) * CARD_WIDTH,
@@ -188,13 +199,16 @@ export default class HomeScreen extends React.Component {
           <MapView
             style={styles.map}
             region={this.state.region}
+            /* initialRegion={this.state.region} */
             provider={MapView.PROVIDER_GOOGLE}
             zoomEnabled={true}
             customMapStyle={generatedMapStyle}
             showsUserLocation={true}
             ref={map => (this.map = map)}
-            onRegionChange={region => this.setState({ region })}
-            /* onRegionChangeComplete={region => this.setState({ region })} */
+            /* onRegionChange={region => this.setState({ region })} */
+            /* onRegionChangeComplete={region =>
+              this.setState({ region }, () => console.log(this.state.region))
+            } */
           >
             {this.state.bikes.map((bikes, index) => {
               const scaleStyle = {
@@ -217,9 +231,7 @@ export default class HomeScreen extends React.Component {
                   }}
                   onPress={e => this.onPressMarker(e.nativeEvent, index)}
                 >
-                  <Animated.View
-                    style={[styles.markerWrap, opacityStyle, scaleStyle]}
-                  >
+                  <Animated.View style={[styles.markerWrap, opacityStyle]}>
                     {/* <Animated.View style={[styles.ring, scaleStyle]} /> */}
                     <View style={styles.marker} />
                   </Animated.View>
@@ -228,7 +240,7 @@ export default class HomeScreen extends React.Component {
             })}
           </MapView>
 
-          <AnimatedFlatList
+          <FlatList
             data={this.state.bikes}
             horizontal={true}
             scrollEventThrottle={1}
@@ -238,7 +250,7 @@ export default class HomeScreen extends React.Component {
               this.flatListRef = ref;
             }}
             snapToInterval={CARD_WIDTH}
-            onScroll={Animated.event(
+            /* onScroll={Animated.event(
               [
                 {
                   nativeEvent: {
@@ -249,7 +261,7 @@ export default class HomeScreen extends React.Component {
                 }
               ],
               { useNativeDriver: true }
-            )}
+            )} */
             keyExtractor={(item, index) => item._id}
             style={styles.scrollView}
             contentContainerStyle={styles.startEndPadding}
