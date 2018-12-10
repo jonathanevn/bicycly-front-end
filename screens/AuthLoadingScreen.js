@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+
     backgroundColor: "#f9f9f9"
   },
   text: {
@@ -63,6 +64,7 @@ const styles = StyleSheet.create({
   },
   connect: {
     marginBottom: 40
+
   }
 });
 
