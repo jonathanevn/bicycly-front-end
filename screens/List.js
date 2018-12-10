@@ -30,7 +30,9 @@ class List extends React.Component {
               <TouchableOpacity
                 onPress={() => {
                   this.props.navigation.navigate("BikeDetails", {
-                    bikeId: item._id
+                    bikeId: item._id,
+                    bikeBrand: item.bikeBrand,
+                    bikeModel: item.bikeModel
                   });
                 }}
               >
@@ -48,10 +50,7 @@ class List extends React.Component {
         <View style={styles.mapButton}>
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.navigate("", {
-                region: this.state.region,
-                bikes: this.state.bikes
-              });
+              this.props.navigation.popToTop();
             }}
           >
             <ListButton name="map" size={25} label="Carte" />
@@ -79,8 +78,10 @@ const styles = StyleSheet.create({
   yellowBackground: {
     backgroundColor: "#ffc200",
     width: width,
-    height: 100,
+    height: 110,
+    top: -20,
     alignItems: "flex-start",
+    justifyContent: "center",
     position: "relative",
     borderRadius: 80 / 2
   },
