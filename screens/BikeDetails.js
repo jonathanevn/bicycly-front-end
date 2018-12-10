@@ -30,7 +30,9 @@ class BikeDetails extends React.Component {
 
         <TouchableOpacity
           onPress={() => {
-            this.props.navigation.navigate("Tchat");
+            this.props.navigation.navigate("Tchat", {
+              bikeId: this.state.params.navigate.bikeId
+            });
           }}
         >
           <Text>Demande de location</Text>

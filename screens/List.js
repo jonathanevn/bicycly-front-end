@@ -29,7 +29,9 @@ class List extends React.Component {
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.navigate("BikeDetails");
+                  this.props.navigation.navigate("BikeDetails", {
+                    bikeId: item._id
+                  });
                 }}
               >
                 <BikeItem
@@ -46,7 +48,7 @@ class List extends React.Component {
         <View style={styles.mapButton}>
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.navigate("Home", {
+              this.props.navigation.navigate("", {
                 region: this.state.region,
                 bikes: this.state.bikes
               });

@@ -117,6 +117,7 @@ export default class HomeScreen extends React.Component {
       viewOffset: CARD_WIDTH,
       viewPosition: 0.5
     });
+
     this.animation.addListener(({ value }) => {
       console.log("value", value);
       let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
@@ -126,22 +127,17 @@ export default class HomeScreen extends React.Component {
       if (index <= 0) {
         index = 0;
       }
-      clearTimeout(this.regionTimeout);
-      this.regionTimeout = setTimeout(() => {
-        if (this.index !== index) {
-          this.index = index;
-          //const { loc } = this.state.bikes[index]
-          this.map.animateToRegion(
-            {
-              latitude: markerData.coordinate.latitude,
-              longitude: markerData.coordinate.longitude,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA
-            },
-            250
-          );
-        }
-      }, 10);
+
+      //const { loc } = this.state.bikes[index]
+      this.map.animateToRegion(
+        {
+          latitude: markerData.coordinate.latitude,
+          longitude: markerData.coordinate.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA
+        },
+        250
+      );
     });
   };
 
@@ -227,18 +223,15 @@ export default class HomeScreen extends React.Component {
             this.flatListRef = ref;
           }}
           snapToInterval={CARD_WIDTH}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    x: this.animation
-                  }
+          onScroll={Animated.event([
+            {
+              nativeEvent: {
+                contentOffset: {
+                  x: this.animation
                 }
               }
-            ]
-            /*       { useNativeDriver: true } */
-          )}
+            }
+          ])}
           keyExtractor={(item, index) => item._id}
           style={styles.scrollView}
           contentContainerStyle={styles.startEndPadding}
@@ -347,13 +340,13 @@ const styles = StyleSheet.create({
 
   filterButton: {
     position: "absolute",
-    top: 200,
+    top: height / 4.5,
     right: 70
   },
 
   listButton: {
     position: "absolute",
-    top: 270,
+    top: height / 3.2,
     right: 70
   }
 });
