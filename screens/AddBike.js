@@ -12,6 +12,7 @@ import { button, text } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
 import RNPickerSelect from "react-native-picker-select";
 import { Constants } from "expo";
+import Accessories from "../components/Accessories";
 
 class AddBike extends React.Component {
   static navigationOptions = {
@@ -205,12 +206,7 @@ class AddBike extends React.Component {
           </View>
 
           <Text>Accessoires</Text>
-          {/* <View style={styles.containerCheckBox}>
-            <Switch
-              onValueChange={this._handleToggleSwitch}
-              value={this.state.switchValue}
-            />
-          </View> */}
+          <Accessories />
           <View>
             <Text>Description</Text>
             <TextInput
