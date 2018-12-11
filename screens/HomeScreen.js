@@ -30,6 +30,7 @@ export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
+
   state = {
     region: {
       latitude: LATITUDE,
@@ -37,15 +38,12 @@ export default class HomeScreen extends React.Component {
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA
     },
-
+    error: null,
+    bikes: [],
     selectedDate: {
       startDate: null,
       endDate: null
-    },
-    error: null
-
-    bikes: []
-
+    }
   };
 
   componentWillMount() {
@@ -77,13 +75,12 @@ export default class HomeScreen extends React.Component {
                 }
               })
               .then(response => {
-                console.log("coucou", response);
                 if (response.data) {
                   this.setState({ bikes: response.data });
                 }
               })
               .catch(error => {
-                console.log("PROBLEME", error.response);
+                console.log(error.response);
               });
           }
         );
@@ -92,7 +89,6 @@ export default class HomeScreen extends React.Component {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   }
-
 
   onChangeDate = ({ startDate, endDate }) => {
     this.setState({
@@ -106,7 +102,6 @@ export default class HomeScreen extends React.Component {
       }
     });
   };
-
 
   onLocationChange = region => {
     console.log("onLocationChange");
@@ -170,7 +165,6 @@ export default class HomeScreen extends React.Component {
         250
       );
     });
-
   };
 
   getItemLayout = (data, index) => ({
@@ -180,7 +174,6 @@ export default class HomeScreen extends React.Component {
   });
 
   render() {
-
     // console.log("render");
     const interpolations = this.state.bikes.map((bikes, index) => {
       const inputRange = [
@@ -211,10 +204,6 @@ export default class HomeScreen extends React.Component {
           customMapStyle={generatedMapStyle}
           showsUserLocation={true}
           ref={map => (this.map = map)}
-          /* onRegionChange={region => this.setState({ region })} */
-          /* onRegionChangeComplete={region =>
-              this.setState({ region }, () => console.log(this.state.region))
-            } */
         >
           {this.state.bikes.map((bikes, index) => {
             const scaleStyle = {
@@ -269,7 +258,6 @@ export default class HomeScreen extends React.Component {
           style={styles.scrollView}
           contentContainerStyle={styles.startEndPadding}
           renderItem={({ item }) => (
-
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("BikeDetails", {
@@ -291,7 +279,12 @@ export default class HomeScreen extends React.Component {
         />
 
         <View style={styles.searchBar}>
-          <SearchBar onLocationChange={this.onLocationChange} />
+          <SearchBar
+            onLocationChange={this.onLocationChange}
+            onChangeDate={this.onChangeDate}
+            startDate={this.state.selectedDate.startDate}
+            endDate={this.state.selectedDate.endDate}
+          />
         </View>
         <View style={styles.filterButton}>
           <TouchableOpacity

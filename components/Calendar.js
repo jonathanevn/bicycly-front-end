@@ -93,11 +93,11 @@ const styles = StyleSheet.create({
   },
   date: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     marginTop: 20,
-    marginBottom: 10,
-    marginLeft: 20,
-    marginRight: 20
+    marginBottom: 15,
+    marginLeft: 10,
+    marginRight: 10
   },
   calendar: {
     marginTop: 10
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
 
   dateSelected: {
-    fontFamily: "Karla-Regular",
+    fontFamily: "Karla-Bold",
     fontSize: 14,
     color: Colors.lightGrey
   },

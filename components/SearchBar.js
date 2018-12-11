@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
 
   searchAddress: {
     paddingLeft: 10,
-    width: 160
+    width: 140
   },
 
   searchDateSection: {
@@ -306,11 +306,12 @@ const styles = StyleSheet.create({
 
   searchDate: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    marginRight: 5
   },
 
   iconCalendar: {
-    paddingRight: 10
+    paddingRight: 14
   },
 
   containerAddressModal: {
