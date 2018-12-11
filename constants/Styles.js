@@ -4,10 +4,6 @@ import { StyleSheet } from "react-native";
 
 const button = StyleSheet.create({
   primary: {
-<<<<<<< HEAD
-    // flex: 1,
-=======
->>>>>>> new updates
     height: 50,
     width: 240,
     backgroundColor: "#ffc200",
@@ -17,10 +13,6 @@ const button = StyleSheet.create({
   },
 
   secondary: {
-<<<<<<< HEAD
-    // flex: 1,
-=======
->>>>>>> new updates
     height: 50,
     width: 240,
     justifyContent: "center",
@@ -79,17 +71,17 @@ const text = StyleSheet.create({
 
   bikeCategory: {
     fontFamily: "Karla-Regular",
-    fontSize: 14,
+    fontSize: 13,
     color: "#ffc200"
   },
   localisation: {
     fontFamily: "Karla-Regular",
-    fontSize: 14,
+    fontSize: 13,
     color: "#c2c2c2"
   },
   rate: {
     fontFamily: "Karla-Regular",
-    fontSize: 14,
+    fontSize: 15,
     color: "#c2c2c2"
   },
   placeholder: {
