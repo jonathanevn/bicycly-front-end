@@ -70,12 +70,13 @@ export default class HomeScreen extends React.Component {
                 }
               })
               .then(response => {
+                console.log("coucou", response);
                 if (response.data) {
                   this.setState({ bikes: response.data });
                 }
               })
               .catch(error => {
-                console.log(error.response);
+                console.log("PROBLEME", error.response);
               });
           }
         );
