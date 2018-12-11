@@ -1,22 +1,27 @@
 import React from "react";
 import { GiftedChat, MessageText } from "react-native-gifted-chat";
 import axios from "axios";
-import { View, Text } from "react-native";
+import { View, Text, AsyncStorage } from "react-native";
 class Tchat extends React.Component {
   static navigationOptions = {
     title: "Message au propriétaire"
   };
   state = {
     messages: [],
-    thread: undefined
+    thread: undefined,
+    user: null
   };
 
   componentDidMount() {
     //rappel de la discussion
-    console.log(
-      "​App -> componentDidMount -> this.state.thread",
-      this.state.thread
-    );
+    console.log("bikeID ===>", this.props.navigation.state.params.bikeId);
+    const bikeId = this.props.navigation.state.params.bikeId;
+    AsyncStorage.getItem("token").then(value => {
+      console.log("token ===>", value);
+      this.setState({
+        user: value
+      });
+    });
     axios
       .get("http://192.168.86.249:3100/message/" + this.state.thread)
       .then(reponse => {
@@ -54,12 +59,13 @@ class Tchat extends React.Component {
   }
 
   render() {
-    console.log(this.state.messages);
-    console.log("Are we got a thread ?", this.state.thread);
+    console.log("state.user ===>", this.state.user);
+    console.log("state.messages ===>", this.state.messages);
+    console.log("Have we got a thread ?", this.state.thread);
 
     return (
       <GiftedChat
-        //id du User -b qui recois
+        //id du User -b qui recois donc propriétaire
         user={{ _id: "5c0ce255019aae1f160a4ba2" }}
         renderMessageText={props => {
           console.log(props.currentMessage);
