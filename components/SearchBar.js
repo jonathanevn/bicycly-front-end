@@ -254,9 +254,6 @@ class SearchBar extends React.Component {
                         .locale("fr")
                         .format("ll")}
                     </Text>
-
-                    {/*    <Text>{this.props.startDate}</Text>
-                    <Text>{this.props.endDate}</Text> */}
                   </View>
                 )}
               </View>

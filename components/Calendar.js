@@ -20,37 +20,8 @@ export default class Calendar extends Component {
   };
 
   render() {
-    const startDate = this.props.startDate
-      ? this.props.startDate.toString()
-      : "";
-    const endDate = this.props.endDate ? this.props.endDate.toString() : "";
-    /*  console.log(
-      "startDate",
-      this.props.startDate,
-      "endDate",
-      this.props.endDate
-    ); */
     const minDate = new Date(); // Today
     // const maxDate = new Date(2027, 6, 3);
-
-    /* console.log(
-      "displayed start date",
-      !this.props.startDate
-        ? "Veuillez choisir une date"
-        : moment(startDate)
-            .locale("fr")
-            .format("ll")
-    );
-
-    console.log(
-      "displayed end date",
-      !this.props.endDate
-        ? "Veuillez choisir une date"
-        : moment(endDate)
-            .locale("fr")
-            .format("ll")
-    ); */
-
     return (
       <View style={styles.container}>
         <View style={styles.date}>
