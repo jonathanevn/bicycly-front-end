@@ -29,7 +29,8 @@ class LogIn extends React.Component {
 
   state = {
     email: "",
-    password: ""
+    password: "",
+    _id: ""
   };
 
   onPress = () => {
@@ -41,10 +42,16 @@ class LogIn extends React.Component {
       })
       .then(response => {
         console.log(response.data);
+
         if (response.data.token) {
-          AsyncStorage.setItem("token", response.data.token).then(() => {
+          AsyncStorage.multiSet([
+            ["token", response.data.token],
+            ["id", response.data._id]
+          ]).then(() => {
+            console.log(response.data.multiSet);
             this.props.navigation.navigate("Home", {
-              token: response.data.token
+              token: response.data.token,
+              id: response.data._id
             });
           });
         }

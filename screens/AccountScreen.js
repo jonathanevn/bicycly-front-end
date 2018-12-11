@@ -8,6 +8,8 @@ import {
   AsyncStorage
 } from "react-native";
 
+import axios from "axios";
+
 import { button, text } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
 
@@ -25,7 +27,35 @@ export default class AccountScreen extends React.Component {
     // }
   };
 
-  state = {};
+  state = {
+    token: "",
+    id: "",
+    account: "",
+    ratingValue: "",
+    reviews: ""
+  };
+
+  componentDidMount() {
+    // const { id } = this.props.match.params;
+    // const AuthStr = "Bearer".concat(this.state.token);
+
+    AsyncStorage.multiGet(["token", "id"]).then(value => {
+      this.setState({ token: value[0][1], id: value[1][1] });
+      console.log("getItem", value);
+      console.log(this.state.token);
+      axios
+        .get("http://localhost:3100/api/user/" + this.state.id, {
+          headers: { Authorization: "Bearer " + this.state.token }
+        })
+        .then(response => {
+          this.setState({
+            account: response.data
+          });
+          console.log("cdm", response.data);
+        })
+        .catch(err => console.log("wtf", err));
+    });
+  }
 
   render() {
     return (
@@ -63,7 +93,7 @@ export default class AccountScreen extends React.Component {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            AsyncStorage.removeItem("token").then(() => {
+            AsyncStorage.multiRemove(["token", "id"]).then(() => {
               this.props.navigation.navigate("AuthLoadingScreen");
             });
           }}
