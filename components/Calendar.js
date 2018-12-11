@@ -23,11 +23,21 @@ export default class Calendar extends Component {
     } else {
       this.setState({
         selectedStartDate: date,
-        selectedEndDate: null
+        selectedEndDate: date
       });
     }
+    () => {
+      this.props.dateSelected({
+        selectedDate: {
+          startDateSelected: this.state.selectedStartDate,
+          endDateSelected: this.state.selectedEndDate
+        }
+      });
+    };
+    console.log("coucou", this.state.selectedStartDate);
+    console.log("coucou", this.state.selectedEndDate);
   }
-  onPress = () => {
+  /*  onPress = () => {
     this.props.dateSelected({
       selectedDate: {
         startDateSelected: this.state.selectedStartDate,
@@ -35,13 +45,13 @@ export default class Calendar extends Component {
       }
     });
   };
-
+ */
   render() {
     const { selectedStartDate, selectedEndDate } = this.state;
-    const minDate = new Date(); // Today
-    // const maxDate = new Date(2027, 6, 3);
     const startDate = selectedStartDate ? selectedStartDate.toString() : "";
     const endDate = selectedEndDate ? selectedEndDate.toString() : "";
+    const minDate = new Date(); // Today
+    // const maxDate = new Date(2027, 6, 3);
 
     return (
       <View style={styles.container}>
@@ -130,5 +140,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "flex-end",
     paddingRight: 10
+  },
+  confirmed: {
+    alignItems: "center",
+    marginBottom: 30
   }
 });

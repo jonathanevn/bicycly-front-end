@@ -152,7 +152,8 @@ class SearchBar extends React.Component {
   };
 
   onDateSelected = selectedDate => {
-    this.setState(selectedDate);
+    this.setState({ selectedDate });
+    console.log("selectedDate", selectedDate);
   };
 
   render() {
@@ -189,24 +190,17 @@ class SearchBar extends React.Component {
           }
         >
           <View style={styles.containerDateModal}>
-            <TouchableOpacity
-              onPress={() => {
-                this.setModalDateVisible(!this.state.modalDateVisible);
-              }}
-            >
-              <Ionicons
-                size={30}
-                color={Colors.darkGrey}
-                name={Platform.OS === "ios" ? "ios-close" : "md-close"}
-              />
-            </TouchableOpacity>
-
             <Calendar dateSelected={this.onDateSelected} />
             <View style={styles.confirmed}>
               <TouchableOpacity style={button.primary}>
-                <Text style={text.textButton} onPress={this.onPress}>
+                <Text
+                  style={text.textButton}
+                  onPress={() => {
+                    this.setModalDateVisible(!this.state.modalDateVisible);
+                    console.log("selectedDate", selectedDate);
+                  }}
+                >
                   Confirmer
-                  {/* {console.log(this.onPress)} */}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -344,7 +338,6 @@ const styles = StyleSheet.create({
   confirmed: {
     alignItems: "center",
     marginBottom: 30
-    // marginTop: 15
   }
 });
 
