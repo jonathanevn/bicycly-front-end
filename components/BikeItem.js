@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
 
   bikeBrandModel: {
     flexDirection: "row",
-    paddingBottom: 5
+    paddingBottom: 8
   },
   bikeCategoryLoc: {
     flexDirection: "row"

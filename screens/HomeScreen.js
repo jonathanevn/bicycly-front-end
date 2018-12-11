@@ -109,6 +109,16 @@ export default class HomeScreen extends React.Component {
     );
   };
 
+  /*   getScrollToIndex = () => {
+    this.flatListRef.scrollToIndex({
+      animated: true,
+      index,
+      viewOffset: CARD_WIDTH,
+      viewPosition: 0.5
+    });
+    this.onPressMarker();
+  }; */
+
   onPressMarker = (markerData, index) => {
     console.log("markerData, index", markerData, index);
     this.flatListRef.scrollToIndex({
@@ -127,8 +137,6 @@ export default class HomeScreen extends React.Component {
       if (index <= 0) {
         index = 0;
       }
-
-      //const { loc } = this.state.bikes[index]
       this.map.animateToRegion(
         {
           latitude: markerData.coordinate.latitude,
@@ -238,7 +246,11 @@ export default class HomeScreen extends React.Component {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate("BikeDetails", item);
+                this.props.navigation.navigate("BikeDetails", {
+                  bikeId: item._id,
+                  bikeBrand: item.bikeBrand,
+                  bikeModel: item.bikeModel
+                });
               }}
             >
               <BikeCard
