@@ -7,6 +7,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { text } from "../constants/Styles";
+import CardTchat from "../components/CardTchat";
 
 export default class ReservationScreen extends React.Component {
   static navigationOptions = {
@@ -31,6 +32,7 @@ export default class ReservationScreen extends React.Component {
             contentContainerStyle={styles.contentContainer}
           >
             <View style={styles.welcomeContainer}>
+              <CardTchat />
               <Text>This is the Reservation screen with the map</Text>
               <TouchableOpacity
                 onPress={() => {
