@@ -10,11 +10,18 @@ import {
 import { text, button } from "../constants/Styles";
 import apiKey from "../apiKey";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+  createIconSetFromIcoMoon
+} from "@expo/vector-icons";
+import icoMoonConfig from "../assets/fonts/selection.json";
 import Colors from "../constants/Colors";
 import { width, height } from "../constants/Layout";
 import Calendar from "./Calendar";
 import moment from "moment/min/moment-with-locales";
+
+const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 
 const homePlace = {
   description: "Home",
@@ -108,7 +115,7 @@ class SearchBar extends React.Component {
             fontSize: 11
           },
           predefinedPlacesDescription: {
-            color: "#262626",
+            color: Colors.darkGrey,
             fontFamily: "Karla-Bold",
             fontSize: 15
           }
@@ -198,11 +205,7 @@ class SearchBar extends React.Component {
 
         <View style={styles.searchBar}>
           <View style={styles.searchAddressSection}>
-            <MaterialCommunityIcons
-              size={20}
-              color={Colors.darkGrey}
-              name={"map-marker"}
-            />
+            <Icon size={18} color={Colors.darkGrey} name={"location"} />
             <TouchableOpacity
               onPress={() => {
                 this.setModalAddressVisible(true);
@@ -270,17 +273,17 @@ class SearchBar extends React.Component {
 const styles = StyleSheet.create({
   searchBar: {
     height: 60,
-    width: 340,
+    width: 330,
     backgroundColor: "white",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    borderRadius: 50,
-    shadowColor: "rgba(93, 93, 93, 0.18)",
+    borderRadius: 12,
+    shadowColor: "rgba(93, 93, 93, 0.25)",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.9,
-    shadowRadius: 2,
-    elevation: 1
+    shadowRadius: 12,
+    elevation: 2
   },
 
   searchAddressSection: {

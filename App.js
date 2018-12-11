@@ -3,8 +3,6 @@ import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { AppLoading, Asset, Font } from "expo";
 
 import AppNavigator from "./navigation/AppNavigator";
-import { createIconSetFromIcoMoon } from "@expo/vector-icons";
-import icoMoonConfig from "./assets/fonts/selection.json";
 
 export default class App extends React.Component {
   state = {
@@ -32,7 +30,6 @@ export default class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     return Promise.all([
-      Asset.loadAsync([require("./assets/images/cyclist.png")]),
       Font.loadAsync({
         "Karla-Bold": require("./assets/fonts/Karla-Bold.ttf"),
         "Karla-Bold-Italic": require("./assets/fonts/Karla-BoldItalic.ttf"),

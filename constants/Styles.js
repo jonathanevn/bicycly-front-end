@@ -4,7 +4,6 @@ import { StyleSheet } from "react-native";
 
 const button = StyleSheet.create({
   primary: {
-    // flex: 1,
     height: 50,
     width: 240,
     backgroundColor: "#ffc200",
@@ -14,7 +13,6 @@ const button = StyleSheet.create({
   },
 
   secondary: {
-    // flex: 1,
     height: 50,
     width: 240,
     justifyContent: "center",
@@ -28,6 +26,17 @@ const button = StyleSheet.create({
 /* --- TEXTS ---- */
 
 const text = StyleSheet.create({
+  company: {
+    fontFamily: "Karla-Regular",
+    fontSize: 60,
+    color: "#262626"
+  },
+  accroche: {
+    fontFamily: "Karla-Regular",
+    fontSize: 18,
+    color: "#262626",
+    lineHeight: 25
+  },
   h1: {
     fontFamily: "Karla-Bold",
     fontSize: 20,
@@ -45,30 +54,34 @@ const text = StyleSheet.create({
   },
   p: {
     fontFamily: "Karla-Regular",
-    fontSize: 15,
+    fontSize: 14,
     color: "#585858",
     lineHeight: 18
   },
-
+  p2: {
+    fontFamily: "Karla-Regular",
+    fontSize: 16,
+    color: "#262626"
+  },
   textButton: {
     fontFamily: "Karla-Regular",
-    fontSize: 20,
+    fontSize: 18,
     color: "#262626"
   },
 
   bikeCategory: {
     fontFamily: "Karla-Regular",
-    fontSize: 15,
+    fontSize: 14,
     color: "#ffc200"
   },
   localisation: {
     fontFamily: "Karla-Regular",
-    fontSize: 16,
+    fontSize: 14,
     color: "#c2c2c2"
   },
   rate: {
     fontFamily: "Karla-Regular",
-    fontSize: 16,
+    fontSize: 14,
     color: "#c2c2c2"
   },
   placeholder: {
@@ -93,6 +106,12 @@ const text = StyleSheet.create({
     fontSize: 13,
     color: "#c2c2c2",
     justifyContent: "center"
+  },
+  cgvText: {
+    fontFamily: "Karla-Regular",
+    fontSize: 12,
+    color: "#262626",
+    justifyContent: "center"
   }
 });
 
@@ -116,4 +135,12 @@ const avatar = StyleSheet.create({
   }
 });
 
-export { button, text, avatar };
+/* --- BackgroundColor--- */
+
+const background = StyleSheet.create({
+  background: {
+    backgroundColor: "#f8f8f8"
+  }
+});
+
+export { button, text, avatar, background };

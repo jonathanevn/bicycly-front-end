@@ -79,7 +79,7 @@ MyBikesStack.navigationOptions = {
     showLabel: false
   },
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} size={37} name="bike" />
+    <TabBarIcon focused={focused} size={30} name="bike" />
   )
 };
 
