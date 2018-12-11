@@ -4,10 +4,6 @@ import { StyleSheet } from "react-native";
 
 const button = StyleSheet.create({
   primary: {
-<<<<<<< HEAD
-    // flex: 1,
-=======
->>>>>>> new updates
     height: 50,
     width: 240,
     backgroundColor: "#ffc200",
@@ -17,10 +13,6 @@ const button = StyleSheet.create({
   },
 
   secondary: {
-<<<<<<< HEAD
-    // flex: 1,
-=======
->>>>>>> new updates
     height: 50,
     width: 240,
     justifyContent: "center",
