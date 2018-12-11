@@ -47,7 +47,7 @@ export default class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log("did mount");
+    // console.log("did mount");
     Permissions.askAsync(Permissions.LOCATION);
 
     navigator.geolocation.getCurrentPosition(
@@ -157,7 +157,7 @@ export default class HomeScreen extends React.Component {
   });
 
   render() {
-    console.log("render");
+    // console.log("render");
     const interpolations = this.state.bikes.map((bikes, index) => {
       const inputRange = [
         (index - 1) * CARD_WIDTH,

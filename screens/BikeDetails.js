@@ -41,6 +41,10 @@ class BikeDetails extends React.Component {
   };
 
   componentDidMount() {
+    console.log(
+      "bikeID on details ===>",
+      this.props.navigation.state.params.bikeId
+    );
     axios
       .get(
         "http://192.168.86.249:3100/api/bike/" +
@@ -158,7 +162,7 @@ class BikeDetails extends React.Component {
               style={button.primary}
               onPress={() => {
                 this.props.navigation.navigate("Tchat", {
-                  // bikeId: this.state.params.navigate.bikeId
+                  bikeId: this.props.navigation.state.params.bikeId
                 });
               }}
             >
