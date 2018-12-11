@@ -244,15 +244,17 @@ class SearchBar extends React.Component {
                   <Text style={text.h3}>Quand ?</Text>
                 ) : (
                   <View>
-                    <Text>
+                    <Text style={text.h3}>
                       {moment(startDate)
                         .locale("fr")
                         .format("ll")}
                     </Text>
-                    <Text>
-                      {moment(endDate)
-                        .locale("fr")
-                        .format("ll")}
+                    <Text style={text.h3}>
+                      {!this.props.endDate
+                        ? ""
+                        : moment(endDate)
+                            .locale("fr")
+                            .format("ll")}
                     </Text>
                   </View>
                 )}
