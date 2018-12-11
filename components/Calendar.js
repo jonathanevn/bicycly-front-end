@@ -6,61 +6,50 @@ import { button, text } from "../constants/Styles";
 import moment from "moment/min/moment-with-locales";
 
 export default class Calendar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedStartDate: null,
-      selectedEndDate: null
-    };
-    this.onDateChange = this.onDateChange.bind(this);
-  }
-
-  onDateChange(date, type) {
+  onDateChange = (date, type) => {
     if (type === "END_DATE") {
-      this.setState({
-        selectedEndDate: date
+      this.props.onChangeDate({
+        endDate: date
       });
     } else {
-      this.setState({
-        selectedStartDate: date,
-        selectedEndDate: null
+      this.props.onChangeDate({
+        startDate: date,
+        endDate: null
       });
     }
-    if (this.state.selectedStartDate) {
-      this.props.dateSelected({
-        selectedDate: {
-          startDateSelected: this.state.selectedStartDate,
-          endDateSelected: this.state.selectedEndDate
-        }
-      });
-      return selectedDate;
-      /*  () => {
-      this.props.dateSelected({
-        selectedDate: {
-          startDateSelected: this.state.selectedStartDate,
-          endDateSelected: this.state.selectedEndDate
-        }
-      });
-    }; */
-      /* console.log("coucou", this.state.selectedStartDate);
-    console.log("coucou", this.state.selectedEndDate); */
-    }
-  }
-  /*  onPress = () => {
-    this.props.dateSelected({
-      selectedDate: {
-        startDateSelected: this.state.selectedStartDate,
-        endDateSelected: this.state.selectedEndDate
-      }
-    });
   };
- */
+
   render() {
-    const { selectedStartDate, selectedEndDate } = this.state;
-    const startDate = selectedStartDate ? selectedStartDate.toString() : "";
-    const endDate = selectedEndDate ? selectedEndDate.toString() : "";
+    const startDate = this.props.startDate
+      ? this.props.startDate.toString()
+      : "";
+    const endDate = this.props.endDate ? this.props.endDate.toString() : "";
+    /*  console.log(
+      "startDate",
+      this.props.startDate,
+      "endDate",
+      this.props.endDate
+    ); */
     const minDate = new Date(); // Today
     // const maxDate = new Date(2027, 6, 3);
+
+    /* console.log(
+      "displayed start date",
+      !this.props.startDate
+        ? "Veuillez choisir une date"
+        : moment(startDate)
+            .locale("fr")
+            .format("ll")
+    );
+
+    console.log(
+      "displayed end date",
+      !this.props.endDate
+        ? "Veuillez choisir une date"
+        : moment(endDate)
+            .locale("fr")
+            .format("ll")
+    ); */
 
     return (
       <View style={styles.container}>
@@ -68,7 +57,7 @@ export default class Calendar extends Component {
           <View style={styles.startDate}>
             <Text style={text.textButton}>Début</Text>
             <Text>
-              {this.state.selectedStartDate === null
+              {!this.props.startDate
                 ? "Veuillez choisir une date"
                 : moment(startDate)
                     .locale("fr")
@@ -78,7 +67,7 @@ export default class Calendar extends Component {
           <View style={styles.endDate}>
             <Text style={text.textButton}>Fin</Text>
             <Text>
-              {this.state.selectedEndDate === null
+              {!this.props.endDate
                 ? "Veuillez choisir une date"
                 : moment(endDate)
                     .locale("fr")

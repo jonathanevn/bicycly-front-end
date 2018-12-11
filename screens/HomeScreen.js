@@ -31,7 +31,7 @@ export default class HomeScreen extends React.Component {
       longitudeDelta: LONGITUDE_DELTA,
       bikes: null
     },
-    date: {
+    selectedDate: {
       startDate: null,
       endDate: null
     },
@@ -67,15 +67,31 @@ export default class HomeScreen extends React.Component {
       });
   }
 
+  // L'argument sera un objet
+  // {
+  //   startDate: new Date(),
+  //   endDate: new Date(),
+  // }
+
+  onChangeDate = ({ startDate, endDate }) => {
+    this.setState({
+      selectedDate: {
+        startDate:
+          startDate !== undefined
+            ? startDate
+            : this.state.selectedDate.startDate,
+        endDate:
+          endDate !== undefined ? endDate : this.state.selectedDate.endDate
+      }
+    });
+  };
+
   onRegionChange = region => {
     this.setState(region);
   };
 
-  //   onDateChange = date => {
-  //     this.setState(date);
-  //   };
-
   render() {
+    console.log("this.state.selectedDate", this.state.selectedDate);
     if (this.state.latitude === null) {
       return <Text>Loading...</Text>;
     } else {
@@ -100,7 +116,9 @@ export default class HomeScreen extends React.Component {
           <View style={styles.content}>
             <SearchBar
               onLocationChange={this.onRegionChange}
-              //   dateChange={this.onDateChange}
+              onChangeDate={this.onChangeDate}
+              startDate={this.state.selectedDate.startDate}
+              endDate={this.state.selectedDate.endDate}
             />
             <TouchableOpacity
               onPress={() => {
