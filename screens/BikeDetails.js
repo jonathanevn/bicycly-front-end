@@ -43,7 +43,7 @@ class BikeDetails extends React.Component {
   componentDidMount() {
     axios
       .get(
-        "http://192.168.1.79:3100/api/bike/" +
+        "http://192.168.86.249:3100/api/bike/" +
           this.props.navigation.state.params.bikeId
       )
       .then(response => {

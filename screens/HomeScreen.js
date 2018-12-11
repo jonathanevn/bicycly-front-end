@@ -63,7 +63,7 @@ export default class HomeScreen extends React.Component {
           },
           () => {
             axios
-              .get("http://192.168.1.79:3100/api/bike/around", {
+              .get("http://192.168.86.249:3100/api/bike/around", {
                 params: {
                   longitude: this.state.region.longitude,
                   latitude: this.state.region.latitude
