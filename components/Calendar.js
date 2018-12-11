@@ -3,45 +3,38 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import CalendarPicker from "react-native-calendar-picker";
 import { width, height } from "../constants/Layout";
 import { button, text } from "../constants/Styles";
-import moment from "moment";
+import moment from "moment/min/moment-with-locales";
+import Colors from "../constants/Colors";
 
 export default class Calendar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedStartDate: null,
-      selectedEndDate: null
-    };
-    this.onDateChange = this.onDateChange.bind(this);
-  }
-
-  onDateChange(date, type) {
+  onDateChange = (date, type) => {
     if (type === "END_DATE") {
-      this.setState({
-        selectedEndDate: date
+      this.props.onChangeDate({
+        endDate: date
       });
     } else {
-      this.setState({
-        selectedStartDate: date,
-        selectedEndDate: null
+      this.props.onChangeDate({
+        startDate: date,
+        endDate: null
       });
     }
-  }
+  };
 
   render() {
-    const { selectedStartDate, selectedEndDate } = this.state;
+    const startDate = this.props.startDate
+      ? this.props.startDate.toString()
+      : "";
+    const endDate = this.props.endDate ? this.props.endDate.toString() : "";
+
     const minDate = new Date(); // Today
     // const maxDate = new Date(2027, 6, 3);
-    const startDate = selectedStartDate ? selectedStartDate.toString() : "";
-    const endDate = selectedEndDate ? selectedEndDate.toString() : "";
-
     return (
       <View style={styles.container}>
         <View style={styles.date}>
           <View style={styles.startDate}>
-            <Text style={text.textButton}>Début</Text>
-            <Text>
-              {this.state.selectedStartDate === null
+            <Text style={styles.startEndDate}>Début</Text>
+            <Text style={styles.dateSelected}>
+              {!this.props.startDate
                 ? "Veuillez choisir une date"
                 : moment(startDate)
                     .locale("fr")
@@ -49,11 +42,13 @@ export default class Calendar extends Component {
             </Text>
           </View>
           <View style={styles.endDate}>
-            <Text style={text.textButton}>Fin</Text>
-            <Text>
-              {this.state.selectedEndDate === null
+            <Text style={styles.startEndDate}>Fin</Text>
+            <Text style={styles.dateSelected}>
+              {!this.props.endDate
                 ? "Veuillez choisir une date"
-                : moment(endDate).format("ll")}
+                : moment(endDate)
+                    .locale("fr")
+                    .format("ll")}
             </Text>
           </View>
         </View>
@@ -86,13 +81,6 @@ export default class Calendar extends Component {
             onDateChange={this.onDateChange}
           />
         </View>
-        <View style={styles.confirmed}>
-          <TouchableOpacity style={button.primary}>
-            <Text style={text.textButton} onPress={this.onPress}>
-              Confirmer
-            </Text>
-          </TouchableOpacity>
-        </View>
       </View>
     );
   }
@@ -102,12 +90,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF"
-
-    // marginTop: 100
   },
   date: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    marginTop: 20,
+    marginBottom: 10,
+    marginLeft: 20,
+    marginRight: 20
   },
   calendar: {
     marginTop: 10
@@ -122,10 +112,27 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     paddingLeft: 10
   },
+
+  startEndDate: {
+    fontFamily: "Karla-Bold",
+    fontSize: 15,
+    color: Colors.darkGrey
+  },
+
   endDate: {
     width: width / 2,
     justifyContent: "flex-end",
     alignItems: "flex-end",
     paddingRight: 10
+  },
+
+  dateSelected: {
+    fontFamily: "Karla-Regular",
+    fontSize: 14,
+    color: Colors.lightGrey
+  },
+  confirmed: {
+    alignItems: "center",
+    marginBottom: 30
   }
 });

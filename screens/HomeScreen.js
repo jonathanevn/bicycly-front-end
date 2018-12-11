@@ -37,8 +37,15 @@ export default class HomeScreen extends React.Component {
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA
     },
-    error: null,
+
+    selectedDate: {
+      startDate: null,
+      endDate: null
+    },
+    error: null
+
     bikes: []
+
   };
 
   componentWillMount() {
@@ -85,6 +92,21 @@ export default class HomeScreen extends React.Component {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   }
+
+
+  onChangeDate = ({ startDate, endDate }) => {
+    this.setState({
+      selectedDate: {
+        startDate:
+          startDate !== undefined
+            ? startDate
+            : this.state.selectedDate.startDate,
+        endDate:
+          endDate !== undefined ? endDate : this.state.selectedDate.endDate
+      }
+    });
+  };
+
 
   onLocationChange = region => {
     console.log("onLocationChange");
@@ -148,6 +170,7 @@ export default class HomeScreen extends React.Component {
         250
       );
     });
+
   };
 
   getItemLayout = (data, index) => ({
@@ -157,6 +180,7 @@ export default class HomeScreen extends React.Component {
   });
 
   render() {
+
     // console.log("render");
     const interpolations = this.state.bikes.map((bikes, index) => {
       const inputRange = [
@@ -245,6 +269,7 @@ export default class HomeScreen extends React.Component {
           style={styles.scrollView}
           contentContainerStyle={styles.startEndPadding}
           renderItem={({ item }) => (
+
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("BikeDetails", {
