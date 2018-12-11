@@ -23,19 +23,28 @@ export default class Calendar extends Component {
     } else {
       this.setState({
         selectedStartDate: date,
-        selectedEndDate: date
+        selectedEndDate: null
       });
     }
-    () => {
+    if (this.state.selectedStartDate) {
       this.props.dateSelected({
         selectedDate: {
           startDateSelected: this.state.selectedStartDate,
           endDateSelected: this.state.selectedEndDate
         }
       });
-    };
-    console.log("coucou", this.state.selectedStartDate);
-    console.log("coucou", this.state.selectedEndDate);
+      return selectedDate;
+      /*  () => {
+      this.props.dateSelected({
+        selectedDate: {
+          startDateSelected: this.state.selectedStartDate,
+          endDateSelected: this.state.selectedEndDate
+        }
+      });
+    }; */
+      /* console.log("coucou", this.state.selectedStartDate);
+    console.log("coucou", this.state.selectedEndDate); */
+    }
   }
   /*  onPress = () => {
     this.props.dateSelected({

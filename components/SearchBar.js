@@ -152,7 +152,7 @@ class SearchBar extends React.Component {
   };
 
   onDateSelected = selectedDate => {
-    this.setState({ selectedDate });
+    this.setState(selectedDate);
     console.log("selectedDate", selectedDate);
   };
 
@@ -197,6 +197,7 @@ class SearchBar extends React.Component {
                   style={text.textButton}
                   onPress={() => {
                     this.setModalDateVisible(!this.state.modalDateVisible);
+
                     console.log("selectedDate", selectedDate);
                   }}
                 >
@@ -255,12 +256,11 @@ class SearchBar extends React.Component {
                 this.state.selectedDate.endDateSelected === null ? (
                   <Text style={text.h3}>Quand ?</Text>
                 ) : (
-                  <Text>
-                    {this.state.selectedDate.startDateSelected}
-                    {this.state.selectedDate.endDateSelected}
-                  </Text>
+                  <View>
+                    <Text>{this.state.selectedDate.startDateSelected}</Text>
+                    <Text>{this.state.selectedDate.endDateSelected}</Text>
+                  </View>
                 )}
-                {console.log(this.state.selectedDate.startDateSelected)}
               </View>
             </View>
           </TouchableOpacity>
