@@ -5,12 +5,13 @@ import {
   View,
   Text,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  Image
 } from "react-native";
 
 import axios from "axios";
 
-import { button, text } from "../constants/Styles";
+import { button, text, avatar } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
 
 export default class AccountScreen extends React.Component {
@@ -30,6 +31,8 @@ export default class AccountScreen extends React.Component {
   state = {
     token: "",
     id: "",
+    firstName: "",
+    lastName: "",
     account: "",
     ratingValue: "",
     reviews: ""
@@ -41,15 +44,18 @@ export default class AccountScreen extends React.Component {
 
     AsyncStorage.multiGet(["token", "id"]).then(value => {
       this.setState({ token: value[0][1], id: value[1][1] });
-      console.log("getItem", value);
-      console.log(this.state.token);
+      //   console.log("getItem", value);
+      //   console.log(this.state.token);
       axios
         .get("http://localhost:3100/api/user/" + this.state.id, {
           headers: { Authorization: "Bearer " + this.state.token }
         })
         .then(response => {
           this.setState({
-            account: response.data
+            account: response.data.account,
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            reviews: response.data.reviews
           });
           console.log("cdm", response.data);
         })
@@ -57,10 +63,50 @@ export default class AccountScreen extends React.Component {
     });
   }
 
+  renderImage() {
+    if (this.state.account.profilePicture) {
+      return (
+        <View>
+          <Image
+            style={[
+              avatar.medium
+              //   {
+              //     backgroundColor: "lightgrey"
+              //   }
+            ]}
+            source={{ uri: this.state.account.profilePicture[0] }}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View
+          style={[
+            avatar.medium,
+            {
+              backgroundColor: "lightgrey"
+            }
+          ]}
+        />
+      );
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>This is the Account screen with the map</Text>
+        <View style={styles.profil}>
+          <View style={styles.picture}>{this.renderImage()}</View>
+          <View>
+            <Text style={text.h3}>
+              {this.state.firstName} {this.state.lastName[0] + "."}
+            </Text>
+            <View style={styles.rating}>
+              <Text>{this.state.ratingValue}</Text>
+              <Text style={text.rate}>{this.state.reviews} avis</Text>
+            </View>
+          </View>
+        </View>
 
         <TouchableOpacity
           style={[styles.textInput, { marginVertical: 20 }]}
@@ -110,6 +156,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 15,
     backgroundColor: "#f8f8f8"
+  },
+  profil: {
+    marginTop: 15,
+    marginBottom: 15,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    width: width
+  },
+  picture: {
+    marginLeft: 20,
+    marginRight: 20
+  },
+  rating: {
+    flexDirection: "row",
+    marginTop: 5
   },
   textInput: {
     borderWidth: 1,
