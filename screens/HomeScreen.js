@@ -43,13 +43,9 @@ export default class HomeScreen extends React.Component {
     selectedDate: {
       startDate: null,
       endDate: null
-    }
+    },
+    markerSelected: null
   };
-
-  componentWillMount() {
-    this.index = 0;
-    this.animation = new Animated.Value(0);
-  }
 
   componentDidMount() {
     // console.log("did mount");
@@ -127,43 +123,32 @@ export default class HomeScreen extends React.Component {
     );
   };
 
-  /*   getScrollToIndex = () => {
+  pickLocationHandler = (event, index) => {
+    console.log("event", event, "index", index);
+    const coords = event.coordinate;
     this.flatListRef.scrollToIndex({
       animated: true,
       index,
       viewOffset: CARD_WIDTH,
       viewPosition: 0.5
     });
-    this.onPressMarker();
-  }; */
-
-  onPressMarker = (markerData, index) => {
-    console.log("markerData, index", markerData, index);
-    this.flatListRef.scrollToIndex({
-      animated: true,
-      index,
-      viewOffset: CARD_WIDTH,
-      viewPosition: 0.5
-    });
-
-    this.animation.addListener(({ value }) => {
-      console.log("value", value);
-      let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-      if (index >= this.state.bikes.length) {
-        index = this.state.bikes.length - 1;
-      }
-      if (index <= 0) {
-        index = 0;
-      }
-      this.map.animateToRegion(
-        {
-          latitude: markerData.coordinate.latitude,
-          longitude: markerData.coordinate.longitude,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA
+    this.map.animateToRegion(
+      {
+        ...this.state.region,
+        latitude: coords.latitude,
+        longitude: coords.longitude
+      },
+      250
+    );
+    this.setState(prevState => {
+      return {
+        region: {
+          ...prevState.region,
+          latitude: coords.latitude,
+          longitude: coords.longitude
         },
-        250
-      );
+        markerSelected: index
+      };
     });
   };
 
@@ -173,26 +158,20 @@ export default class HomeScreen extends React.Component {
     index
   });
 
+  handleOnScroll = (event, index) => {
+    Animated.event([
+      {
+        nativeEvent: {
+          contentOffset: {
+            x: this.animation
+          }
+        }
+      }
+    ]);
+  };
+
   render() {
     // console.log("render");
-    const interpolations = this.state.bikes.map((bikes, index) => {
-      const inputRange = [
-        (index - 1) * CARD_WIDTH,
-        index * CARD_WIDTH,
-        (index + 1) * CARD_WIDTH
-      ];
-      const scale = this.animation.interpolate({
-        inputRange,
-        outputRange: [1, 2, 1],
-        extrapolate: "clamp"
-      });
-      const opacity = this.animation.interpolate({
-        inputRange,
-        outputRange: [0.5, 1, 0.5],
-        extrapolate: "clamp"
-      });
-      return { scale, opacity };
-    });
 
     return (
       <View style={styles.container}>
@@ -205,31 +184,21 @@ export default class HomeScreen extends React.Component {
           showsUserLocation={true}
           ref={map => (this.map = map)}
         >
-          {this.state.bikes.map((bikes, index) => {
-            const scaleStyle = {
-              transform: [
-                {
-                  scale: interpolations[index].scale
-                }
-              ]
-            };
-            const opacityStyle = {
-              opacity: interpolations[index].opacity
-            };
-
+          {this.state.bikes.map((bikes, i) => {
             return (
               <MapView.Marker
-                key={index}
+                key={i}
                 coordinate={{
                   latitude: bikes.loc.lat,
                   longitude: bikes.loc.lon
                 }}
-                onPress={e => this.onPressMarker(e.nativeEvent, index)}
+                onPress={e => this.pickLocationHandler(e.nativeEvent, i)}
               >
-                <Animated.View style={[styles.markerWrap, opacityStyle]}>
-                  <Animated.View style={[styles.ring, scaleStyle]} />
-                  <Animated.View style={[styles.marker, scaleStyle]} />
-                </Animated.View>
+                {this.state.markerSelected === i ? (
+                  <View style={styles.marker} />
+                ) : (
+                  <View style={styles.marker2} />
+                )}
               </MapView.Marker>
             );
           })}
@@ -245,6 +214,7 @@ export default class HomeScreen extends React.Component {
             this.flatListRef = ref;
           }}
           snapToInterval={CARD_WIDTH}
+          keyExtractor={(item, index) => item._id}
           onScroll={Animated.event([
             {
               nativeEvent: {
@@ -254,7 +224,6 @@ export default class HomeScreen extends React.Component {
               }
             }
           ])}
-          keyExtractor={(item, index) => item._id}
           style={styles.scrollView}
           contentContainerStyle={styles.startEndPadding}
           renderItem={({ item }) => (
@@ -337,7 +306,7 @@ const styles = StyleSheet.create({
     paddingRight: width - CARD_WIDTH
   },
 
-  markerWrap: {
+  /*  markerWrap: {
     alignItems: "center",
     justifyContent: "center",
     height: 50,
@@ -352,7 +321,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(255,194,0,0.5)",
     position: "relative"
-  },
+  }, */
 
   marker: {
     height: 8,
@@ -362,6 +331,16 @@ const styles = StyleSheet.create({
     borderRadius: 8 / 2,
     position: "absolute",
     backgroundColor: "rgb(255,194,0)"
+  },
+
+  marker2: {
+    height: 8,
+    width: 8,
+    borderWidth: 1,
+    borderColor: "white",
+    borderRadius: 8 / 2,
+    position: "absolute",
+    backgroundColor: "red"
   },
 
   searchBar: {
