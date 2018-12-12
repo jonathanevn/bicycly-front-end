@@ -35,7 +35,7 @@ class Tchat extends React.Component {
         });
       });
 
-    this.ws = new WebSocket("ws://bicycly.herokuapp.com");
+    this.ws = new WebSocket("ws://https://bicycly.herokuapp.com");
     this.ws.onmessage = e => {
       const message = JSON.parse(e.data);
       this.setState({
