@@ -30,6 +30,7 @@ export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
+
   state = {
     region: {
       latitude: LATITUDE,
@@ -38,7 +39,11 @@ export default class HomeScreen extends React.Component {
       longitudeDelta: LONGITUDE_DELTA
     },
     error: null,
-    bikes: []
+    bikes: [],
+    selectedDate: {
+      startDate: null,
+      endDate: null
+    }
   };
 
   componentWillMount() {
@@ -47,7 +52,7 @@ export default class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log("did mount");
+    // console.log("did mount");
     Permissions.askAsync(Permissions.LOCATION);
 
     navigator.geolocation.getCurrentPosition(
@@ -63,7 +68,7 @@ export default class HomeScreen extends React.Component {
           },
           () => {
             axios
-              .get("http://192.168.86.249:3100/api/bike/around", {
+              .get("http://localhost:3100/api/bike/around", {
                 params: {
                   longitude: this.state.region.longitude,
                   latitude: this.state.region.latitude
@@ -85,11 +90,24 @@ export default class HomeScreen extends React.Component {
     );
   }
 
+  onChangeDate = ({ startDate, endDate }) => {
+    this.setState({
+      selectedDate: {
+        startDate:
+          startDate !== undefined
+            ? startDate
+            : this.state.selectedDate.startDate,
+        endDate:
+          endDate !== undefined ? endDate : this.state.selectedDate.endDate
+      }
+    });
+  };
+
   onLocationChange = region => {
     console.log("onLocationChange");
     this.setState(region, () =>
       axios
-        .get("http://192.168.86.249:3100/api/bike/around", {
+        .get("http://localhost:3100/api/bike/around", {
           params: {
             longitude: this.state.region.longitude,
             latitude: this.state.region.latitude
@@ -109,6 +127,16 @@ export default class HomeScreen extends React.Component {
     );
   };
 
+  /*   getScrollToIndex = () => {
+    this.flatListRef.scrollToIndex({
+      animated: true,
+      index,
+      viewOffset: CARD_WIDTH,
+      viewPosition: 0.5
+    });
+    this.onPressMarker();
+  }; */
+
   onPressMarker = (markerData, index) => {
     console.log("markerData, index", markerData, index);
     this.flatListRef.scrollToIndex({
@@ -127,8 +155,6 @@ export default class HomeScreen extends React.Component {
       if (index <= 0) {
         index = 0;
       }
-
-      //const { loc } = this.state.bikes[index]
       this.map.animateToRegion(
         {
           latitude: markerData.coordinate.latitude,
@@ -148,7 +174,7 @@ export default class HomeScreen extends React.Component {
   });
 
   render() {
-    console.log("render");
+    // console.log("render");
     const interpolations = this.state.bikes.map((bikes, index) => {
       const inputRange = [
         (index - 1) * CARD_WIDTH,
@@ -178,10 +204,6 @@ export default class HomeScreen extends React.Component {
           customMapStyle={generatedMapStyle}
           showsUserLocation={true}
           ref={map => (this.map = map)}
-          /* onRegionChange={region => this.setState({ region })} */
-          /* onRegionChangeComplete={region =>
-              this.setState({ region }, () => console.log(this.state.region))
-            } */
         >
           {this.state.bikes.map((bikes, index) => {
             const scaleStyle = {
@@ -238,7 +260,11 @@ export default class HomeScreen extends React.Component {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate("BikeDetails", item);
+                this.props.navigation.navigate("BikeDetails", {
+                  bikeId: item._id,
+                  bikeBrand: item.bikeBrand,
+                  bikeModel: item.bikeModel
+                });
               }}
             >
               <BikeCard
@@ -253,7 +279,12 @@ export default class HomeScreen extends React.Component {
         />
 
         <View style={styles.searchBar}>
-          <SearchBar onLocationChange={this.onLocationChange} />
+          <SearchBar
+            onLocationChange={this.onLocationChange}
+            onChangeDate={this.onChangeDate}
+            startDate={this.state.selectedDate.startDate}
+            endDate={this.state.selectedDate.endDate}
+          />
         </View>
         <View style={styles.filterButton}>
           <TouchableOpacity

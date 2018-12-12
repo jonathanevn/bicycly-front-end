@@ -7,7 +7,7 @@ import {
   Modal,
   TouchableOpacity
 } from "react-native";
-import { text } from "../constants/Styles";
+import { text, button } from "../constants/Styles";
 import apiKey from "../apiKey";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import {
@@ -19,6 +19,7 @@ import icoMoonConfig from "../assets/fonts/selection.json";
 import Colors from "../constants/Colors";
 import { width, height } from "../constants/Layout";
 import Calendar from "./Calendar";
+import moment from "moment/min/moment-with-locales";
 
 const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 
@@ -83,18 +84,7 @@ class SearchBar extends React.Component {
               });
             }
           );
-          // console.log(
-          //   "data",
-          //   data,
-          //   "details",
-          //   details,
-          //   "latitudeDelta",
-          //   this.state.latDeltaSelected,
-          //   "longitudeDelta",
-          //   this.state.longDeltaSelected,
-          //   "latitude",
-          //   this.state.latitudeSelected
-          // );
+
           this.setModalAddressVisible(!this.state.modalAddressVisible);
           // 'details' is provided when fetchDetails = true
         }}
@@ -155,6 +145,11 @@ class SearchBar extends React.Component {
   };
 
   render() {
+    const startDate = this.props.startDate
+      ? this.props.startDate.toString()
+      : "";
+    const endDate = this.props.endDate ? this.props.endDate.toString() : "";
+
     return (
       <View>
         <Modal
@@ -188,19 +183,23 @@ class SearchBar extends React.Component {
           }
         >
           <View style={styles.containerDateModal}>
-            <TouchableOpacity
-              onPress={() => {
-                this.setModalDateVisible(!this.state.modalDateVisible);
-              }}
-            >
-              <Ionicons
-                size={30}
-                color={Colors.darkGrey}
-                name={Platform.OS === "ios" ? "ios-close" : "md-close"}
-              />
-            </TouchableOpacity>
-
-            <Calendar />
+            <Calendar
+              onChangeDate={this.props.onChangeDate}
+              startDate={this.props.startDate}
+              endDate={this.props.endDate}
+            />
+            <View style={styles.confirmed}>
+              <TouchableOpacity style={button.primary}>
+                <Text
+                  style={text.textButton}
+                  onPress={() => {
+                    this.setModalDateVisible(!this.state.modalDateVisible);
+                  }}
+                >
+                  Confirmer
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </Modal>
 
@@ -244,7 +243,24 @@ class SearchBar extends React.Component {
                   color={Colors.darkGrey}
                   name={Platform.OS === "ios" ? "ios-calendar" : "md-calendar"}
                 />
-                <Text style={text.h3}>Quand ?</Text>
+                {!this.props.startDate && !this.props.endDate ? (
+                  <Text style={text.h3}>Quand ?</Text>
+                ) : (
+                  <View>
+                    <Text style={text.h3}>
+                      {moment(startDate)
+                        .locale("fr")
+                        .format("ll")}
+                    </Text>
+                    <Text style={text.h3}>
+                      {!this.props.endDate
+                        ? ""
+                        : moment(endDate)
+                            .locale("fr")
+                            .format("ll")}
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
           </TouchableOpacity>
@@ -277,7 +293,7 @@ const styles = StyleSheet.create({
 
   searchAddress: {
     paddingLeft: 10,
-    width: 160
+    width: 140
   },
 
   searchDateSection: {
@@ -290,11 +306,12 @@ const styles = StyleSheet.create({
 
   searchDate: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    marginRight: 5
   },
 
   iconCalendar: {
-    paddingRight: 10
+    paddingRight: 14
   },
 
   containerAddressModal: {
@@ -318,6 +335,10 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     marginTop: 300,
     flex: 1
+  },
+  confirmed: {
+    alignItems: "center",
+    marginBottom: 30
   }
 });
 

@@ -4,7 +4,6 @@ import { StyleSheet } from "react-native";
 
 const button = StyleSheet.create({
   primary: {
-    // flex: 1,
     height: 50,
     width: 240,
     backgroundColor: "#ffc200",
@@ -14,7 +13,6 @@ const button = StyleSheet.create({
   },
 
   secondary: {
-    // flex: 1,
     height: 50,
     width: 240,
     justifyContent: "center",
@@ -56,7 +54,7 @@ const text = StyleSheet.create({
   },
   p: {
     fontFamily: "Karla-Regular",
-    fontSize: 15,
+    fontSize: 14,
     color: "#585858",
     lineHeight: 18
   },
@@ -67,23 +65,23 @@ const text = StyleSheet.create({
   },
   textButton: {
     fontFamily: "Karla-Regular",
-    fontSize: 20,
+    fontSize: 18,
     color: "#262626"
   },
 
   bikeCategory: {
     fontFamily: "Karla-Regular",
-    fontSize: 13,
+    fontSize: 14,
     color: "#ffc200"
   },
   localisation: {
     fontFamily: "Karla-Regular",
-    fontSize: 13,
+    fontSize: 14,
     color: "#c2c2c2"
   },
   rate: {
     fontFamily: "Karla-Regular",
-    fontSize: 15,
+    fontSize: 14,
     color: "#c2c2c2"
   },
   placeholder: {
