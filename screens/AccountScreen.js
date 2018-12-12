@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF"
   },
   deconnexion: {
+    marginTop: 20,
     color: "red",
     alignItems: "center",
     justifyContent: "center"
