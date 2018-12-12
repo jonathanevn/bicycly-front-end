@@ -155,7 +155,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingTop: 15,
-    backgroundColor: "#f8f8f8"
+    backgroundColor: "#f8f8f8",
+    height: height,
+    width: width
   },
   profil: {
     marginTop: 15,

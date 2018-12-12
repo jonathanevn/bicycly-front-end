@@ -59,9 +59,8 @@ class AuthLoadingScreen extends React.Component {
 
   //   this.state.navigate.params.token
   componentDidMount() {
-    console.log("là");
     AsyncStorage.multiGet(["token", "id"]).then(value => {
-      console.log("ici", value[1][1]);
+      //   console.log("ici", value[1][1]);
 
       if (value[0][1]) {
         // [[token: null]] pour accéder à 'null' ou au token
