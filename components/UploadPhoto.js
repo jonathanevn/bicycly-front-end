@@ -14,7 +14,10 @@ export default class UploadPhoto extends React.Component {
       <View>
         <Button title="Ajouter une photo" onPress={this.useLibraryHandler} />
         {image && (
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+          <Image
+            source={{ uri: image }}
+            style={[{ width: 200, height: 200 }, this.props.size]}
+          />
         )}
       </View>
     );

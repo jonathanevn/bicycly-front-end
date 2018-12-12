@@ -13,6 +13,9 @@ import axios from "axios";
 
 import { button, text, avatar } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
+import { createIconSetFromIcoMoon } from "@expo/vector-icons";
+import icoMoonConfig from "../assets/fonts/selection.json";
+const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 
 export default class AccountScreen extends React.Component {
   static navigationOptions = {
@@ -35,7 +38,8 @@ export default class AccountScreen extends React.Component {
     lastName: "",
     account: "",
     ratingValue: "",
-    reviews: ""
+    reviews: "",
+    email: ""
   };
 
   componentDidMount() {
@@ -55,7 +59,8 @@ export default class AccountScreen extends React.Component {
             account: response.data.account,
             firstName: response.data.firstName,
             lastName: response.data.lastName,
-            reviews: response.data.reviews
+            reviews: response.data.reviews,
+            email: response.data.email
           });
           console.log("cdm", response.data);
         })
@@ -64,35 +69,32 @@ export default class AccountScreen extends React.Component {
   }
 
   renderImage() {
-    if (this.state.account.profilePicture) {
+    if (this.state.account.profilePicture[0]) {
       return (
         <View>
           <Image
-            style={[
-              avatar.medium
-              //   {
-              //     backgroundColor: "lightgrey"
-              //   }
-            ]}
+            style={[avatar.medium]}
             source={{ uri: this.state.account.profilePicture[0] }}
           />
         </View>
       );
     } else {
       return (
-        <View
-          style={[
-            avatar.medium,
-            {
-              backgroundColor: "lightgrey"
-            }
-          ]}
-        />
+        <View style={styles.image}>
+          <Icon name="cyclist" size={45} color="#ffc200" />
+        </View>
+        //   style={[
+        //     avatar.medium,
+        //     {
+        //       backgroundColor: "lightgrey"
+        //     }
+        //   ]}
       );
     }
   }
 
   render() {
+    const { firstName, lastName, email, phone, account } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.profil}>
@@ -111,7 +113,13 @@ export default class AccountScreen extends React.Component {
         <TouchableOpacity
           style={[styles.textInput, { marginVertical: 20 }]}
           onPress={() => {
-            this.props.navigation.navigate("MyAccountInfo");
+            this.props.navigation.navigate("MyAccountInfo", {
+              firstName,
+              lastName,
+              email,
+              phone,
+              account
+            });
           }}
         >
           <Text style={[text.placeholder]}>Mes infos</Text>
@@ -165,6 +173,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     width: width
+  },
+  image: {
+    backgroundColor: "white",
+    borderRadius: 50,
+    height: 66,
+    width: 66,
+    alignItems: "center",
+    justifyContent: "center"
   },
   picture: {
     marginLeft: 20,
