@@ -29,7 +29,8 @@ class LogIn extends React.Component {
 
   state = {
     email: "",
-    password: ""
+    password: "",
+    _id: ""
   };
 
   onPress = () => {
@@ -41,10 +42,16 @@ class LogIn extends React.Component {
       })
       .then(response => {
         console.log(response.data);
+
         if (response.data.token) {
-          AsyncStorage.setItem("token", response.data.token).then(() => {
+          AsyncStorage.multiSet([
+            ["token", response.data.token],
+            ["id", response.data._id]
+          ]).then(() => {
+            console.log(response.data.multiSet);
             this.props.navigation.navigate("Home", {
-              token: response.data.token
+              token: response.data.token,
+              id: response.data._id
             });
           });
         }
@@ -59,7 +66,11 @@ class LogIn extends React.Component {
             <Text style={[text.company, styles.title]}>bicycly</Text>
             <View style={{ marginBottom: 40 }}>
               <TextInput
-                style={[styles.textInput, { borderBottomWidth: 0.5 }]}
+                style={[
+                  styles.textInput,
+                  //   text.placeholder,
+                  { borderBottomWidth: 0.5 }
+                ]}
                 placeholder="Adresse email"
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -69,9 +80,14 @@ class LogIn extends React.Component {
                 }}
               />
               <TextInput
-                style={[styles.textInput, { borderTopWidth: 0.5 }]}
+                style={[
+                  styles.textInput,
+                  //   text.placeholder,
+                  { borderTopWidth: 0.5 }
+                ]}
                 secureTextEntry={true}
                 placeholder="Mot de passe"
+                // placeholderTextColor="#c2c2c2"
                 value={this.state.password}
                 onChangeText={value => {
                   this.setState({ password: value });
@@ -129,7 +145,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 30
-
   }
 });
 
