@@ -14,10 +14,12 @@ import {
 } from "react-native";
 import { MapView, Permissions } from "expo";
 import { height, width } from "../constants/Layout";
-import { text, button } from "../constants/Styles";
+import { text, button, background } from "../constants/Styles";
 import { ListButton, FilterButton } from "../components/SquareButton";
 import BikeCard from "../components/BikeCard";
 import Colors from "../constants/Colors";
+import { createIconSetFromIcoMoon } from "@expo/vector-icons";
+import icoMoonConfig from "../assets/fonts/selection.json";
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 0;
@@ -26,7 +28,8 @@ const LATITUDE_DELTA = 0.04;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const CARD_HEIGHT = 180;
 const CARD_WIDTH = width - 20;
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+
+const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -125,9 +128,8 @@ export default class HomeScreen extends React.Component {
   };
 
   pickLocationHandler = (event, index) => {
-    console.log("event", event, "index", index);
     const coords = event.coordinate;
-    console.log("index", index);
+
     this._carousel.snapToItem(index);
 
     this.map.animateToRegion(
@@ -179,7 +181,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
     console.log("render");
-    /* console.log("carousel", this._carousel); */
+
     return (
       <View style={styles.container}>
         <MapView
@@ -202,9 +204,9 @@ export default class HomeScreen extends React.Component {
                 onPress={e => this.pickLocationHandler(e.nativeEvent, i)}
               >
                 {this.state.markerSelected === i ? (
-                  <View style={styles.marker} />
+                  <Icon name="bike" size={23} style={styles.selectedIcon} />
                 ) : (
-                  <View style={styles.marker2} />
+                  <Icon name="bike" size={10} color={Colors.midGrey} />
                 )}
               </MapView.Marker>
             );
@@ -224,7 +226,7 @@ export default class HomeScreen extends React.Component {
           lockScrollWhileSnapping
           inactiveSlideScale={0.7}
           itemWidth={width - 40}
-          inactiveSlideOpacity={0.3}
+          inactiveSlideOpacity={0.5}
           onSnapToItem={slideIndex => this.centerMapOnMarker(slideIndex)}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -246,49 +248,6 @@ export default class HomeScreen extends React.Component {
             </TouchableOpacity>
           )}
         />
-
-        {/* <FlatList
-          data={this.state.bikes}
-          horizontal={true}
-          scrollEventThrottle={1}
-          getItemLayout={this.getItemLayout}
-          showsHorizontalScrollIndicator={false}
-          ref={ref => {
-            this.flatListRef = ref;
-          }}
-          snapToInterval={CARD_WIDTH}
-          keyExtractor={(item, index) => item._id}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: {
-                  x: this.animation
-                }
-              }
-            }
-          ])}
-          style={styles.scrollView}
-          contentContainerStyle={styles.startEndPadding}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("BikeDetails", {
-                  bikeId: item._id,
-                  bikeBrand: item.bikeBrand,
-                  bikeModel: item.bikeModel
-                });
-              }}
-            >
-              <BikeCard
-                brand={item.bikeBrand}
-                model={item.bikeModel}
-                picture={item.photos[0]}
-                category={item.bikeCategory}
-                pricePerDay={item.pricePerDay}
-              />
-            </TouchableOpacity>
-          )}
-        /> */}
 
         <View style={styles.searchBar}>
           <SearchBar
@@ -340,7 +299,6 @@ const styles = StyleSheet.create({
     bottom: 15,
     left: 0,
     right: 0,
-    /*     margin: "auto", */
     paddingVertical: 3
   },
 
@@ -349,41 +307,39 @@ const styles = StyleSheet.create({
     paddingRight: width - CARD_WIDTH
   },
 
-  /*  markerWrap: {
-    alignItems: "center",
-    justifyContent: "center",
+  markerWrap: {
     height: 50,
-    width: 50
+    width: 50,
+    justifyContent: "center",
+    alignItems: "center"
   },
 
-  ring: {
-    height: 14,
-    width: 14,
-    borderRadius: 14 / 2,
-    backgroundColor: "rgba(255,194,0,0.3)",
-    borderWidth: 1,
-    borderColor: "rgba(255,194,0,0.5)",
-    position: "relative"
-  }, */
-
-  marker: {
-    height: 10,
-    width: 10,
-    borderWidth: 1,
+  /*   marker: {
+    height: 16,
+    width: 16,
+    borderWidth: 2,
     borderColor: "white",
-    borderRadius: 10 / 2,
+    borderRadius: 16 / 2,
     position: "absolute",
-    backgroundColor: "rgb(255,194,0)"
+    backgroundColor: "rgb(255,194,0)",
+    shadowColor: "#585858",
+    shadowOffset: { width: 3, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2
   },
 
   marker2: {
-    height: 8,
-    width: 8,
-    borderWidth: 1,
+    height: 10,
+    width: 10,
+    borderWidth: 2,
     borderColor: "white",
-    borderRadius: 8 / 2,
+    borderRadius: 10 / 2,
     position: "absolute",
     backgroundColor: Colors.midGrey
+  }, */
+
+  selectedIcon: {
+    color: "#ffc200"
   },
 
   searchBar: {
