@@ -68,7 +68,7 @@ export default class HomeScreen extends React.Component {
           },
           () => {
             axios
-              .get("http://localhost:3100/api/bike/around", {
+              .get("https://bicycly.herokuapp.com/api/bike/around", {
                 params: {
                   longitude: this.state.region.longitude,
                   latitude: this.state.region.latitude
@@ -107,7 +107,7 @@ export default class HomeScreen extends React.Component {
     console.log("onLocationChange");
     this.setState(region, () =>
       axios
-        .get("http://localhost:3100/api/bike/around", {
+        .get("https://bicycly.herokuapp.com/api/bike/around", {
           params: {
             longitude: this.state.region.longitude,
             latitude: this.state.region.latitude
