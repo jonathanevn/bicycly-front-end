@@ -25,10 +25,10 @@ class MyAccountInfo extends React.Component {
     return (
       <View style={styles.container}>
         <View>
-          <Image style={[avatar.medium, { backgroundColor: "lightgrey" }]} />
+          <Image style={[avatar.medium, { backgroundColor: "lightgray" }]} />
         </View>
         <TouchableOpacity style={[styles.textInput, { borderBottomWidth: 0 }]}>
-          <Text style={[text.placeholder]}>Prénoms</Text>
+          <Text style={[text.placeholder]}>Prénom</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.textInput, { marginBottom: 20 }]}
@@ -36,7 +36,7 @@ class MyAccountInfo extends React.Component {
             this.props.navigation.navigate("PaymentMethods");
           }}
         >
-          <Text style={[text.placeholder]}>Noms</Text>
+          <Text style={[text.placeholder]}>Nom</Text>
         </TouchableOpacity>
         <Text>This is the MyAccountInfo screen</Text>
         <TouchableOpacity
