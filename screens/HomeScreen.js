@@ -1,6 +1,7 @@
 import React from "react";
 import SearchBar from "../components/SearchBar";
 import axios from "axios";
+import Carousel from "react-native-snap-carousel";
 import {
   Platform,
   StyleSheet,
@@ -16,6 +17,7 @@ import { height, width } from "../constants/Layout";
 import { text, button } from "../constants/Styles";
 import { ListButton, FilterButton } from "../components/SquareButton";
 import BikeCard from "../components/BikeCard";
+import Colors from "../constants/Colors";
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 0;
@@ -33,8 +35,8 @@ export default class HomeScreen extends React.Component {
 
   state = {
     region: {
-      latitude: LATITUDE,
       longitude: LONGITUDE,
+      latitude: LATITUDE,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA
     },
@@ -48,7 +50,7 @@ export default class HomeScreen extends React.Component {
   };
 
   componentDidMount() {
-    // console.log("did mount");
+    console.log("did mount");
     Permissions.askAsync(Permissions.LOCATION);
 
     navigator.geolocation.getCurrentPosition(
@@ -56,15 +58,15 @@ export default class HomeScreen extends React.Component {
         this.setState(
           {
             region: {
-              latitude: position.coords.latitude,
               longitude: position.coords.longitude,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA
+              latitude: position.coords.latitude,
+              longitudeDelta: LONGITUDE_DELTA,
+              latitudeDelta: LATITUDE_DELTA
             }
           },
           () => {
             axios
-              .get("http://localhost:3100/api/bike/around", {
+              .get("https://bicycly.herokuapp.com/api/bike/around", {
                 params: {
                   longitude: this.state.region.longitude,
                   latitude: this.state.region.latitude
@@ -76,7 +78,7 @@ export default class HomeScreen extends React.Component {
                 }
               })
               .catch(error => {
-                console.log(error.response);
+                console.log("ERROR", error);
               });
           }
         );
@@ -103,7 +105,7 @@ export default class HomeScreen extends React.Component {
     console.log("onLocationChange");
     this.setState(region, () =>
       axios
-        .get("http://localhost:3100/api/bike/around", {
+        .get("https://bicycly.herokuapp.com/api/bike/around", {
           params: {
             longitude: this.state.region.longitude,
             latitude: this.state.region.latitude
@@ -112,7 +114,6 @@ export default class HomeScreen extends React.Component {
         .then(response => {
           if (response.data) {
             this.setState({
-              isLoading: false,
               bikes: response.data
             });
           }
@@ -126,17 +127,14 @@ export default class HomeScreen extends React.Component {
   pickLocationHandler = (event, index) => {
     console.log("event", event, "index", index);
     const coords = event.coordinate;
-    this.flatListRef.scrollToIndex({
-      animated: true,
-      index,
-      viewOffset: CARD_WIDTH,
-      viewPosition: 0.5
-    });
+    console.log("index", index);
+    this._carousel.snapToItem(index);
+
     this.map.animateToRegion(
       {
         ...this.state.region,
-        latitude: coords.latitude,
-        longitude: coords.longitude
+        longitude: coords.longitude,
+        latitude: coords.latitude
       },
       250
     );
@@ -152,27 +150,36 @@ export default class HomeScreen extends React.Component {
     });
   };
 
-  getItemLayout = (data, index) => ({
-    length: CARD_WIDTH,
-    offset: CARD_WIDTH * index,
-    index
-  });
+  centerMapOnMarker(slideIndex) {
+    console.log("slideIndex", slideIndex);
+    const markerData = this.state.bikes[slideIndex];
+    console.log("markerData", markerData);
+    /*  const mapRef = this._mapView;
 
-  handleOnScroll = (event, index) => {
-    Animated.event([
-      {
-        nativeEvent: {
-          contentOffset: {
-            x: this.animation
-          }
-        }
-      }
-    ]);
-  };
+    if (!markerData || !mapRef) {
+      return;
+    }*/
+    this.map.animateToRegion({
+      longitude: markerData.loc[0],
+      latitude: markerData.loc[1],
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    });
+    this.setState(prevState => {
+      return {
+        region: {
+          ...prevState.region,
+          longitude: markerData.loc[0],
+          latitude: markerData.loc[1]
+        },
+        markerSelected: slideIndex
+      };
+    });
+  }
 
   render() {
-    // console.log("render");
-
+    console.log("render");
+    /* console.log("carousel", this._carousel); */
     return (
       <View style={styles.container}>
         <MapView
@@ -189,8 +196,8 @@ export default class HomeScreen extends React.Component {
               <MapView.Marker
                 key={i}
                 coordinate={{
-                  latitude: bikes.loc.lat,
-                  longitude: bikes.loc.lon
+                  longitude: bikes.loc[0],
+                  latitude: bikes.loc[1]
                 }}
                 onPress={e => this.pickLocationHandler(e.nativeEvent, i)}
               >
@@ -204,7 +211,43 @@ export default class HomeScreen extends React.Component {
           })}
         </MapView>
 
-        <FlatList
+        <Carousel
+          layout={"stack"}
+          layoutCardOffset={18}
+          ref={c => {
+            this._carousel = c;
+          }}
+          data={this.state.bikes}
+          loop={true}
+          containerCustomStyle={styles.scrollView}
+          sliderWidth={width}
+          lockScrollWhileSnapping
+          inactiveSlideScale={0.7}
+          itemWidth={width - 40}
+          inactiveSlideOpacity={0.3}
+          onSnapToItem={slideIndex => this.centerMapOnMarker(slideIndex)}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("BikeDetails", {
+                  bikeId: item._id,
+                  bikeBrand: item.bikeBrand,
+                  bikeModel: item.bikeModel
+                });
+              }}
+            >
+              <BikeCard
+                brand={item.bikeBrand}
+                model={item.bikeModel}
+                picture={item.photos[0]}
+                category={item.bikeCategory}
+                pricePerDay={item.pricePerDay}
+              />
+            </TouchableOpacity>
+          )}
+        />
+
+        {/* <FlatList
           data={this.state.bikes}
           horizontal={true}
           scrollEventThrottle={1}
@@ -245,7 +288,7 @@ export default class HomeScreen extends React.Component {
               />
             </TouchableOpacity>
           )}
-        />
+        /> */}
 
         <View style={styles.searchBar}>
           <SearchBar
@@ -297,7 +340,7 @@ const styles = StyleSheet.create({
     bottom: 15,
     left: 0,
     right: 0,
-    margin: "auto",
+    /*     margin: "auto", */
     paddingVertical: 3
   },
 
@@ -324,11 +367,11 @@ const styles = StyleSheet.create({
   }, */
 
   marker: {
-    height: 8,
-    width: 8,
+    height: 10,
+    width: 10,
     borderWidth: 1,
     borderColor: "white",
-    borderRadius: 8 / 2,
+    borderRadius: 10 / 2,
     position: "absolute",
     backgroundColor: "rgb(255,194,0)"
   },
@@ -340,7 +383,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     borderRadius: 8 / 2,
     position: "absolute",
-    backgroundColor: "red"
+    backgroundColor: Colors.midGrey
   },
 
   searchBar: {
