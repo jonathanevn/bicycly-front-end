@@ -7,7 +7,7 @@ import {
   Modal,
   TouchableOpacity
 } from "react-native";
-import { text, button } from "../constants/Styles";
+import { text, button, background } from "../constants/Styles";
 import apiKey from "../apiKey";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import {
@@ -183,22 +183,24 @@ class SearchBar extends React.Component {
           }
         >
           <View style={styles.containerDateModal}>
-            <Calendar
-              onChangeDate={this.props.onChangeDate}
-              startDate={this.props.startDate}
-              endDate={this.props.endDate}
-            />
-            <View style={styles.confirmed}>
-              <TouchableOpacity style={button.primary}>
-                <Text
-                  style={text.textButton}
-                  onPress={() => {
-                    this.setModalDateVisible(!this.state.modalDateVisible);
-                  }}
-                >
-                  Confirmer
-                </Text>
-              </TouchableOpacity>
+            <View style={styles.halfDateModal}>
+              <Calendar
+                onChangeDate={this.props.onChangeDate}
+                startDate={this.props.startDate}
+                endDate={this.props.endDate}
+              />
+              <View style={styles.confirmed}>
+                <TouchableOpacity style={button.primary}>
+                  <Text
+                    style={text.textButton}
+                    onPress={() => {
+                      this.setModalDateVisible(!this.state.modalDateVisible);
+                    }}
+                  >
+                    Confirmer
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Modal>
@@ -329,16 +331,24 @@ const styles = StyleSheet.create({
   },
 
   containerDateModal: {
-    backgroundColor: "white",
-    // padding: 22,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    marginTop: 300,
-    flex: 1
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    flex: 1,
+    backgroundColor: "rgba(88, 88, 88, 0.7)"
   },
+
+  halfDateModal: {
+    height: height / 2,
+    backgroundColor: "white",
+    width: width,
+    alignItems: "flex-end"
+  },
+
   confirmed: {
     alignItems: "center",
-    marginBottom: 30
+    paddingBottom: 30,
+    backgroundColor: "white"
   }
 });
 

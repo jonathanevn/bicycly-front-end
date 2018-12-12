@@ -35,7 +35,7 @@ export default class Calendar extends Component {
             <Text style={styles.startEndDate}>Début</Text>
             <Text style={styles.dateSelected}>
               {!this.props.startDate
-                ? "Veuillez choisir une date"
+                ? "Choisir une date"
                 : moment(startDate)
                     .locale("fr")
                     .format("ll")}
@@ -45,7 +45,7 @@ export default class Calendar extends Component {
             <Text style={styles.startEndDate}>Fin</Text>
             <Text style={styles.dateSelected}>
               {!this.props.endDate
-                ? "Veuillez choisir une date"
+                ? "Choisir une date"
                 : moment(endDate)
                     .locale("fr")
                     .format("ll")}
@@ -88,7 +88,7 @@ export default class Calendar extends Component {
 // moment().format("ll");
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    /*     flex: 1, */
     backgroundColor: "#FFFFFF"
   },
   date: {
@@ -102,10 +102,7 @@ const styles = StyleSheet.create({
   calendar: {
     marginTop: 10
   },
-  confirmed: {
-    alignItems: "center",
-    marginTop: 15
-  },
+
   startDate: {
     width: width / 2,
     justifyContent: "flex-start",
@@ -130,9 +127,5 @@ const styles = StyleSheet.create({
     fontFamily: "Karla-Bold",
     fontSize: 14,
     color: Colors.lightGrey
-  },
-  confirmed: {
-    alignItems: "center",
-    marginBottom: 30
   }
 });
