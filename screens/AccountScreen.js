@@ -47,7 +47,7 @@ export default class AccountScreen extends React.Component {
       //   console.log("getItem", value);
       //   console.log(this.state.token);
       axios
-        .get("http://localhost:3100/api/user/" + this.state.id, {
+        .get("https://bicycly.herokuapp.com/api/user/" + this.state.id, {
           headers: { Authorization: "Bearer " + this.state.token }
         })
         .then(response => {

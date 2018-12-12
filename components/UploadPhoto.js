@@ -33,6 +33,8 @@ export default class UploadPhoto extends React.Component {
       base64: true
     });
     this.setState({ image: result.uri });
+    console.log(result.uri);
+
     // Pour le formulaire: this.props.handleImagePick(result.uri)
   };
 }

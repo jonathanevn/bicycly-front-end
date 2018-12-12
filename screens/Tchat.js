@@ -23,7 +23,7 @@ class Tchat extends React.Component {
       });
     });
     axios
-      .get("http://192.168.86.249:3100/message/" + this.state.thread)
+      .get("https://bicycly.herokuapp.com/message/" + this.state.thread)
       .then(reponse => {
         console.log("rappel history discussion", reponse.data);
 
@@ -35,7 +35,7 @@ class Tchat extends React.Component {
         });
       });
 
-    this.ws = new WebSocket("ws://192.168.86.249:3100");
+    this.ws = new WebSocket("ws://bicycly.herokuapp.com");
     this.ws.onmessage = e => {
       const message = JSON.parse(e.data);
       this.setState({
