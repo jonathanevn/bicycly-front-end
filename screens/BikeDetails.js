@@ -47,7 +47,7 @@ class BikeDetails extends React.Component {
     );
     axios
       .get(
-        "http://192.168.86.249:3100/api/bike/" +
+        "https://bicycly.herokuapp.com/api/bike/" +
           this.props.navigation.state.params.bikeId
       )
       .then(response => {
