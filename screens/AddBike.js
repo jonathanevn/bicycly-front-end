@@ -184,7 +184,7 @@ class AddBike extends React.Component {
       <KeyboardAvoidingView>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <View style={styles.container}>
-            <View>
+            <View style={styles.sectionPhoto}>
               <UploadPhoto
               //  handleImagePick={}
               />
@@ -275,12 +275,12 @@ class AddBike extends React.Component {
 
             <Text>Accessoires</Text>
             <Accessories />
-            <View>
+            <View style={styles.sectionDescription}>
               <Text>Description</Text>
               <TextInput
                 style={[styles.textInput, { borderTopWidth: 0.5 }]}
                 style={[styles.textInput, { borderBottomWidth: 0.5 }]}
-                // value={this.state.description}
+                value={this.state.description}
                 onChangeText={value => {
                   this.setState({ description: value });
                 }}
@@ -291,8 +291,9 @@ class AddBike extends React.Component {
                 // value={this.state.text}
               />
             </View>
-            <Text>Tarification</Text>
+
             <View>
+              <Text>Tarification</Text>
               <TextInput
                 style={[styles.textInput, { borderTopWidth: 0.5 }]}
                 style={[styles.textInput, { borderBottomWidth: 0 }]}
@@ -320,12 +321,10 @@ const pickerSelectStyles = StyleSheet.create({
     paddingTop: 13,
     paddingLeft: 15,
     marginRight: 50,
-    // paddingBottom: 12,
     borderWidth: 0.5,
     width: 350,
     height: 50,
     borderColor: "#f1f1f1",
-    // borderRadius: 4,
     backgroundColor: "white",
     color: "black"
   }
@@ -338,6 +337,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
     // flex: 1
   },
+  sectionPhoto: {
+    justifyContent: "center"
+  },
   containerCheckBox: {
     flex: 1,
     alignItems: "center",
@@ -345,7 +347,9 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: "#fff"
   },
-
+  sectionDescription: {
+    marginVertical: 10
+  },
   textInput: {
     borderWidth: 0.5,
     width: 350,
@@ -355,6 +359,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   buttonSection: {
+    marginVertical: 20,
     width: width,
     justifyContent: "center",
     alignItems: "center"

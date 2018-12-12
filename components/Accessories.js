@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
-
+import { width, height } from "../constants/Layout";
 const accessories = [
   "Antivol",
   "Lumières",
@@ -30,27 +30,25 @@ export default class Accessories extends Component {
       <View style={styles.containerAccessories}>
         {this.state.accessoriesChecked.map(({ name, checked }, index) => {
           return (
-            <View>
-              <TouchableOpacity
-                key={index}
-                onPress={() => {
-                  const newAccessoriesChecked = [
-                    ...this.state.accessoriesChecked
-                  ];
-                  newAccessoriesChecked[index] = { name, checked: !checked };
+            <TouchableOpacity
+              key={index}
+              onPress={() => {
+                const newAccessoriesChecked = [
+                  ...this.state.accessoriesChecked
+                ];
+                newAccessoriesChecked[index] = { name, checked: !checked };
 
-                  this.setState(state => ({
-                    accessoriesChecked: newAccessoriesChecked
-                  }));
-                }}
-                style={[
-                  styles.container,
-                  checked && { backgroundColor: "white" }
-                ]}
-              >
-                <Text style={styles.textButton}>{name}</Text>
-              </TouchableOpacity>
-            </View>
+                this.setState(state => ({
+                  accessoriesChecked: newAccessoriesChecked
+                }));
+              }}
+              style={[
+                styles.container,
+                checked && { backgroundColor: "#ffc200" }
+              ]}
+            >
+              <Text style={styles.textButton}>{name}</Text>
+            </TouchableOpacity>
           );
         })}
       </View>
@@ -60,18 +58,24 @@ export default class Accessories extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    flexWrap: "wrap",
     alignItems: "center",
     marginBottom: 5,
-    marginLeft: 10,
+    marginRight: 10,
     borderRadius: 12,
-    backgroundColor: "#ffc200",
+    // borderColor: "#ffc200",
+    // borderWidth: 1,
+    backgroundColor: "white",
     paddingHorizontal: 5,
     width: 110
   },
 
   containerAccessories: {
+    justifyContent: "center",
+    flexDirection: "row",
     marginVertical: 10,
-    flexDirection: "column"
+    flexWrap: "wrap",
+    width: width
   },
 
   textButton: {
