@@ -47,6 +47,7 @@ class BikeDetails extends React.Component {
     );
     axios
       .get(
+
         "https://bicycly.herokuapp.com/api/bike/" +
           this.props.navigation.state.params.bikeId
       )

@@ -12,6 +12,7 @@ import { button, text } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
 import RNPickerSelect from "react-native-picker-select";
 import { Constants } from "expo";
+import axios from "axios";
 import Accessories from "../components/Accessories";
 import UploadPhoto from "../components/UploadPhoto";
 class AddBike extends React.Component {
@@ -28,13 +29,22 @@ class AddBike extends React.Component {
     }
   };
   state = {
-    switchValue: true
+    bikeBrand: "",
+    bikeModel: "",
+    condition: "",
+    bikeCategory: "",
+    description: "",
+    photos: [],
+    pricePerDay: ""
   };
 
-  _handleToggleSwitch = () =>
-    this.setState(state => ({
-      switchValue: !state.switchValue
-    }));
+  // handleChange = event => {
+  //   const { name, value } = event.target;
+  //   this.setState({
+  //     [name]: value
+  //   });
+  // };
+
   constructor(props) {
     super(props);
 
@@ -42,7 +52,7 @@ class AddBike extends React.Component {
 
     this.state = {
       CateVelo: undefined,
-      items: [
+      bikeCategory: [
         {
           label: "VTT",
           value: "VTT"
@@ -93,7 +103,7 @@ class AddBike extends React.Component {
         }
       ],
       etatVelo: undefined,
-      items2: [
+      condition: [
         {
           label: "Neuf",
           value: "Neuf"
@@ -116,16 +126,58 @@ class AddBike extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       this.setState({
-        CateVelo: "VTT"
+        CateVelo: "VTT",
+        bikeCategory: this.state.bikeCategory.concat([
+          { value: "VTT", label: "VTT" }
+        ])
       });
     }, 1000);
 
     setTimeout(() => {
       this.setState({
-        items: this.state.items.concat([{ value: "VTT", label: "VTT" }])
+        bikeCategory: this.state.bikeCategory.concat([
+          { value: "VTT", label: "VTT" }
+        ])
       });
     }, 2500);
   }
+
+  onPress = () => {
+    const {
+      bikeBrand,
+      bikeModel,
+      condition,
+      bikeCategory,
+      description,
+      photos,
+      pricePerDay
+    } = this.state;
+    console.log("fais voir les states", this.state);
+    axios
+      .post("https://bicycly.herokuapp.com/api/bike/publish", {
+        bikeBrand: bikeBrand,
+        bikeModel: bikeModel,
+        condition: condition,
+        bikeCategory: bikeCategory,
+        description: description,
+        photos: photos,
+        pricePerDay: pricePerDay
+      })
+      .then(response => {
+        if (response.data.token) {
+          AsyncStorage.multiSet([
+            ["token", response.data.token],
+            ["id", response.data._id]
+          ]).then(() => {
+            this.props.navigation.navigate("BikeDetails", {
+              bikeId: response.data.id
+            });
+          });
+        }
+        this.props.navigation.navigate("BikeDetails");
+      });
+    console.log("fais voir les states 2", this.state);
+  };
 
   render() {
     return (
@@ -134,7 +186,7 @@ class AddBike extends React.Component {
           <View style={styles.container}>
             <View>
               <UploadPhoto
-              // handleImagePick={}
+              //  handleImagePick={}
               />
             </View>
 
@@ -143,13 +195,22 @@ class AddBike extends React.Component {
               style={[styles.textInput, { borderTopWidth: 0.5 }]}
               style={[styles.textInput, { borderBottomWidth: 0 }]}
               placeholder="Marque"
+              name="bikeBrand"
+              // value={this.state.bikeBrand}
+              onChangeText={value => {
+                this.setState({ bikeBrand: value });
+              }}
             />
             <TextInput
               style={[styles.textInput, { borderTopWidth: 0.5 }]}
               style={[styles.textInput, { borderBottomWidth: 0.5 }]}
               placeholder="Modèle"
+              name="bikeModel"
+              // value={this.state.bikeModel}
+              onChangeText={value => {
+                this.setState({ bikeModel: value });
+              }}
             />
-
             <View style={styles.container}>
               <View style={{ paddingVertical: 5 }} />
 
@@ -160,7 +221,7 @@ class AddBike extends React.Component {
                   value: null,
                   color: "#9EA0A4"
                 }}
-                items={this.state.items}
+                items={this.state.bikeCategory}
                 onValueChange={value => {
                   this.setState({
                     CateVelo: value
@@ -189,7 +250,7 @@ class AddBike extends React.Component {
                   value: null,
                   color: "#9EA0A4"
                 }}
-                items={this.state.items2}
+                items={this.state.condition}
                 onValueChange={value => {
                   this.setState({
                     etatVelo: value
@@ -219,20 +280,30 @@ class AddBike extends React.Component {
               <TextInput
                 style={[styles.textInput, { borderTopWidth: 0.5 }]}
                 style={[styles.textInput, { borderBottomWidth: 0.5 }]}
+                // value={this.state.description}
+                onChangeText={value => {
+                  this.setState({ description: value });
+                }}
+                name="description"
                 multiline={true}
-                numberOfLines={4}
                 placeholder="Dites pourquoi votre vélo est le plus beau des vélos!"
                 // onChangeText={text => this.setState({ text })}
                 // value={this.state.text}
               />
             </View>
-            <View style={styles.buttonSection}>
-              <TouchableOpacity
-                style={button.primary}
-                onPress={() => {
-                  this.props.navigation.navigate("BikeDetails");
+            <Text>Tarification</Text>
+            <View>
+              <TextInput
+                style={[styles.textInput, { borderTopWidth: 0.5 }]}
+                style={[styles.textInput, { borderBottomWidth: 0 }]}
+                placeholder="Prix par jour €"
+                onChangeText={value => {
+                  this.setState({ pricePerDay: value });
                 }}
-              >
+              />
+            </View>
+            <View style={styles.buttonSection}>
+              <TouchableOpacity style={button.primary} onPress={this.onPress}>
                 <Text>Valider</Text>
               </TouchableOpacity>
             </View>
