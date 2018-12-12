@@ -35,7 +35,7 @@ class SignIn extends React.Component {
   onPress = () => {
     const { firstName, lastName, email, password } = this.state;
     axios
-      .post("http://localhost:3100/api/user/sign_up", {
+      .post("https://bicycly.herokuapp.com/api/user/sign_up", {
         firstName: firstName,
         lastName: lastName,
         email: email,
@@ -44,7 +44,10 @@ class SignIn extends React.Component {
       .then(response => {
         console.log(response.data);
         if (response.data.token) {
-          AsyncStorage.setItem("token", response.data.token).then(() => {
+          AsyncStorage.multiSet([
+            ["token", response.data.token],
+            ["id", response.data._id]
+          ]).then(() => {
             this.props.navigation.navigate("Home", {
               token: response.data.token
             });
@@ -62,7 +65,11 @@ class SignIn extends React.Component {
             <Text style={[text.company, styles.title]}>bicycly</Text>
             <View style={styles.input}>
               <TextInput
-                style={[styles.textInput, { borderBottomWidth: 0 }]}
+                style={[
+                  styles.textInput,
+                  text.placeholder,
+                  { borderBottomWidth: 0 }
+                ]}
                 placeholder="Prénom"
                 value={this.state.firstName}
                 onChangeText={value => {
@@ -70,7 +77,7 @@ class SignIn extends React.Component {
                 }}
               />
               <TextInput
-                style={styles.textInput}
+                style={[styles.textInput, text.placeholder]}
                 placeholder="Nom"
                 value={this.state.lastName}
                 onChangeText={value => {
@@ -80,7 +87,11 @@ class SignIn extends React.Component {
             </View>
             <View style={{ marginBottom: 40 }}>
               <TextInput
-                style={[styles.textInput, { borderBottomWidth: 0.5 }]}
+                style={[
+                  styles.textInput,
+                  text.placeholder,
+                  { borderBottomWidth: 0.5 }
+                ]}
                 placeholder="Adresse email"
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -90,7 +101,11 @@ class SignIn extends React.Component {
                 }}
               />
               <TextInput
-                style={[styles.textInput, { borderTopWidth: 0.5 }]}
+                style={[
+                  styles.textInput,
+                  text.placeholder,
+                  { borderTopWidth: 0.5 }
+                ]}
                 secureTextEntry={true}
                 placeholder="Mot de passe"
                 value={this.state.password}
@@ -161,7 +176,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 30,
     marginBottom: 50
-
   }
 });
 
