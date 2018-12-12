@@ -1,5 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+
+import { button, text, avatar } from "../constants/Styles";
+import { width, height } from "../constants/Layout";
 
 class MyAccountInfo extends React.Component {
   static navigationOptions = {
@@ -21,6 +24,20 @@ class MyAccountInfo extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <View>
+          <Image style={[avatar.medium, { backgroundColor: "lightgrey" }]} />
+        </View>
+        <TouchableOpacity style={[styles.textInput, { borderBottomWidth: 0 }]}>
+          <Text style={[text.placeholder]}>Prénoms</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.textInput, { marginBottom: 20 }]}
+          onPress={() => {
+            this.props.navigation.navigate("PaymentMethods");
+          }}
+        >
+          <Text style={[text.placeholder]}>Noms</Text>
+        </TouchableOpacity>
         <Text>This is the MyAccountInfo screen</Text>
         <TouchableOpacity
           onPress={() => {
@@ -40,6 +57,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#f8f8f8"
+  },
+  textInput: {
+    borderWidth: 1,
+    width: width,
+    height: 50,
+    paddingLeft: 15,
+    justifyContent: "center",
+    borderColor: "#f1f1f1",
+    backgroundColor: "#FFFFFF"
   }
 });
 

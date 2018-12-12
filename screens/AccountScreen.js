@@ -59,7 +59,7 @@ export default class AccountScreen extends React.Component {
           });
           console.log("cdm", response.data);
         })
-        .catch(err => console.log("wtf", err));
+        .catch(err => ("wtf", err));
     });
   }
 
