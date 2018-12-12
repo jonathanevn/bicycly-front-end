@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "center",
     position: "relative",
-    borderRadius: 80 / 2
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40
   },
 
   listItems: {

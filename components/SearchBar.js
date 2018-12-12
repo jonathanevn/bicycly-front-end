@@ -335,6 +335,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-end",
     flex: 1,
+    width: width,
     backgroundColor: "rgba(88, 88, 88, 0.7)"
   },
 
@@ -348,7 +349,8 @@ const styles = StyleSheet.create({
   confirmed: {
     alignItems: "center",
     paddingBottom: 30,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    width: width
   }
 });
 
