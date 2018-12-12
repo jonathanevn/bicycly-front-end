@@ -5,15 +5,15 @@ import {
   View,
   TouchableOpacity,
   TextInput,
-  Switch,
-  ScrollView
+  ScrollView,
+  KeyboardAvoidingView
 } from "react-native";
 import { button, text } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
 import RNPickerSelect from "react-native-picker-select";
 import { Constants } from "expo";
 import Accessories from "../components/Accessories";
-
+import UploadPhoto from "../components/UploadPhoto";
 class AddBike extends React.Component {
   static navigationOptions = {
     title: "Nom du vélo",
@@ -129,108 +129,116 @@ class AddBike extends React.Component {
 
   render() {
     return (
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <View style={styles.container}>
-          <Text>Mon Vélo</Text>
-          <TextInput
-            style={[styles.textInput, { borderTopWidth: 0.5 }]}
-            style={[styles.textInput, { borderBottomWidth: 0 }]}
-            placeholder="Marque"
-          />
-          <TextInput
-            style={[styles.textInput, { borderTopWidth: 0.5 }]}
-            style={[styles.textInput, { borderBottomWidth: 0.5 }]}
-            placeholder="Modèle"
-          />
-
+      <KeyboardAvoidingView>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
           <View style={styles.container}>
-            <View style={{ paddingVertical: 5 }} />
+            <View>
+              <UploadPhoto
+              // handleImagePick={}
+              />
+            </View>
 
-            <Text> Catégorie du vélo</Text>
-            <RNPickerSelect
-              placeholder={{
-                label: "Select a Category...",
-                value: null,
-                color: "#9EA0A4"
-              }}
-              items={this.state.items}
-              onValueChange={value => {
-                this.setState({
-                  CateVelo: value
-                });
-              }}
-              onUpArrow={() => {
-                this.inputRefs.name.focus();
-              }}
-              onDownArrow={() => {
-                this.inputRefs.picker2.togglePicker();
-              }}
-              style={{ ...pickerSelectStyles }}
-              value={this.state.CateVelo}
-              ref={el => {
-                this.inputRefs.picker = el;
-              }}
+            <Text>Mon Vélo</Text>
+            <TextInput
+              style={[styles.textInput, { borderTopWidth: 0.5 }]}
+              style={[styles.textInput, { borderBottomWidth: 0 }]}
+              placeholder="Marque"
             />
-
-            <View style={{ paddingVertical: 5 }} />
-
-            <Text>Etat du vélo</Text>
-            <RNPickerSelect
-              placeholder={{
-                label: "Etat du vélo",
-                color: "black",
-                value: null,
-                color: "#9EA0A4"
-              }}
-              items={this.state.items2}
-              onValueChange={value => {
-                this.setState({
-                  etatVelo: value
-                });
-              }}
-              onUpArrow={() => {
-                this.inputRefs.picker.togglePicker();
-              }}
-              onDownArrow={() => {
-                this.inputRefs.company.focus();
-              }}
-              style={{ ...pickerSelectStyles }}
-              value={this.state.etatVelo}
-              ref={el => {
-                this.inputRefs.picker2 = el;
-              }}
-              useNativeAndroidPickerStyle={false}
-            />
-
-            <View style={{ paddingVertical: 5 }} />
-          </View>
-
-          <Text>Accessoires</Text>
-          <Accessories />
-          <View>
-            <Text>Description</Text>
             <TextInput
               style={[styles.textInput, { borderTopWidth: 0.5 }]}
               style={[styles.textInput, { borderBottomWidth: 0.5 }]}
-              multiline={true}
-              numberOfLines={4}
-              placeholder="Dites pourquoi votre vélo est le plus beau des vélos!"
-              // onChangeText={text => this.setState({ text })}
-              // value={this.state.text}
+              placeholder="Modèle"
             />
+
+            <View style={styles.container}>
+              <View style={{ paddingVertical: 5 }} />
+
+              <Text> Catégorie du vélo</Text>
+              <RNPickerSelect
+                placeholder={{
+                  label: "Select a Category...",
+                  value: null,
+                  color: "#9EA0A4"
+                }}
+                items={this.state.items}
+                onValueChange={value => {
+                  this.setState({
+                    CateVelo: value
+                  });
+                }}
+                onUpArrow={() => {
+                  this.inputRefs.name.focus();
+                }}
+                onDownArrow={() => {
+                  this.inputRefs.picker2.togglePicker();
+                }}
+                style={{ ...pickerSelectStyles }}
+                value={this.state.CateVelo}
+                ref={el => {
+                  this.inputRefs.picker = el;
+                }}
+              />
+
+              <View style={{ paddingVertical: 5 }} />
+
+              <Text>Etat du vélo</Text>
+              <RNPickerSelect
+                placeholder={{
+                  label: "Etat du vélo",
+                  color: "black",
+                  value: null,
+                  color: "#9EA0A4"
+                }}
+                items={this.state.items2}
+                onValueChange={value => {
+                  this.setState({
+                    etatVelo: value
+                  });
+                }}
+                onUpArrow={() => {
+                  this.inputRefs.picker.togglePicker();
+                }}
+                onDownArrow={() => {
+                  this.inputRefs.company.focus();
+                }}
+                style={{ ...pickerSelectStyles }}
+                value={this.state.etatVelo}
+                ref={el => {
+                  this.inputRefs.picker2 = el;
+                }}
+                useNativeAndroidPickerStyle={false}
+              />
+
+              <View style={{ paddingVertical: 5 }} />
+            </View>
+
+            <Text>Accessoires</Text>
+            <Accessories />
+            <View>
+              <Text>Description</Text>
+              <TextInput
+                style={[styles.textInput, { borderTopWidth: 0.5 }]}
+                style={[styles.textInput, { borderBottomWidth: 0.5 }]}
+                multiline={true}
+                numberOfLines={4}
+                placeholder="Dites pourquoi votre vélo est le plus beau des vélos!"
+                // onChangeText={text => this.setState({ text })}
+                // value={this.state.text}
+              />
+            </View>
+            <View style={styles.buttonSection}>
+              <TouchableOpacity
+                style={button.primary}
+                onPress={() => {
+                  this.props.navigation.navigate("BikeDetails");
+                }}
+              >
+                <Text>Valider</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.buttonSection}>
-            <TouchableOpacity
-              style={button.primary}
-              onPress={() => {
-                this.props.navigation.navigate("BikeDetails");
-              }}
-            >
-              <Text>Valider</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -256,8 +264,8 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     backgroundColor: "#f8f8f8",
     justifyContent: "center",
-    paddingHorizontal: 10,
-    flex: 1
+    paddingHorizontal: 10
+    // flex: 1
   },
   containerCheckBox: {
     flex: 1,
