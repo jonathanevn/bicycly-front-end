@@ -45,9 +45,6 @@ export default class AccountScreen extends React.Component {
   };
 
   componentDidMount() {
-    // const { id } = this.props.match.params;
-    // const AuthStr = "Bearer".concat(this.state.token);
-
     AsyncStorage.multiGet(["token", "id"]).then(value => {
       this.setState({ token: value[0][1], id: value[1][1] });
       //   console.log("getItem", value);

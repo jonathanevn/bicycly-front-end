@@ -32,9 +32,17 @@ class MyAccountInfo extends React.Component {
   };
 
   state = {
-    account: "",
+    photos: [],
     email: this.props.navigation.state.params.email,
     phone: this.props.navigation.state.params.account.phone
+  };
+
+  handleImagePick = photoBase64 => {
+    const updatedPhotos = [...this.state.photos];
+    updatedPhotos.push(photoBase64);
+    this.setState({
+      photos: updatedPhotos
+    });
   };
 
   renderImage() {
@@ -54,7 +62,11 @@ class MyAccountInfo extends React.Component {
     } else {
       return (
         <View style={styles.image}>
-          <UploadPhoto size={avatar.medium} />
+          <UploadPhoto
+            size={avatar.medium}
+            photos={this.state.photos}
+            handleImagePick={this.handleImagePick}
+          />
         </View>
       );
     }
@@ -69,11 +81,12 @@ class MyAccountInfo extends React.Component {
 
         {
           email: this.state.email,
-          phone: this.state.phone
+          phone: this.state.phone,
+          photos: this.state.photos
         },
         {
           headers: {
-            authorization: "Bearer " + params.token
+            Authorization: "Bearer " + params.token
           }
         }
       )
