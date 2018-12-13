@@ -20,11 +20,13 @@ const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 export default class AccountScreen extends React.Component {
   static navigationOptions = {
     title: "Mon compte",
+    // headerBackTitle: null,
     headerTitleStyle: {
       fontFamily: "Karla-Bold",
       fontSize: 18,
       color: "#262626"
     }
+
     // headerStyle: {
     //   backgroundColor: "#f8f8f8",
     //   borderBottomColor: "#f8f8f8"
@@ -69,12 +71,12 @@ export default class AccountScreen extends React.Component {
   }
 
   renderImage() {
-    if (this.state.account.profilePicture[0]) {
+    if (this.state.account.photos[0]) {
       return (
         <View>
           <Image
             style={[avatar.medium]}
-            source={{ uri: this.state.account.profilePicture[0] }}
+            source={{ uri: this.state.account.photos[0] }}
           />
         </View>
       );
@@ -83,79 +85,85 @@ export default class AccountScreen extends React.Component {
         <View style={styles.image}>
           <Icon name="cyclist" size={45} color="#ffc200" />
         </View>
-        //   style={[
-        //     avatar.medium,
-        //     {
-        //       backgroundColor: "lightgrey"
-        //     }
-        //   ]}
       );
     }
   }
 
   render() {
-    const { firstName, lastName, email, phone, account } = this.state;
-    return (
-      <View style={styles.container}>
-        <View style={styles.profil}>
-          <View style={styles.picture}>{this.renderImage()}</View>
-          <View>
-            <Text style={text.h3}>
-              {this.state.firstName} {this.state.lastName[0] + "."}
-            </Text>
-            <View style={styles.rating}>
-              <Text>{this.state.ratingValue}</Text>
-              <Text style={text.rate}>{this.state.reviews} avis</Text>
+    const { firstName, lastName, email, token, account } = this.state;
+    if (this.state.account.photos === undefined) {
+      return null;
+    } else {
+      return (
+        <View style={styles.container}>
+          <View style={styles.profil}>
+            <View style={styles.picture}>{this.renderImage()}</View>
+            <View>
+              <Text style={text.h3}>
+                {this.state.firstName} {this.state.lastName[0] + "."}
+              </Text>
+              <View style={styles.rating}>
+                <Text>{this.state.ratingValue}</Text>
+                <Text style={text.rate}>{this.state.reviews} avis</Text>
+              </View>
             </View>
           </View>
+
+          <TouchableOpacity
+            style={[styles.textInput, { marginVertical: 20 }]}
+            onPress={() => {
+              this.props.navigation.navigate("MyAccountInfo", {
+                firstName,
+                lastName,
+                email,
+                account,
+                token
+              });
+            }}
+          >
+            <Text style={[text.placeholder]}>Mes infos</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.textInput, { borderBottomWidth: 0 }]}
+          >
+            <Text style={[text.placeholder]}>Mes paiements</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.textInput, { marginBottom: 20 }]}
+            onPress={() => {
+              this.props.navigation.navigate("PaymentMethods");
+            }}
+          >
+            <Text style={[text.placeholder]}>
+              Moyens de paiement enregistrés
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.textInput, { borderBottomWidth: 0 }]}
+          >
+            <Text style={[text.placeholder]}>Aide</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.textInput, { borderBottomWidth: 0 }]}
+          >
+            <Text style={[text.placeholder]}>Contact</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.textInput, { marginBottom: 30 }]}>
+            <Text style={[text.placeholder]}>A propos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              AsyncStorage.multiRemove(["token", "id"]).then(() => {
+                this.props.navigation.navigate("AuthLoadingScreen");
+              });
+            }}
+          >
+            <Text style={[text.p2, styles.deconnexion]}>Se déconnecter</Text>
+          </TouchableOpacity>
         </View>
-
-        <TouchableOpacity
-          style={[styles.textInput, { marginVertical: 20 }]}
-          onPress={() => {
-            this.props.navigation.navigate("MyAccountInfo", {
-              firstName,
-              lastName,
-              email,
-              phone,
-              account
-            });
-          }}
-        >
-          <Text style={[text.placeholder]}>Mes infos</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.textInput, { borderBottomWidth: 0 }]}>
-          <Text style={[text.placeholder]}>Mes paiements</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.textInput, { marginBottom: 20 }]}
-          onPress={() => {
-            this.props.navigation.navigate("PaymentMethods");
-          }}
-        >
-          <Text style={[text.placeholder]}>Moyens de paiement enregistrés</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.textInput, { borderBottomWidth: 0 }]}>
-          <Text style={[text.placeholder]}>Aide</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.textInput, { borderBottomWidth: 0 }]}>
-          <Text style={[text.placeholder]}>Contact</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.textInput, { marginBottom: 30 }]}>
-          <Text style={[text.placeholder]}>A propos</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            AsyncStorage.multiRemove(["token", "id"]).then(() => {
-              this.props.navigation.navigate("AuthLoadingScreen");
-            });
-          }}
-        >
-          <Text style={[text.p2, styles.deconnexion]}>Se déconnecter</Text>
-        </TouchableOpacity>
-      </View>
-    );
+      );
+    }
   }
 }
 const styles = StyleSheet.create({

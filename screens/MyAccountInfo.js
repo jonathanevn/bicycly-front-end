@@ -7,16 +7,17 @@ import {
   Image,
   KeyboardAvoidingView
 } from "react-native";
-
+import axios from "axios";
 import { button, text, avatar } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
 import UploadPhoto from "../components/UploadPhoto";
 import { TextInput } from "react-native-gesture-handler";
+import Axios from "axios";
 
 class MyAccountInfo extends React.Component {
   static navigationOptions = {
     title: "Mes informations",
-    headerBackTitle: null,
+    headerLeftBackTitle: null,
     headerTintColor: "black",
     headerTitleStyle: {
       fontFamily: "Karla-Bold",
@@ -31,18 +32,21 @@ class MyAccountInfo extends React.Component {
   };
 
   state = {
-    phone: ""
+    account: "",
+    email: this.props.navigation.state.params.email,
+    phone: this.props.navigation.state.params.account.phone
   };
 
   renderImage() {
-    if (this.props.navigation.state.params.account.profilePicture[0]) {
-      console.log(this.props.navigation.state.params.account.profilePicture);
+    console.log("ici", this.props.navigation.state.params);
+    if (this.props.navigation.state.params.account.photos[0]) {
+      console.log(this.props.navigation.state.params.account.photos);
       return (
         <View>
           <Image
             style={[avatar.medium, (backgroundColor = "red")]}
             source={{
-              uri: this.props.navigation.state.params.account.profilePicture[0]
+              uri: this.props.navigation.state.params.account.photos[0]
             }}
           />
         </View>
@@ -50,13 +54,35 @@ class MyAccountInfo extends React.Component {
     } else {
       return (
         <View style={styles.image}>
-          {/* <Text>Coucou</Text> */}
           <UploadPhoto size={avatar.medium} />
         </View>
       );
-      console.log("hello");
     }
   }
+
+  onPress = () => {
+    const { params } = this.props.navigation.state;
+    console.log("Mes params", params);
+    axios
+      .post(
+        "http://localhost:3100/api/user/update",
+
+        {
+          email: this.state.email,
+          phone: this.state.phone
+        },
+        {
+          headers: {
+            authorization: "Bearer " + params.token
+          }
+        }
+      )
+      .then(response => {
+        console.log(response.data);
+        this.props.navigation.navigate("AccountScreen");
+      })
+      .catch(err => console.log("wtf", err));
+  };
 
   render() {
     return (
@@ -77,27 +103,34 @@ class MyAccountInfo extends React.Component {
           />
           <TextInput
             style={[styles.textInput, text.p2, { marginBottom: 20 }]}
-            value={this.props.navigation.state.params.email}
-            // onChangeText={value => {
-            //     this.setState({ email: value });
-            // }}
+            value={this.state.email}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            onChangeText={value => {
+              this.setState({ email: value });
+            }}
           />
           <TextInput
             style={[styles.textInput, text.p2, { marginBottom: 20 }]}
             placeholder="Téléphone"
             keyboardType="number-pad"
-            value={this.props.navigation.state.params.phone}
+            value={this.state.phone}
             onChangeText={value => {
               this.setState({ phone: value });
             }}
           />
           <TouchableOpacity
-            style={[styles.textInput, { marginBottom: 20 }]}
+            style={[styles.textInput, { marginBottom: 50 }]}
             onPress={() => {
               this.props.navigation.navigate("MyBikes");
             }}
           >
             <Text style={[text.p2]}>Voir mes vélos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={text.p2} onPress={this.onPress}>
+              Enregistrer les modifications
+            </Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

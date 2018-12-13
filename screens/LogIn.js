@@ -48,7 +48,6 @@ class LogIn extends React.Component {
             ["token", response.data.token],
             ["id", response.data._id]
           ]).then(() => {
-            console.log(response.data.multiSet);
             this.props.navigation.navigate("Home", {
               token: response.data.token,
               id: response.data._id
