@@ -5,7 +5,7 @@ import Carousel from "react-native-snap-carousel";
 import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { MapView, Permissions } from "expo";
 import { height, width } from "../constants/Layout";
-import { text, button, background } from "../constants/Styles";
+
 import { ListButton, FilterButton } from "../components/SquareButton";
 import BikeCard from "../components/BikeCard";
 import Colors from "../constants/Colors";
@@ -164,12 +164,15 @@ export default class HomeScreen extends React.Component {
     if (!markerData || !mapRef) {
       return;
     }*/
-    this.map.animateToRegion({
-      longitude: markerData.loc[0],
-      latitude: markerData.loc[1],
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
-    });
+    this.map.animateToRegion(
+      {
+        longitude: markerData.loc[0],
+        latitude: markerData.loc[1],
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      },
+      200
+    );
     this.setState(prevState => {
       return {
         region: {
