@@ -24,14 +24,14 @@ class Tchat extends React.Component {
     });
     axios
       .get("https://bicycly.herokuapp.com/message/" + this.state.thread)
-      .then(reponse => {
-        console.log("rappel history discussion", reponse.data);
+      .then(response => {
+        console.log("rappel history discussion", response.data);
 
-        // this.setState({ messages: reponse.data, thread: random });
-        // this.setState({ thread: reponse.data._id });
+        // this.setState({ messages: response.data, thread: random });
+        // this.setState({ thread: response.data._id });
         this.setState({
-          messages: reponse.data.messages || this.state.messages,
-          thread: reponse.data._id
+          messages: response.data.messages || this.state.messages,
+          thread: response.data._id
         });
       });
 
@@ -68,7 +68,7 @@ class Tchat extends React.Component {
         //id du User -b qui recois donc propriétaire
         user={{ _id: "5c0ce255019aae1f160a4ba2" }}
         renderMessageText={props => {
-          console.log(props.currentMessage);
+          console.log("props.currentMessage", props.currentMessage);
           if (
             props.currentMessage.isRequest === true &&
             props.currentMessage.thread.bike.user === "5c0ce255019aae1f160a4ba2" //User -b Est-ce que je suis le propriétaire du vélo ?
