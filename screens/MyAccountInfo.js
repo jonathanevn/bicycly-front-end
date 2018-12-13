@@ -12,7 +12,6 @@ import { button, text, avatar } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
 import UploadPhoto from "../components/UploadPhoto";
 import { TextInput } from "react-native-gesture-handler";
-import Axios from "axios";
 
 class MyAccountInfo extends React.Component {
   static navigationOptions = {
@@ -32,7 +31,7 @@ class MyAccountInfo extends React.Component {
   };
 
   state = {
-    photos: [],
+    photos: this.props.navigation.state.params.account.photos,
     email: this.props.navigation.state.params.email,
     phone: this.props.navigation.state.params.account.phone
   };
@@ -64,8 +63,8 @@ class MyAccountInfo extends React.Component {
         <View style={styles.image}>
           <UploadPhoto
             size={avatar.medium}
-            photos={this.state.photos}
             handleImagePick={this.handleImagePick}
+            photos={this.state.photos}
           />
         </View>
       );
@@ -162,9 +161,12 @@ const styles = StyleSheet.create({
   },
   image: {
     marginTop: 20,
-    marginBottom: 40,
+    marginBottom: 20,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    height: 200,
+    width: 200,
+    backgroundColor: "yellow"
   },
   textInput: {
     borderWidth: 1,

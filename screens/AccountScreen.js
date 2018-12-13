@@ -69,6 +69,7 @@ export default class AccountScreen extends React.Component {
 
   renderImage() {
     if (this.state.account.photos[0]) {
+      console.log("avatar", this.state.account.photos[0]);
       return (
         <View>
           <Image
