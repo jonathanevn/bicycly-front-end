@@ -5,7 +5,8 @@ import {
   View,
   TouchableOpacity,
   Image,
-  ScrollView
+  ScrollView,
+  AsyncStorage
 } from "react-native";
 import { text, button, avatar } from "../constants/Styles";
 import { createIconSetFromIcoMoon } from "@expo/vector-icons";
@@ -35,7 +36,7 @@ class BikeDetails extends React.Component {
   });
 
   state = {
-    bike: [],
+    bike: this.props.navigation.state.params.bikeId,
     userId: [],
     propId: [],
     isLoading: false
