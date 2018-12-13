@@ -263,7 +263,7 @@ export default class HomeScreen extends React.Component {
           />
         </View>
         <View style={styles.filterButton}>
-          <Filters />
+          <Filters categoriesSelected={this.handleFilters} />
         </View>
         <View style={styles.listButton}>
           <TouchableOpacity

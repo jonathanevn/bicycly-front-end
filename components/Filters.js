@@ -42,9 +42,12 @@ const categories = [
   { category: "autres", name: "Autres", iconName: "Autres", size: 22 }
 ];
 
+const categoriesSelected = [];
+
 class Filters extends React.Component {
   state = {
     modalFilterVisible: false,
+    categoriesFilter: [],
     categoriesRange: categories.map(item => ({
       category: item.category,
       name: item.name,
@@ -73,8 +76,6 @@ class Filters extends React.Component {
   );
 
   onPressItem = index => {
-    console.log("index", index);
-
     const newCategorySelected = [...this.state.categoriesRange];
     newCategorySelected[index] = {
       ...newCategorySelected[index],
@@ -83,7 +84,18 @@ class Filters extends React.Component {
     this.setState({
       categoriesRange: newCategorySelected
     });
-    console.log("coucou", this.state.categoriesRange[index]);
+  };
+
+  handleSubmit = () => {
+    for (let i = 0; i < this.state.categoriesRange.length; i++) {
+      if (this.state.categoriesRange[i].selected === true) {
+        categoriesSelected.push(this.state.categoriesRange[i].category);
+      }
+    }
+    this.setState({ categoriesFilter: categoriesSelected }, () =>
+      this.setModalFilterVisible(!this.state.modalFilterVisible)
+    );
+    return categoriesSelected;
   };
 
   render() {
@@ -126,7 +138,7 @@ class Filters extends React.Component {
                 <TouchableOpacity
                   style={button.primary}
                   onPress={() => {
-                    this.setModalFilterVisible(!this.state.modalFilterVisible);
+                    this.handleSubmit();
                   }}
                 >
                   <Text style={text.textButton}>Confirmer</Text>
