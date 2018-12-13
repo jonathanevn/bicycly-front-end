@@ -47,10 +47,15 @@ class MyAccountInfo extends React.Component {
   renderImage() {
     console.log("ici", this.props.navigation.state.params);
     if (this.props.navigation.state.params.account.photos[0]) {
-      console.log(this.props.navigation.state.params.account.photos);
+      //   console.log(this.props.navigation.state.params.account.photos);
       return (
         <View>
           <Image
+            onPress={() => {
+              const updatedPhotos = [...this.state.photos];
+              updatedPhotos.splice(0, 1);
+              this.setState({ photos: updatedPhotos });
+            }}
             style={[avatar.medium, (backgroundColor = "red")]}
             source={{
               uri:
@@ -102,11 +107,7 @@ class MyAccountInfo extends React.Component {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <View style={styles.container}>
-          <View style={styles.image}>
-            {this.renderImage()}
-            {/* {this.props.navigation.state.params.account.profilPicture[0]}
-            <UploadPhoto size={avatar.medium} /> */}
-          </View>
+          <View style={styles.image}>{this.renderImage()}</View>
           <TextInput
             style={[styles.textInput, text.p2, { borderBottomWidth: 0 }]}
             value={this.props.navigation.state.params.firstName}
