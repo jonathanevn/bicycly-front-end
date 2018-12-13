@@ -15,7 +15,6 @@ import AddPayementMethod from "../screens/AddPayementMethod";
 import AccountScreen from "../screens/AccountScreen";
 import Calendar from "../screens/Calendar";
 import EndRent from "../screens/EndRent";
-import Filters from "../screens/Filters";
 import List from "../screens/List";
 import MyAccountInfo from "../screens/MyAccountInfo";
 import PaymentMethods from "../screens/PaymentMethods";
@@ -28,7 +27,6 @@ import UserProfile from "../screens/UserProfile";
 
 const HomeStack = createStackNavigator({
   Home: { screen: HomeScreen, navigationOptions: { header: null } },
-  Filters: { screen: Filters },
   Calendar: { screen: Calendar, navigationOptions: { header: null } },
   List: { screen: List, navigationOptions: { header: null } },
   BikeDetails: { screen: BikeDetails },

@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   yellowBackground: {
     backgroundColor: "#ffc200",
     width: width,
-    height: 110,
+    height: 100,
     top: -20,
     alignItems: "flex-start",
     justifyContent: "center",
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
 
   listItems: {
-    marginTop: 50,
+    marginTop: 40,
     position: "relative"
   },
 
