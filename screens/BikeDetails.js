@@ -65,7 +65,10 @@ class BikeDetails extends React.Component {
       return (
         <ScrollView style={styles.contentContainer}>
           <View style={styles.photoPrice}>
-            {/* <Image source={{ uri: bike.photos[0] }} style={styles.photo} /> */}
+            <Image
+              source={{ uri: "data:image/jpeg;base64" + bike.photos[0] }}
+              style={styles.photo}
+            />
             <View style={styles.priceAvatar}>
               <Text style={text.fullPrice}>30€</Text>
               <Text style={text.pricePerDay}>{bike.pricePerDay}€ /jour</Text>
