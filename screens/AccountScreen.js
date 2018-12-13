@@ -74,7 +74,9 @@ export default class AccountScreen extends React.Component {
         <View>
           <Image
             style={[avatar.medium]}
-            source={{ uri: this.state.account.photos[0] }}
+            source={{
+              uri: "data:image/jpeg;base64," + this.state.account.photos[0]
+            }}
           />
         </View>
       );

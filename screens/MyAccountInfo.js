@@ -53,7 +53,9 @@ class MyAccountInfo extends React.Component {
           <Image
             style={[avatar.medium, (backgroundColor = "red")]}
             source={{
-              uri: this.props.navigation.state.params.account.photos[0]
+              uri:
+                "data:image/jpeg;base64," +
+                this.props.navigation.state.params.account.photos[0]
             }}
           />
         </View>
@@ -161,12 +163,9 @@ const styles = StyleSheet.create({
   },
   image: {
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 40,
     alignItems: "center",
-    justifyContent: "center",
-    height: 200,
-    width: 200,
-    backgroundColor: "yellow"
+    justifyContent: "center"
   },
   textInput: {
     borderWidth: 1,
