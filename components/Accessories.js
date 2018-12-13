@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { width, height } from "../constants/Layout";
-const accessories = [
+const accessoriesToChoose = [
   "Antivol",
   "Lumières",
   "Casque",
@@ -17,37 +17,62 @@ const accessories = [
 ];
 
 export default class Accessories extends Component {
-  state = {
-    accessoriesChecked: accessories.map(element => ({
+  /* state = {
+    accessories: accessoriesToChoose.map(element => ({
       name: element,
       checked: false
     }))
-    // [{name: 'Antivol', checked: false}, etc.]
+  }; */
+
+  state = {
+    accessories: []
   };
+
+  toggleAccessory(item) {
+    const accessories = [...this.state.accessories];
+    if (accessories.indexOf(item) > -1) {
+      accessories.splice(accessories.indexOf(item), 1);
+    } else {
+      accessories.push(item);
+    }
+    this.setState({ accessories }, () => {
+      this.props.handleAccessories(this.state.accessories);
+    });
+  }
 
   render() {
     return (
       <View style={styles.containerAccessories}>
-        {this.state.accessoriesChecked.map(({ name, checked }, index) => {
+        {accessoriesToChoose.map((item, index) => {
           return (
             <TouchableOpacity
               key={index}
-              onPress={() => {
-                const newAccessoriesChecked = [
-                  ...this.state.accessoriesChecked
-                ];
-                newAccessoriesChecked[index] = { name, checked: !checked };
-
-                this.setState(state => ({
-                  accessoriesChecked: newAccessoriesChecked
-                }));
-              }}
               style={[
                 styles.container,
-                checked && { backgroundColor: "#ffc200" }
+                this.state.accessories.indexOf(item) > -1 && {
+                  backgroundColor: "#ffc200"
+                }
               ]}
+              onPress={
+                () => this.toggleAccessory(item)
+                /* () => {
+                const newAccessories = [...this.state.accessories];
+                newAccessories[index] = { name, checked: !checked };
+                console.log(
+                  "newAccessories[index]",
+                  newAccessories[index].name
+                );
+                this.setState(
+                  {
+                    accessories: newAccessories
+                  },
+                  () =>
+                    this.props.accessoriesSelected(newAccessories[index].name)
+                );
+              } */
+              }
             >
-              <Text style={styles.textButton}>{name}</Text>
+              <Text style={styles.textButton}>{item}</Text>
             </TouchableOpacity>
           );
         })}
@@ -63,8 +88,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginRight: 10,
     borderRadius: 12,
-    // borderColor: "#ffc200",
-    // borderWidth: 1,
     backgroundColor: "white",
     paddingHorizontal: 5,
     width: 110
