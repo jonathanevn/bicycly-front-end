@@ -81,21 +81,26 @@ class Filters extends React.Component {
       ...newCategorySelected[index],
       selected: !newCategorySelected[index].selected
     };
+
     this.setState({
       categoriesRange: newCategorySelected
     });
   };
 
   handleSubmit = () => {
+    const categoriesSelected = [...this.state.categoriesFilter];
     for (let i = 0; i < this.state.categoriesRange.length; i++) {
       if (this.state.categoriesRange[i].selected === true) {
+        this.state.categoriesFilter.push(
+          this.state.categoriesRange[i].category
+        );
         categoriesSelected.push(this.state.categoriesRange[i].category);
       }
     }
     this.setState({ categoriesFilter: categoriesSelected }, () =>
-      this.setModalFilterVisible(!this.state.modalFilterVisible)
+      this.props.categoriesSelected({ categories: this.state.categoriesFilter })
     );
-    return categoriesSelected;
+    this.setModalFilterVisible(!this.state.modalFilterVisible);
   };
 
   render() {

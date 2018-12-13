@@ -42,9 +42,7 @@ export default class HomeScreen extends React.Component {
       endDate: null
     },
     markerSelected: null,
-    params: {
-      categoriesSelected: []
-    },
+    categoriesSelected: [],
     modalFilterVisible: false
   };
   /* 
@@ -128,8 +126,8 @@ export default class HomeScreen extends React.Component {
   };
 
   handleFilters = categories => {
-    this.setState({ params: { categorieSelected: categories } });
     console.log("categories", categories);
+    this.setState({ categorieSelected: categories });
   };
 
   pickLocationHandler = (event, index) => {
