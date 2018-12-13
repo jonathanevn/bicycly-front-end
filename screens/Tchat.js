@@ -8,7 +8,7 @@ class Tchat extends React.Component {
   };
   state = {
     messages: [],
-    thread: undefined,
+    thread: this.props.navigation.state.params.threadId,
     user: null
   };
 
