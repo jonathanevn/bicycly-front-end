@@ -66,7 +66,9 @@ class BikeDetails extends React.Component {
         <ScrollView style={styles.contentContainer}>
           <View style={styles.photoPrice}>
             <Image
-              source={{ uri: "data:image/jpeg;base64" + bike.photos[0] }}
+              source={{
+                uri: "data:image/jpeg;base64" + this.state.bike.photos[0]
+              }}
               style={styles.photo}
             />
             <View style={styles.priceAvatar}>
