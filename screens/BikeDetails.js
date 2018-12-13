@@ -41,10 +41,6 @@ class BikeDetails extends React.Component {
   };
 
   componentDidMount() {
-    console.log(
-      "bikeID on details ===>",
-      this.props.navigation.state.params.bikeId
-    );
     axios
       .get(
         "https://bicycly.herokuapp.com/api/bike/" +
@@ -52,7 +48,7 @@ class BikeDetails extends React.Component {
       )
       .then(response => {
         if (response.data) {
-          /*           console.log("response.data", response.data); */
+          console.log("response.data", response.data);
           this.setState({ bike: response.data, isLoading: true });
         }
       })
@@ -69,7 +65,7 @@ class BikeDetails extends React.Component {
       return (
         <ScrollView style={styles.contentContainer}>
           <View style={styles.photoPrice}>
-            <Image source={{ uri: bike.photos[0] }} style={styles.photo} />
+            {/* <Image source={{ uri: bike.photos[0] }} style={styles.photo} /> */}
             <View style={styles.priceAvatar}>
               <Text style={text.fullPrice}>30€</Text>
               <Text style={text.pricePerDay}>{bike.pricePerDay}€ /jour</Text>
@@ -108,10 +104,10 @@ class BikeDetails extends React.Component {
             </View>
 
             <View style={styles.profileUser}>
-              <Image
+              {/* <Image
                 source={{ uri: bike.user.photo[0] }}
                 style={avatar.medium}
-              />
+              /> */}
               <View style={styles.profileUserInfo}>
                 <View style={styles.username}>
                   <Text style={styles.firstname}>{bike.user.firstName}</Text>

@@ -6,12 +6,14 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  AsyncStorage
 } from "react-native";
 import { button, text } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
 import RNPickerSelect from "react-native-picker-select";
 import { Constants } from "expo";
+import axios from "axios";
 import Accessories from "../components/Accessories";
 import UploadPhoto from "../components/UploadPhoto";
 class AddBike extends React.Component {
@@ -27,14 +29,7 @@ class AddBike extends React.Component {
       borderBottomColor: "#f8f8f8"
     }
   };
-  state = {
-    switchValue: true
-  };
 
-  _handleToggleSwitch = () =>
-    this.setState(state => ({
-      switchValue: !state.switchValue
-    }));
   constructor(props) {
     super(props);
 
@@ -42,7 +37,7 @@ class AddBike extends React.Component {
 
     this.state = {
       CateVelo: undefined,
-      items: [
+      bikeCategory: [
         {
           label: "VTT",
           value: "VTT"
@@ -92,49 +87,87 @@ class AddBike extends React.Component {
           value: "Autres"
         }
       ],
-      etatVelo: undefined,
-      items2: [
-        {
-          label: "Neuf",
-          value: "Neuf"
-        },
-        {
-          label: "Bon",
-          value: "Bon"
-        },
-        {
-          label: "Moyen",
-          value: "Moyen"
-        },
-        {
-          label: "Fonctionne",
-          value: "Fonctionne"
-        }
-      ]
+
+      bikeBrand: "",
+      bikeModel: "",
+      description: "",
+      accessories: [],
+      photos: [],
+      pricePerDay: "",
+      token: ""
     };
   }
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        CateVelo: "VTT"
-      });
-    }, 1000);
-
-    setTimeout(() => {
-      this.setState({
-        items: this.state.items.concat([{ value: "VTT", label: "VTT" }])
-      });
-    }, 2500);
+    AsyncStorage.getItem("token").then(token => {
+      this.setState({ token });
+    });
   }
+
+  handleImagePick = photoBase64 => {
+    const newPhotos = [...this.state.photos];
+    newPhotos.push(photoBase64);
+    this.setState({
+      photos: newPhotos
+    });
+  };
+  onPress = () => {
+    const {
+      bikeBrand,
+      bikeModel,
+      accessories,
+      CateVelo,
+      description,
+      photos,
+      pricePerDay
+    } = this.state;
+
+    axios
+      .post(
+        "http://localhost:3100/api/bike/publish",
+        {
+          bikeBrand: bikeBrand,
+          bikeModel: bikeModel,
+          accessories: accessories,
+          bikeCategory: CateVelo,
+          description: description,
+          photos: photos,
+          pricePerDay: pricePerDay
+        },
+        {
+          headers: { Authorization: this.state.token }
+        }
+      )
+
+      .then(response => {
+        this.props.navigation.navigate("BikeDetails", {
+          bikeId: response.data._id,
+          bikeBrand: response.data.bikeBrand,
+          bikeModel: response.data.bikeModel,
+          accessories: response.data.accessories,
+          bikeCategory: response.data.bikeCategory,
+          description: response.data.description,
+          photos: response.data.photos,
+          pricePerDay: response.data.pricePerDay
+        });
+      });
+  };
+
+  handleAccessories = accessories => {
+    console.log("accessories", accessories);
+    this.setState({ accessories: accessories }, () => {
+      console.log(this.state.accessories);
+    });
+  };
 
   render() {
     return (
       <KeyboardAvoidingView>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <View style={styles.container}>
-            <View>
+            <View style={styles.sectionPhoto}>
               <UploadPhoto
-              // handleImagePick={}
+                handleImagePick={this.handleImagePick}
+                photos={this.state.photos}
               />
             </View>
 
@@ -143,16 +176,23 @@ class AddBike extends React.Component {
               style={[styles.textInput, { borderTopWidth: 0.5 }]}
               style={[styles.textInput, { borderBottomWidth: 0 }]}
               placeholder="Marque"
+              name="bikeBrand"
+              value={this.state.bikeBrand}
+              onChangeText={value => {
+                this.setState({ bikeBrand: value });
+              }}
             />
             <TextInput
               style={[styles.textInput, { borderTopWidth: 0.5 }]}
               style={[styles.textInput, { borderBottomWidth: 0.5 }]}
               placeholder="Modèle"
+              name="bikeModel"
+              value={this.state.bikeModel}
+              onChangeText={value => {
+                this.setState({ bikeModel: value });
+              }}
             />
-
             <View style={styles.container}>
-              <View style={{ paddingVertical: 5 }} />
-
               <Text> Catégorie du vélo</Text>
               <RNPickerSelect
                 placeholder={{
@@ -160,11 +200,16 @@ class AddBike extends React.Component {
                   value: null,
                   color: "#9EA0A4"
                 }}
-                items={this.state.items}
+                items={this.state.bikeCategory}
                 onValueChange={value => {
-                  this.setState({
-                    CateVelo: value
-                  });
+                  this.setState(
+                    {
+                      CateVelo: value
+                    },
+                    () => {
+                      console.log("CateVelo: value", this.state.CateVelo);
+                    }
+                  );
                 }}
                 onUpArrow={() => {
                   this.inputRefs.name.focus();
@@ -178,61 +223,39 @@ class AddBike extends React.Component {
                   this.inputRefs.picker = el;
                 }}
               />
-
-              <View style={{ paddingVertical: 5 }} />
-
-              <Text>Etat du vélo</Text>
-              <RNPickerSelect
-                placeholder={{
-                  label: "Etat du vélo",
-                  color: "black",
-                  value: null,
-                  color: "#9EA0A4"
-                }}
-                items={this.state.items2}
-                onValueChange={value => {
-                  this.setState({
-                    etatVelo: value
-                  });
-                }}
-                onUpArrow={() => {
-                  this.inputRefs.picker.togglePicker();
-                }}
-                onDownArrow={() => {
-                  this.inputRefs.company.focus();
-                }}
-                style={{ ...pickerSelectStyles }}
-                value={this.state.etatVelo}
-                ref={el => {
-                  this.inputRefs.picker2 = el;
-                }}
-                useNativeAndroidPickerStyle={false}
-              />
-
-              <View style={{ paddingVertical: 5 }} />
             </View>
 
             <Text>Accessoires</Text>
-            <Accessories />
-            <View>
+            <Accessories handleAccessories={this.handleAccessories} />
+            <View style={styles.sectionDescription}>
               <Text>Description</Text>
               <TextInput
                 style={[styles.textInput, { borderTopWidth: 0.5 }]}
                 style={[styles.textInput, { borderBottomWidth: 0.5 }]}
+                value={this.state.description}
+                onChangeText={value => {
+                  this.setState({ description: value });
+                }}
+                name="description"
                 multiline={true}
-                numberOfLines={4}
                 placeholder="Dites pourquoi votre vélo est le plus beau des vélos!"
-                // onChangeText={text => this.setState({ text })}
-                // value={this.state.text}
+              />
+            </View>
+
+            <View>
+              <Text>Tarification</Text>
+              <TextInput
+                style={[styles.textInput, { borderTopWidth: 0.5 }]}
+                style={[styles.textInput, { borderBottomWidth: 0 }]}
+                placeholder="Prix par jour €"
+                value={this.state.pricePerDay}
+                onChangeText={value => {
+                  this.setState({ pricePerDay: value });
+                }}
               />
             </View>
             <View style={styles.buttonSection}>
-              <TouchableOpacity
-                style={button.primary}
-                onPress={() => {
-                  this.props.navigation.navigate("BikeDetails");
-                }}
-              >
+              <TouchableOpacity style={button.primary} onPress={this.onPress}>
                 <Text>Valider</Text>
               </TouchableOpacity>
             </View>
@@ -249,12 +272,10 @@ const pickerSelectStyles = StyleSheet.create({
     paddingTop: 13,
     paddingLeft: 15,
     marginRight: 50,
-    // paddingBottom: 12,
     borderWidth: 0.5,
     width: 350,
     height: 50,
     borderColor: "#f1f1f1",
-    // borderRadius: 4,
     backgroundColor: "white",
     color: "black"
   }
@@ -265,7 +286,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8f8f8",
     justifyContent: "center",
     paddingHorizontal: 10
-    // flex: 1
+  },
+  sectionPhoto: {
+    justifyContent: "center"
   },
   containerCheckBox: {
     flex: 1,
@@ -274,7 +297,9 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: "#fff"
   },
-
+  sectionDescription: {
+    marginVertical: 10
+  },
   textInput: {
     borderWidth: 0.5,
     width: 350,
@@ -284,6 +309,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   buttonSection: {
+    marginVertical: 20,
     width: width,
     justifyContent: "center",
     alignItems: "center"

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
-
-const accessories = [
+import { width, height } from "../constants/Layout";
+const accessoriesToChoose = [
   "Antivol",
   "Lumières",
   "Casque",
@@ -17,40 +17,63 @@ const accessories = [
 ];
 
 export default class Accessories extends Component {
-  state = {
-    accessoriesChecked: accessories.map(element => ({
+  /* state = {
+    accessories: accessoriesToChoose.map(element => ({
       name: element,
       checked: false
     }))
-    // [{name: 'Antivol', checked: false}, etc.]
+  }; */
+
+  state = {
+    accessories: []
   };
+
+  toggleAccessory(item) {
+    const accessories = [...this.state.accessories];
+    if (accessories.indexOf(item) > -1) {
+      accessories.splice(accessories.indexOf(item), 1);
+    } else {
+      accessories.push(item);
+    }
+    this.setState({ accessories }, () => {
+      this.props.handleAccessories(this.state.accessories);
+    });
+  }
 
   render() {
     return (
       <View style={styles.containerAccessories}>
-        {this.state.accessoriesChecked.map(({ name, checked }, index) => {
+        {accessoriesToChoose.map((item, index) => {
           return (
-            <View>
-              <TouchableOpacity
-                key={index}
-                onPress={() => {
-                  const newAccessoriesChecked = [
-                    ...this.state.accessoriesChecked
-                  ];
-                  newAccessoriesChecked[index] = { name, checked: !checked };
-
-                  this.setState(state => ({
-                    accessoriesChecked: newAccessoriesChecked
-                  }));
-                }}
-                style={[
-                  styles.container,
-                  checked && { backgroundColor: "white" }
-                ]}
-              >
-                <Text style={styles.textButton}>{name}</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.container,
+                this.state.accessories.indexOf(item) > -1 && {
+                  backgroundColor: "#ffc200"
+                }
+              ]}
+              onPress={
+                () => this.toggleAccessory(item)
+                /* () => {
+                const newAccessories = [...this.state.accessories];
+                newAccessories[index] = { name, checked: !checked };
+                console.log(
+                  "newAccessories[index]",
+                  newAccessories[index].name
+                );
+                this.setState(
+                  {
+                    accessories: newAccessories
+                  },
+                  () =>
+                    this.props.accessoriesSelected(newAccessories[index].name)
+                );
+              } */
+              }
+            >
+              <Text style={styles.textButton}>{item}</Text>
+            </TouchableOpacity>
           );
         })}
       </View>
@@ -60,18 +83,22 @@ export default class Accessories extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    flexWrap: "wrap",
     alignItems: "center",
     marginBottom: 5,
-    marginLeft: 10,
+    marginRight: 10,
     borderRadius: 12,
-    backgroundColor: "#ffc200",
+    backgroundColor: "white",
     paddingHorizontal: 5,
     width: 110
   },
 
   containerAccessories: {
+    justifyContent: "center",
+    flexDirection: "row",
     marginVertical: 10,
-    flexDirection: "column"
+    flexWrap: "wrap",
+    width: width
   },
 
   textButton: {

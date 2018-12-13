@@ -27,6 +27,7 @@ export default class UploadPhoto extends React.Component {
         <View>
           {photos.map(imageBase64 => {
             // console.log("​UploadPhoto -> render -> imageBase64", imageBase64);
+
             return (
               //
               <Image
