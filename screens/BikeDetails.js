@@ -5,7 +5,8 @@ import {
   View,
   TouchableOpacity,
   Image,
-  ScrollView
+  ScrollView,
+  AsyncStorage
 } from "react-native";
 import { text, button, avatar } from "../constants/Styles";
 import { createIconSetFromIcoMoon } from "@expo/vector-icons";
@@ -35,15 +36,34 @@ class BikeDetails extends React.Component {
   });
 
   state = {
+
+    bikeId: this.props.navigation.state.params.bikeId,
+    userId: [],
+    propId: [],
+
     bike: {},
     user: [],
+
     isLoading: false
   };
 
   componentDidMount() {
+
+    AsyncStorage.getItem("id").then(value => {
+      console.log("userId ===>", value);
+      this.setState({
+        userId: value
+      });
+    });
+    console.log(
+      "bikeID on details ===>",
+      this.props.navigation.state.params.bikeId
+    );
+
     axios
       .get(
         "https://bicycly.herokuapp.com/api/bike/" +
+
           this.props.navigation.state.params.bikeId
       )
       .then(response => {
@@ -166,9 +186,41 @@ class BikeDetails extends React.Component {
             <TouchableOpacity
               style={button.primary}
               onPress={() => {
-                this.props.navigation.navigate("Tchat", {
-                  bikeId: this.props.navigation.state.params.bikeId
-                });
+                axios
+                  .get(
+                    "http://localhost:3100/api/tchat/" +
+                      this.props.navigation.state.params.bikeId
+                  )
+                  .then(firstResponse => {
+                    this.setState({
+                      propId: firstResponse.data[0].user._id
+                    });
+                    axios
+                      .get(
+                        "http://localhost:3100/api/tchat/thread/" +
+                          this.state.userId +
+                          "/" +
+                          firstResponse.data[0].user._id
+                      )
+                      .then(response => {
+                        console.log(
+                          "reponse du deuxieme axios ===>",
+                          response.data[0]._id
+                        );
+                        this.props.navigation.navigate("Tchat", {
+                          bikeId: this.props.navigation.state.params.bikeId,
+                          threadId: response.data[0]._id,
+                          userId: this.state.userId,
+                          propId: this.state.propId
+                        });
+                      })
+                      .catch(error => {
+                        console.log("ERROR", error.response);
+                      });
+                  })
+                  .catch(error => {
+                    console.log("ERROR", error.firstResponse);
+                  });
               }}
             >
               <Text style={text.textButton}>Demande de location</Text>

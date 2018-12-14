@@ -47,7 +47,7 @@ export default class HomeScreen extends React.Component {
   };
 
   componentDidMount() {
-    console.log("did mount");
+    // console.log("did mount");
     Permissions.askAsync(Permissions.LOCATION);
 
     navigator.geolocation.getCurrentPosition(
@@ -156,9 +156,9 @@ export default class HomeScreen extends React.Component {
   };
 
   centerMapOnMarker(slideIndex) {
-    console.log("slideIndex", slideIndex);
+    // console.log("slideIndex", slideIndex);
     const markerData = this.state.bikes[slideIndex];
-    console.log("markerData", markerData);
+    // console.log("markerData", markerData);
     /*  const mapRef = this._mapView;
 
     if (!markerData || !mapRef) {
@@ -186,8 +186,6 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
-    console.log("render");
-
     return (
       <View style={styles.container}>
         <MapView

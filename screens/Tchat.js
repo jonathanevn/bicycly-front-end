@@ -8,34 +8,47 @@ class Tchat extends React.Component {
   };
   state = {
     messages: [],
-    thread: undefined,
-    user: null
+    thread: this.props.navigation.state.params.threadId,
+    userId: this.props.navigation.state.params.userId,
+    bikeId: this.props.navigation.state.params.bikeId,
+    propId: this.props.navigation.state.params.propId
   };
 
   componentDidMount() {
     //rappel de la discussion
-    console.log("bikeID ===>", this.props.navigation.state.params.bikeId);
-    const bikeId = this.props.navigation.state.params.bikeId;
-    AsyncStorage.getItem("token").then(value => {
-      console.log("token ===>", value);
-      this.setState({
-        user: value
-      });
-    });
+    console.log("bikeID ===>", this.state.bikeId);
+    console.log("userID ===>", this.state.userId);
+    console.log("propriétaireID ===>", this.state.propId);
+    console.log("threadID ===>", this.state.thread);
+    // AsyncStorage.getItem("token").then(value => {
+    //   console.log("token ===>", value);
+    //   this.setState({
+    //     user: value
+    //   });
+    // });
     axios
-      .get("https://bicycly.herokuapp.com/message/" + this.state.thread)
-      .then(reponse => {
-        console.log("rappel history discussion", reponse.data);
+      .get(
+        "http://localhost:3100/api/tchat/message/" +
+          this.state.bikeId +
+          "/" +
+          this.state.userId +
+          "/" +
+          this.state.thread
+      )
+      .then(response => {
+        console.log(
+          "rappel de l'historique de la discussion // ou affichage de la discussion sauvegardée, le cas échéant",
+          response.data
+        );
 
-        // this.setState({ messages: reponse.data, thread: random });
-        // this.setState({ thread: reponse.data._id });
+        // this.setState({ messages: response.data, thread: random });
+        // this.setState({ thread: response.data._id });
         this.setState({
-          messages: reponse.data.messages || this.state.messages,
-          thread: reponse.data._id
+          messages: response.data.messages || this.state.messages
         });
       });
 
-    this.ws = new WebSocket("ws://https://bicycly.herokuapp.com");
+    this.ws = new WebSocket("ws://192.168.86.41:3100");
     this.ws.onmessage = e => {
       const message = JSON.parse(e.data);
       this.setState({
@@ -59,19 +72,19 @@ class Tchat extends React.Component {
   }
 
   render() {
-    console.log("state.user ===>", this.state.user);
+    console.log("state.userId ===>", this.state.userId);
     console.log("state.messages ===>", this.state.messages);
-    console.log("Have we got a thread ?", this.state.thread);
+    console.log("Have we got a thread ? ===>", this.state.thread);
 
     return (
       <GiftedChat
         //id du User -b qui recois donc propriétaire
-        user={{ _id: "5c0ce255019aae1f160a4ba2" }}
+        user={{ _id: this.state.propId }}
         renderMessageText={props => {
-          console.log(props.currentMessage);
+          console.log("props.currentMessage", props.currentMessage);
           if (
             props.currentMessage.isRequest === true &&
-            props.currentMessage.thread.bike.user === "5c0ce255019aae1f160a4ba2" //User -b Est-ce que je suis le propriétaire du vélo ?
+            props.currentMessage.thread.bike.user === this.state.propId //User -b Est-ce que je suis le propriétaire du vélo ?
           ) {
             return (
               //la demande de location avec l'acceptation ou le refus
