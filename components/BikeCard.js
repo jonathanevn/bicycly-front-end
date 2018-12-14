@@ -14,7 +14,7 @@ class BikeCard extends React.Component {
         <View style={styles.card}>
           <View style={styles.photoPrice}>
             <Image
-              source={{ uri: this.props.picture }}
+              source={{ uri: this.props.picture.secure_url }}
               style={styles.photo}
               resizeMode="cover"
             />

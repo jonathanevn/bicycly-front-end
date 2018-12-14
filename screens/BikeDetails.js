@@ -36,13 +36,19 @@ class BikeDetails extends React.Component {
   });
 
   state = {
-    bike: this.props.navigation.state.params.bikeId,
+
+    bikeId: this.props.navigation.state.params.bikeId,
     userId: [],
     propId: [],
+
+    bike: {},
+    user: [],
+
     isLoading: false
   };
 
   componentDidMount() {
+
     AsyncStorage.getItem("id").then(value => {
       console.log("userId ===>", value);
       this.setState({
@@ -53,14 +59,16 @@ class BikeDetails extends React.Component {
       "bikeID on details ===>",
       this.props.navigation.state.params.bikeId
     );
+
     axios
       .get(
-        "http://localhost:3100/api/bike/" +
+        "https://bicycly.herokuapp.com/api/bike/" +
+
           this.props.navigation.state.params.bikeId
       )
       .then(response => {
         if (response.data) {
-          /*           console.log("response.data", response.data); */
+          console.log("​componentDidMount -> response.data", response.data);
           this.setState({ bike: response.data, isLoading: true });
         }
       })
@@ -73,11 +81,18 @@ class BikeDetails extends React.Component {
     const { bike } = this.state;
     if (this.state.isLoading === false) {
       return <Text>isLoading...</Text>;
+      // } else if (this.state.bike.photos === undefined) {
+      //   return null;
     } else {
       return (
         <ScrollView style={styles.contentContainer}>
           <View style={styles.photoPrice}>
-            <Image source={{ uri: bike.photos[0] }} style={styles.photo} />
+            <Image
+              source={{
+                uri: this.state.bike.photos[0].secure_url
+              }}
+              style={styles.photo}
+            />
             <View style={styles.priceAvatar}>
               <Text style={text.fullPrice}>30€</Text>
               <Text style={text.pricePerDay}>{bike.pricePerDay}€ /jour</Text>
@@ -116,10 +131,12 @@ class BikeDetails extends React.Component {
             </View>
 
             <View style={styles.profileUser}>
-              <Image
-                source={{ uri: bike.user.photo[0] }}
+              {/* <Image
+                source={{
+                  uri: "data:image/jpeg;base64," + bike.user.photos[0]
+                }}
                 style={avatar.medium}
-              />
+              /> */}
               <View style={styles.profileUserInfo}>
                 <View style={styles.username}>
                   <Text style={styles.firstname}>{bike.user.firstName}</Text>

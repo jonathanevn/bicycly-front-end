@@ -10,15 +10,12 @@ import {
 import { text, button, background } from "../constants/Styles";
 import apiKey from "../apiKey";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import {
-  Ionicons,
-  MaterialCommunityIcons,
-  createIconSetFromIcoMoon
-} from "@expo/vector-icons";
+import { Ionicons, createIconSetFromIcoMoon } from "@expo/vector-icons";
 import icoMoonConfig from "../assets/fonts/selection.json";
 import Colors from "../constants/Colors";
 import { width, height } from "../constants/Layout";
 import Calendar from "./Calendar";
+
 import moment from "moment/min/moment-with-locales";
 
 const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
@@ -156,6 +153,9 @@ class SearchBar extends React.Component {
           animationType="slide"
           transparent={false}
           visible={this.state.modalAddressVisible}
+          onRequestClose={() => {
+            this.setModalAddressVisible(false);
+          }}
         >
           <View style={styles.containerAddressModal}>
             <TouchableOpacity
@@ -178,9 +178,9 @@ class SearchBar extends React.Component {
           animationType="slide"
           transparent={true}
           visible={this.state.modalDateVisible}
-          onBackdropPress={() =>
-            this.setModalDateVisible(!this.state.modalDateVisible)
-          }
+          onRequestClose={() => {
+            this.setModalDateVisible(false);
+          }}
         >
           <View style={styles.containerDateModal}>
             <View style={styles.halfDateModal}>
@@ -335,6 +335,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-end",
     flex: 1,
+    width: width,
     backgroundColor: "rgba(88, 88, 88, 0.7)"
   },
 
@@ -348,7 +349,8 @@ const styles = StyleSheet.create({
   confirmed: {
     alignItems: "center",
     paddingBottom: 30,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    width: width
   }
 });
 

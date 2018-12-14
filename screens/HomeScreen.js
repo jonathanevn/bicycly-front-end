@@ -2,24 +2,16 @@ import React from "react";
 import SearchBar from "../components/SearchBar";
 import axios from "axios";
 import Carousel from "react-native-snap-carousel";
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Animated,
-  FlatList,
-  Image
-} from "react-native";
+import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import { MapView, Permissions } from "expo";
 import { height, width } from "../constants/Layout";
-import { text, button, background } from "../constants/Styles";
+
 import { ListButton, FilterButton } from "../components/SquareButton";
 import BikeCard from "../components/BikeCard";
 import Colors from "../constants/Colors";
 import { createIconSetFromIcoMoon } from "@expo/vector-icons";
 import icoMoonConfig from "../assets/fonts/selection.json";
+import Filters from "../components/Filters";
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 0;
@@ -49,7 +41,9 @@ export default class HomeScreen extends React.Component {
       startDate: null,
       endDate: null
     },
-    markerSelected: null
+    markerSelected: null,
+    categoriesSelected: "",
+    modalFilterVisible: false
   };
 
   componentDidMount() {
@@ -72,7 +66,8 @@ export default class HomeScreen extends React.Component {
               .get("https://bicycly.herokuapp.com/api/bike/around", {
                 params: {
                   longitude: this.state.region.longitude,
-                  latitude: this.state.region.latitude
+                  latitude: this.state.region.latitude,
+                  category: this.state.categoriesSelected
                 }
               })
               .then(response => {
@@ -105,13 +100,13 @@ export default class HomeScreen extends React.Component {
   };
 
   onLocationChange = region => {
-    console.log("onLocationChange");
     this.setState(region, () =>
       axios
         .get("https://bicycly.herokuapp.com/api/bike/around", {
           params: {
             longitude: this.state.region.longitude,
-            latitude: this.state.region.latitude
+            latitude: this.state.region.latitude,
+            category: this.state.categoriesSelected
           }
         })
         .then(response => {
@@ -125,6 +120,14 @@ export default class HomeScreen extends React.Component {
           console.log(error);
         })
     );
+  };
+
+  handleFilters = categories => {
+    const categoriesSplitted = categories.join(" ");
+    this.setState({ categorieSelected: categoriesSplitted }, () => {
+      console.log("categorieeees", this.state.categorieSelected);
+    });
+    this.onLocationChange();
   };
 
   pickLocationHandler = (event, index) => {
@@ -161,12 +164,15 @@ export default class HomeScreen extends React.Component {
     if (!markerData || !mapRef) {
       return;
     }*/
-    this.map.animateToRegion({
-      longitude: markerData.loc[0],
-      latitude: markerData.loc[1],
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
-    });
+    this.map.animateToRegion(
+      {
+        longitude: markerData.loc[0],
+        latitude: markerData.loc[1],
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      },
+      200
+    );
     this.setState(prevState => {
       return {
         region: {
@@ -256,13 +262,7 @@ export default class HomeScreen extends React.Component {
           />
         </View>
         <View style={styles.filterButton}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate("Filters");
-            }}
-          >
-            <FilterButton name="equalizer" size={20} label="Filtres" />
-          </TouchableOpacity>
+          <Filters categoriesSelected={this.handleFilters} />
         </View>
         <View style={styles.listButton}>
           <TouchableOpacity
@@ -347,13 +347,13 @@ const styles = StyleSheet.create({
 
   filterButton: {
     position: "absolute",
-    top: height / 4.5,
+    top: 85,
     right: 70
   },
 
   listButton: {
     position: "absolute",
-    top: height / 3.2,
+    top: 150,
     right: 70
   }
 });

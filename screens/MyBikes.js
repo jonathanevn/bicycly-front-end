@@ -10,7 +10,7 @@ import {
 
 //import { ListButton } from "../components/SquareButton";
 import SearchBar from "../components/SearchBar";
-
+import { text, button, avatar } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
 
 export default class MyBikesScreen extends React.Component {
@@ -27,9 +27,31 @@ export default class MyBikesScreen extends React.Component {
     }
   };
 
+  /* 
+  componentDidMount() {
+ 
+
+    AsyncStorage.multiGet(["token", "id"]).then(value => {
+      this.setState({ token: value[0][1], id: value[1][1] });
+
+      axios
+        .get("https://bicycly.herokuapp.com/api/user/" + this.state.id, {
+          headers: { Authorization: "Bearer " + this.state.token }
+        })
+        .then(response => {
+          this.setState({
+            account: response.data.account,
+            firstName: response.data.firstName,
+            lastName: response.data.lastName,
+            reviews: response.data.reviews
+          });
+          console.log("cdm", response.data);
+        })
+        .catch(err => ("wtf", err));
+    });
+  } */
+
   render() {
-    /* Go ahead and delete ExpoConfigView and replace it with your
-     * content, we just wanted to give you a quick view of your config */
     return (
       <View style={styles.container}>
         <ScrollView
@@ -58,7 +80,7 @@ export default class MyBikesScreen extends React.Component {
                 this.props.navigation.navigate("AddBike");
               }}
             >
-              <Text>Modifier</Text>
+              <Text>Ajouter un vélo</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {

@@ -39,7 +39,7 @@ class List extends React.Component {
                 <BikeItem
                   brand={item.bikeBrand}
                   model={item.bikeModel}
-                  picture={item.photos[0]}
+                  picture={item.photos[0].secure_url}
                   category={item.bikeCategory}
                   pricePerDay={item.pricePerDay}
                 />
@@ -78,16 +78,17 @@ const styles = StyleSheet.create({
   yellowBackground: {
     backgroundColor: "#ffc200",
     width: width,
-    height: 110,
+    height: 100,
     top: -20,
     alignItems: "flex-start",
     justifyContent: "center",
     position: "relative",
-    borderRadius: 80 / 2
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40
   },
 
   listItems: {
-    marginTop: 50,
+    marginTop: 40,
     position: "relative"
   },
 
