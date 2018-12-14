@@ -67,7 +67,7 @@ class BikeDetails extends React.Component {
           <View style={styles.photoPrice}>
             <Image
               source={{
-                uri: "data:image/jpeg;base64" + this.state.bike.photos[0]
+                uri: "data:image/jpeg;base64," + bike.photos[0]
               }}
               style={styles.photo}
             />
@@ -109,10 +109,10 @@ class BikeDetails extends React.Component {
             </View>
 
             <View style={styles.profileUser}>
-              {/* <Image
-                source={{ uri: bike.user.photo[0] }}
+              <Image
+                source={{ uri: "data:image/jpeg;base64," + bike.user.photo[0] }}
                 style={avatar.medium}
-              /> */}
+              />
               <View style={styles.profileUserInfo}>
                 <View style={styles.username}>
                   <Text style={styles.firstname}>{bike.user.firstName}</Text>
