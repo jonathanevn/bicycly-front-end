@@ -59,7 +59,7 @@ class MyAccountInfo extends React.Component {
             style={[avatar.medium, (backgroundColor = "red")]}
             source={{
               uri:
-                "data:image/jpeg;base64," +
+                "data:image/jpeg;base64" +
                 this.props.navigation.state.params.account.photos[0]
             }}
           />
