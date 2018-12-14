@@ -97,7 +97,7 @@ export default class AccountScreen extends React.Component {
       <View style={styles.container}>
         <NavigationEvents onDidFocus={this.getUserInfos} />
         {this.state.account.photos === undefined ? null : (
-          <View>
+          <View style={styles.container}>
             <View style={styles.profil}>
               <View style={styles.picture}>{this.renderImage()}</View>
               <View>
