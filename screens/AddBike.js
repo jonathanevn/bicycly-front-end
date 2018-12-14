@@ -139,6 +139,10 @@ class AddBike extends React.Component {
       )
 
       .then(response => {
+        console.log(
+          "​AddBike -> onPress -> response.data.photos.map(photo => photo.secure_url)",
+          response.data.photos.map(photo => photo.secure_url)
+        );
         this.props.navigation.navigate("BikeDetails", {
           bikeId: response.data._id,
           bikeBrand: response.data.bikeBrand,
@@ -146,17 +150,13 @@ class AddBike extends React.Component {
           accessories: response.data.accessories,
           bikeCategory: response.data.bikeCategory,
           description: response.data.description,
-          photos: response.data.photos,
+          photos: response.data.photos.map(photo => photo.secure_url), // [{ secure_url: 'https://...' }, {}]
           pricePerDay: response.data.pricePerDay
         });
       });
   };
-
   handleAccessories = accessories => {
-    console.log("accessories", accessories);
-    this.setState({ accessories: accessories }, () => {
-      console.log(this.state.accessories);
-    });
+    this.setState({ accessories: accessories });
   };
 
   render() {
@@ -202,14 +202,9 @@ class AddBike extends React.Component {
                 }}
                 items={this.state.bikeCategory}
                 onValueChange={value => {
-                  this.setState(
-                    {
-                      CateVelo: value
-                    },
-                    () => {
-                      console.log("CateVelo: value", this.state.CateVelo);
-                    }
-                  );
+                  this.setState({
+                    CateVelo: value
+                  });
                 }}
                 onUpArrow={() => {
                   this.inputRefs.name.focus();

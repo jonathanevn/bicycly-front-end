@@ -35,7 +35,7 @@ class BikeDetails extends React.Component {
   });
 
   state = {
-    bike: [],
+    bike: {},
     user: [],
     isLoading: false
   };
@@ -48,7 +48,7 @@ class BikeDetails extends React.Component {
       )
       .then(response => {
         if (response.data) {
-          console.log("response.data", response.data);
+          console.log("​componentDidMount -> response.data", response.data);
           this.setState({ bike: response.data, isLoading: true });
         }
       })
@@ -61,11 +61,18 @@ class BikeDetails extends React.Component {
     const { bike } = this.state;
     if (this.state.isLoading === false) {
       return <Text>isLoading...</Text>;
+      // } else if (this.state.bike.photos === undefined) {
+      //   return null;
     } else {
       return (
         <ScrollView style={styles.contentContainer}>
           <View style={styles.photoPrice}>
-            {/* <Image source={{ uri: bike.photos[0] }} style={styles.photo} /> */}
+            <Image
+              source={{
+                uri: this.state.bike.photos[0]
+              }}
+              style={styles.photo}
+            />
             <View style={styles.priceAvatar}>
               <Text style={text.fullPrice}>30€</Text>
               <Text style={text.pricePerDay}>{bike.pricePerDay}€ /jour</Text>
@@ -105,7 +112,9 @@ class BikeDetails extends React.Component {
 
             <View style={styles.profileUser}>
               {/* <Image
-                source={{ uri: bike.user.photo[0] }}
+                source={{
+                  uri: "data:image/jpeg;base64," + bike.user.photos[0]
+                }}
                 style={avatar.medium}
               /> */}
               <View style={styles.profileUserInfo}>
