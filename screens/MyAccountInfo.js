@@ -11,7 +11,7 @@ import axios from "axios";
 import { button, text, avatar } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
 import UploadPhoto from "../components/UploadPhoto";
-import { TextInput } from "react-native-gesture-handler";
+import { TextInput, ScrollView } from "react-native-gesture-handler";
 
 class MyAccountInfo extends React.Component {
   static navigationOptions = {
@@ -106,48 +106,50 @@ class MyAccountInfo extends React.Component {
   render() {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-        <View style={styles.container}>
-          <View style={styles.image}>{this.renderImage()}</View>
-          <TextInput
-            style={[styles.textInput, text.p2, { borderBottomWidth: 0 }]}
-            value={this.props.navigation.state.params.firstName}
-          />
-          <TextInput
-            style={[styles.textInput, text.p2, { marginBottom: 20 }]}
-            value={this.props.navigation.state.params.lastName}
-          />
-          <TextInput
-            style={[styles.textInput, text.p2, { marginBottom: 20 }]}
-            value={this.state.email}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            onChangeText={value => {
-              this.setState({ email: value });
-            }}
-          />
-          <TextInput
-            style={[styles.textInput, text.p2, { marginBottom: 20 }]}
-            placeholder="Téléphone"
-            keyboardType="number-pad"
-            value={this.state.phone}
-            onChangeText={value => {
-              this.setState({ phone: value });
-            }}
-          />
-          <TouchableOpacity
-            style={[styles.textInput, { marginBottom: 50 }]}
-            onPress={() => {
-              this.props.navigation.navigate("MyBikes");
-            }}
-          >
-            <Text style={[text.p2]}>Voir mes vélos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={text.p2} onPress={this.onPress}>
-              Enregistrer les modifications
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.image}>{this.renderImage()}</View>
+            <TextInput
+              style={[styles.textInput, text.p2, { borderBottomWidth: 0 }]}
+              value={this.props.navigation.state.params.firstName}
+            />
+            <TextInput
+              style={[styles.textInput, text.p2, { marginBottom: 20 }]}
+              value={this.props.navigation.state.params.lastName}
+            />
+            <TextInput
+              style={[styles.textInput, text.p2, { marginBottom: 20 }]}
+              value={this.state.email}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              onChangeText={value => {
+                this.setState({ email: value });
+              }}
+            />
+            <TextInput
+              style={[styles.textInput, text.p2, { marginBottom: 20 }]}
+              placeholder="Téléphone"
+              keyboardType="number-pad"
+              value={this.state.phone}
+              onChangeText={value => {
+                this.setState({ phone: value });
+              }}
+            />
+            <TouchableOpacity
+              style={[styles.textInput, { marginBottom: 50 }]}
+              onPress={() => {
+                this.props.navigation.navigate("MyBikes");
+              }}
+            >
+              <Text style={[text.p2]}>Voir mes vélos</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text style={text.p2} onPress={this.onPress}>
+                Enregistrer les modifications
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     );
   }
