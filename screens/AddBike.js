@@ -123,7 +123,7 @@ class AddBike extends React.Component {
 
     axios
       .post(
-        "http://localhost:3100/api/bike/publish",
+        "https://bicycly.herokuapp.com/api/bike/publish",
         {
           bikeBrand: bikeBrand,
           bikeModel: bikeModel,
@@ -133,9 +133,7 @@ class AddBike extends React.Component {
           photos: photos,
           pricePerDay: pricePerDay
         },
-        {
-          headers: { Authorization: this.state.token }
-        }
+        { headers: { Authorization: this.state.token } }
       )
 
       .then(response => {

@@ -81,20 +81,9 @@ class MyAccountInfo extends React.Component {
     const { params } = this.props.navigation.state;
     console.log("Mes params", params);
     axios
-      .post(
-        "http://localhost:3100/api/user/update",
+      .post("https://bicycly.herokuapp.com/api/user/update",
 
-        {
-          email: this.state.email,
-          phone: this.state.phone,
-          photos: this.state.photos
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + params.token
-          }
-        }
-      )
+        { email: this.state.email, phone: this.state.phone, photos: this.state.photos }, { headers: { Authorization: "Bearer " + params.token } })
       .then(response => {
         console.log(response.data);
         this.props.navigation.navigate("AccountScreen");
