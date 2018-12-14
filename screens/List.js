@@ -78,16 +78,17 @@ const styles = StyleSheet.create({
   yellowBackground: {
     backgroundColor: "#ffc200",
     width: width,
-    height: 110,
+    height: 100,
     top: -20,
     alignItems: "flex-start",
     justifyContent: "center",
     position: "relative",
-    borderRadius: 80 / 2
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40
   },
 
   listItems: {
-    marginTop: 50,
+    marginTop: 40,
     position: "relative"
   },
 

@@ -40,51 +40,51 @@ class AddBike extends React.Component {
       bikeCategory: [
         {
           label: "VTT",
-          value: "VTT"
+          value: "vtt"
         },
         {
           label: "Vélo ville",
-          value: "Vélo ville"
+          value: "ville"
         },
         {
           label: "VTC",
-          value: "VTC"
+          value: "vtc"
         },
         {
           label: "BMX",
-          value: "BMX"
+          value: "bmx"
         },
         {
           label: "Tandem",
-          value: "Tandem"
+          value: "tandem"
         },
         {
           label: "Course",
-          value: "Course"
+          value: "course"
         },
         {
           label: "Hollandais",
-          value: "Hollandais"
+          value: "hollandais"
         },
         {
           label: "Electrique",
-          value: "Electrique"
+          value: "electrique"
         },
         {
           label: "Fixie/SP",
-          value: "Fixie/SP"
+          value: "fixie/SP"
         },
         {
           label: "Cargo",
-          value: "Cargo"
+          value: "cargo"
         },
         {
           label: "Enfants",
-          value: "Enfants"
+          value: "enfants"
         },
         {
           label: "Autres",
-          value: "Autres"
+          value: "autres"
         }
       ],
 
