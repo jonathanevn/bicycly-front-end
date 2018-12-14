@@ -31,7 +31,7 @@ class MyAccountInfo extends React.Component {
   };
 
   state = {
-    photos: this.props.navigation.state.params.account.photos,
+    photos: [],
     email: this.props.navigation.state.params.email,
     phone: this.props.navigation.state.params.account.phone
   };
@@ -58,9 +58,8 @@ class MyAccountInfo extends React.Component {
             }}
             style={[avatar.medium, (backgroundColor = "red")]}
             source={{
-              uri:
-                "data:image/jpeg;base64," +
-                this.props.navigation.state.params.account.photos[0]
+              uri: this.props.navigation.state.params.account.photos[0]
+                .secure_url
             }}
           />
         </View>
