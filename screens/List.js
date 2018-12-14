@@ -39,7 +39,7 @@ class List extends React.Component {
                 <BikeItem
                   brand={item.bikeBrand}
                   model={item.bikeModel}
-                  picture={item.photos[0]}
+                  picture={item.photos[0].secure_url}
                   category={item.bikeCategory}
                   pricePerDay={item.pricePerDay}
                 />

@@ -69,7 +69,7 @@ class BikeDetails extends React.Component {
           <View style={styles.photoPrice}>
             <Image
               source={{
-                uri: this.state.bike.photos[0]
+                uri: this.state.bike.photos[0].secure_url
               }}
               style={styles.photo}
             />
