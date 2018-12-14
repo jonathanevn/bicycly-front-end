@@ -176,19 +176,23 @@ class BikeDetails extends React.Component {
                   )
                   .then(firstResponse => {
                     this.setState({
-                      propId: firstResponse.data
+                      propId: firstResponse.data[0].user._id
                     });
                     axios
                       .get(
                         "http://localhost:3100/api/tchat/thread/" +
                           this.state.userId +
                           "/" +
-                          firstResponse.data
+                          firstResponse.data[0].user._id
                       )
                       .then(response => {
+                        console.log(
+                          "reponse du deuxieme axios ===>",
+                          response.data[0]._id
+                        );
                         this.props.navigation.navigate("Tchat", {
                           bikeId: this.props.navigation.state.params.bikeId,
-                          threadId: response.data._id,
+                          threadId: response.data[0]._id,
                           userId: this.state.userId,
                           propId: this.state.propId
                         });
@@ -198,7 +202,7 @@ class BikeDetails extends React.Component {
                       });
                   })
                   .catch(error => {
-                    console.log("ERROR", error.response);
+                    console.log("ERROR", error.firstResponse);
                   });
               }}
             >

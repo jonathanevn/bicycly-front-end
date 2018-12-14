@@ -28,7 +28,7 @@ class Tchat extends React.Component {
     // });
     axios
       .get(
-        "https://bicycly.herokuapp.com/message/" +
+        "http://localhost:3100/api/tchat/message/" +
           this.state.bikeId +
           "/" +
           this.state.userId +
@@ -48,7 +48,7 @@ class Tchat extends React.Component {
         });
       });
 
-    this.ws = new WebSocket("ws://https://bicycly.herokuapp.com");
+    this.ws = new WebSocket("ws://192.168.86.41:3100");
     this.ws.onmessage = e => {
       const message = JSON.parse(e.data);
       this.setState({
