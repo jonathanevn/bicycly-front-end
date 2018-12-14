@@ -42,13 +42,9 @@ export default class HomeScreen extends React.Component {
       endDate: null
     },
     markerSelected: null,
-    categoriesSelected: [],
+    categoriesSelected: "",
     modalFilterVisible: false
   };
-  /* 
-  setModalFilterVisible(visible) {
-    this.setState({ modalFilterVisible: visible });
-  } */
 
   componentDidMount() {
     console.log("did mount");
@@ -70,7 +66,8 @@ export default class HomeScreen extends React.Component {
               .get("https://bicycly.herokuapp.com/api/bike/around", {
                 params: {
                   longitude: this.state.region.longitude,
-                  latitude: this.state.region.latitude
+                  latitude: this.state.region.latitude,
+                  category: this.state.categoriesSelected
                 }
               })
               .then(response => {
@@ -103,13 +100,13 @@ export default class HomeScreen extends React.Component {
   };
 
   onLocationChange = region => {
-    console.log("onLocationChange");
     this.setState(region, () =>
       axios
         .get("https://bicycly.herokuapp.com/api/bike/around", {
           params: {
             longitude: this.state.region.longitude,
-            latitude: this.state.region.latitude
+            latitude: this.state.region.latitude,
+            category: this.state.categoriesSelected
           }
         })
         .then(response => {
@@ -126,8 +123,11 @@ export default class HomeScreen extends React.Component {
   };
 
   handleFilters = categories => {
-    console.log("categories", categories);
-    this.setState({ categorieSelected: categories });
+    const categoriesSplitted = categories.join(" ");
+    this.setState({ categorieSelected: categoriesSplitted }, () => {
+      console.log("categorieeees", this.state.categorieSelected);
+    });
+    this.onLocationChange();
   };
 
   pickLocationHandler = (event, index) => {

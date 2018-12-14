@@ -98,7 +98,7 @@ class Filters extends React.Component {
       }
     }
     this.setState({ categoriesFilter: categoriesSelected }, () =>
-      this.props.categoriesSelected({ categories: this.state.categoriesFilter })
+      this.props.categoriesSelected(this.state.categoriesFilter)
     );
     this.setModalFilterVisible(!this.state.modalFilterVisible);
   };
