@@ -31,7 +31,7 @@ export default class UploadPhoto extends React.Component {
             return (
               //
               <Image
-                source={{ uri: "data:image/jpeg;base64" + imageBase64 }}
+                source={{ uri: "data:image/jpeg;base64," + imageBase64 }}
                 style={[{ width: 200, height: 200 }, this.props.size]}
               />
             );
