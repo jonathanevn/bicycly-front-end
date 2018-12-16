@@ -49,14 +49,20 @@ class CardTchat extends React.Component {
               </TouchableOpacity>
             </View>
           ) : (
-            <View style={styles.button}>
-              <Icon
+            <View>
+              {/* <Icon
                 name="check"
                 size={15}
                 color={"#ffc200"}
                 style={{ paddingRight: 10 }}
-              />
-              <Text style={styles.nameBike}>Acceptée</Text>
+              /> */}
+              <TouchableOpacity
+                style={styles.button}
+                // style={button.secondary}
+                onPress={this.useLibraryHandler}
+              >
+                <Text>Accepter</Text>
+              </TouchableOpacity>
             </View>
           )}
         </View>

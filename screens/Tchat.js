@@ -1,6 +1,7 @@
 import React from "react";
 import { GiftedChat, MessageText } from "react-native-gifted-chat";
 import axios from "axios";
+import CardTchat from "../components/CardTchat";
 import { View, Text, AsyncStorage } from "react-native";
 class Tchat extends React.Component {
   static navigationOptions = {
@@ -63,9 +64,14 @@ class Tchat extends React.Component {
                   this.ws = new WebSocket("ws://192.168.86.134:3100");
                   this.ws.onmessage = e => {
                     const message = JSON.parse(e.data);
-                    this.setState({
-                      messages: GiftedChat.append(this.state.messages, message)
-                    });
+                    if (message.threadId === this.state.threadId) {
+                      this.setState({
+                        messages: GiftedChat.append(
+                          this.state.messages,
+                          message
+                        )
+                      });
+                    }
                   };
                 }
               );
@@ -115,7 +121,7 @@ class Tchat extends React.Component {
               <React.Fragment>
                 <MessageText {...props} />
                 <View>
-                  <Text>Vélo à louer</Text>
+                  <CardTchat />
                 </View>
               </React.Fragment>
             );
