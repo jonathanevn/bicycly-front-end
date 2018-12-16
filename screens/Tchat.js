@@ -64,7 +64,7 @@ class Tchat extends React.Component {
                   this.ws = new WebSocket("ws://192.168.86.134:3100");
                   this.ws.onmessage = e => {
                     const message = JSON.parse(e.data);
-                    if (message.threadId === this.state.threadId) {
+                    if (message.threadId === this.state.thread) {
                       this.setState({
                         messages: GiftedChat.append(
                           this.state.messages,
@@ -103,6 +103,7 @@ class Tchat extends React.Component {
 
     return (
       <GiftedChat
+        // bottomOffset={81}
         //id du User -b qui recois donc propriétaire
         user={{ _id: this.state.userId }}
         renderMessageText={props => {
