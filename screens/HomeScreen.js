@@ -191,7 +191,7 @@ export default class HomeScreen extends React.Component {
         <MapView
           style={styles.map}
           region={this.state.region}
-          provider={MapView.PROVIDER_GOOGLE}
+          // provider={MapView.PROVIDER_GOOGLE}
           zoomEnabled={true}
           customMapStyle={generatedMapStyle}
           showsUserLocation={true}
