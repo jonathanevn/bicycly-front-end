@@ -5,8 +5,11 @@ import {
   View,
   Text,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  AsyncStorage
 } from "react-native";
+import axios from "axios";
+import BikeViewHistory from "../components/BikeViewHistory";
 
 //import { ListButton } from "../components/SquareButton";
 import SearchBar from "../components/SearchBar";
@@ -27,31 +30,30 @@ export default class MyBikesScreen extends React.Component {
     }
   };
 
-  /* 
-  componentDidMount() {
- 
+  state = {
+    token: "",
+    id: "",
+    bikes: []
+  };
 
+  componentDidMount() {
     AsyncStorage.multiGet(["token", "id"]).then(value => {
       this.setState({ token: value[0][1], id: value[1][1] });
 
       axios
-        .get("https://bicycly.herokuapp.com/api/user/" + this.state.id, {
+        .get("http://localhost:3100/api/user/anyThread/" + this.state.id, {
           headers: { Authorization: "Bearer " + this.state.token }
         })
         .then(response => {
-          this.setState({
-            account: response.data.account,
-            firstName: response.data.firstName,
-            lastName: response.data.lastName,
-            reviews: response.data.reviews
-          });
-          console.log("cdm", response.data);
+          console.log("on a bien les vélos ? ====> ", response.data);
+          this.setState({ bikes: response.data });
         })
-        .catch(err => ("wtf", err));
+        .catch(err => err);
     });
-  } */
+  }
 
   render() {
+    console.log(this.state);
     return (
       <View style={styles.container}>
         <ScrollView
@@ -61,20 +63,36 @@ export default class MyBikesScreen extends React.Component {
           <View style={styles.welcomeContainer}>
             <Text>This is the My Bikes screen with the map</Text>
 
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("StartRent");
-              }}
-            >
-              <Text>Demarrer</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("EndRent");
-              }}
-            >
-              <Text>Terminer</Text>
-            </TouchableOpacity>
+            <FlatList
+              data={this.state.bikes}
+              keyExtractor={item => item._id}
+              renderItem={({ item }) => (
+                <View>
+                  <BikeViewHistory
+                    picture={item.bike.photos[0].secure_url}
+                    brand={item.bike.bikeBrand}
+                    cat={item.bike.bikeCategory}
+                  />
+                  <View style={styles.confirmButton}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.props.navigation.navigate("StartRent");
+                      }}
+                    >
+                      <Text>Demarrer</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.props.navigation.navigate("Tchat");
+                      }}
+                    >
+                      <Text>Contacter</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
+            />
+
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("AddBike");
@@ -84,10 +102,10 @@ export default class MyBikesScreen extends React.Component {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                this.props.navigation.navigate("Tchat");
+                this.props.navigation.navigate("EndRent");
               }}
             >
-              <Text>Contacter</Text>
+              <Text>Terminer</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -100,5 +118,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 15,
     backgroundColor: "#f8f8f8"
+  },
+  confirmButton: {
+    flexDirection: "row"
   }
 });
