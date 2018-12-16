@@ -48,7 +48,7 @@ class Tchat extends React.Component {
         });
       });
 
-    this.ws = new WebSocket("ws://192.168.86.41:3100");
+    this.ws = new WebSocket("ws://localhost:3100");
     this.ws.onmessage = e => {
       const message = JSON.parse(e.data);
       this.setState({

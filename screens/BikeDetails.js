@@ -36,19 +36,18 @@ class BikeDetails extends React.Component {
   });
 
   state = {
-
     bikeId: this.props.navigation.state.params.bikeId,
     userId: [],
     propId: [],
 
     bike: {},
+    thread: {},
     user: [],
 
     isLoading: false
   };
 
   componentDidMount() {
-
     AsyncStorage.getItem("id").then(value => {
       console.log("userId ===>", value);
       this.setState({
@@ -62,19 +61,69 @@ class BikeDetails extends React.Component {
 
     axios
       .get(
-        "https://bicycly.herokuapp.com/api/bike/" +
-
+        "http://localhost:3100/api/bike/" +
+          // "https://bicycly.herokuapp.com/api/bike/"
           this.props.navigation.state.params.bikeId
       )
       .then(response => {
+        console.log(response.data);
+
         if (response.data) {
-          console.log("​componentDidMount -> response.data", response.data);
-          this.setState({ bike: response.data, isLoading: true });
+          this.setState({
+            bike: response.data.bike,
+            thread: response.data.thread,
+            isLoading: true
+          });
         }
       })
       .catch(error => {
-        console.log("ERROR", error.response);
+        console.log("ERROR3", error.response);
       });
+  }
+
+  renderRentButton() {
+    if (this.state.userId !== this.state.bike.user._id) {
+      return (
+        <TouchableOpacity
+          style={button.primary}
+          onPress={() => {
+            if (this.state.thread) {
+              this.props.navigation.navigate("Tchat", {
+                bikeId: this.props.navigation.state.params.bikeId,
+                threadId: this.state.thread._id,
+                userId: this.state.userId,
+                propId: this.state.propId
+              });
+            } else {
+              axios
+                .get(
+                  `http://localhost:3100/api/tchat/message/${
+                    this.props.navigation.state.params.bikeId
+                  }/${this.state.userId}`
+                )
+                .then(response => {
+                  if (response.data._id) {
+                    this.props.navigation.navigate("Tchat", {
+                      bikeId: this.props.navigation.state.params.bikeId,
+                      threadId: response.data._id,
+                      userId: this.state.userId,
+                      propId: this.state.propId
+                    });
+                  } else {
+                    alert("Une erreur est survenue");
+                  }
+                })
+                .catch(error => {
+                  console.log("ERROR1", error);
+                });
+            }
+          }}
+        >
+          <Text style={text.textButton}>Demande de location</Text>
+        </TouchableOpacity>
+      );
+    }
+    return null;
   }
 
   render() {
@@ -182,50 +231,7 @@ class BikeDetails extends React.Component {
 
             <Text style={text.p}>{this.state.bike.description}</Text>
           </View>
-          <View style={styles.buttonSection}>
-            <TouchableOpacity
-              style={button.primary}
-              onPress={() => {
-                axios
-                  .get(
-                    "http://localhost:3100/api/tchat/" +
-                      this.props.navigation.state.params.bikeId
-                  )
-                  .then(firstResponse => {
-                    this.setState({
-                      propId: firstResponse.data[0].user._id
-                    });
-                    axios
-                      .get(
-                        "http://localhost:3100/api/tchat/thread/" +
-                          this.state.userId +
-                          "/" +
-                          firstResponse.data[0].user._id
-                      )
-                      .then(response => {
-                        console.log(
-                          "reponse du deuxieme axios ===>",
-                          response.data[0]._id
-                        );
-                        this.props.navigation.navigate("Tchat", {
-                          bikeId: this.props.navigation.state.params.bikeId,
-                          threadId: response.data[0]._id,
-                          userId: this.state.userId,
-                          propId: this.state.propId
-                        });
-                      })
-                      .catch(error => {
-                        console.log("ERROR", error.response);
-                      });
-                  })
-                  .catch(error => {
-                    console.log("ERROR", error.firstResponse);
-                  });
-              }}
-            >
-              <Text style={text.textButton}>Demande de location</Text>
-            </TouchableOpacity>
-          </View>
+          <View style={styles.buttonSection}>{this.renderRentButton()}</View>
         </ScrollView>
       );
     }
