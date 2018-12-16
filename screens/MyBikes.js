@@ -53,7 +53,7 @@ export default class MyBikesScreen extends React.Component {
   }
 
   render() {
-    console.log(this.state);
+    console.log("Les states de la page ====>", this.state);
     return (
       <View style={styles.container}>
         <ScrollView
@@ -67,28 +67,13 @@ export default class MyBikesScreen extends React.Component {
               data={this.state.bikes}
               keyExtractor={item => item._id}
               renderItem={({ item }) => (
-                <View>
+                <View style={styles.flatCard}>
                   <BikeViewHistory
                     picture={item.bike.photos[0].secure_url}
                     brand={item.bike.bikeBrand}
                     cat={item.bike.bikeCategory}
+                    price={item.bike.pricePerDay}
                   />
-                  <View style={styles.confirmButton}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.props.navigation.navigate("StartRent");
-                      }}
-                    >
-                      <Text>Demarrer</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.props.navigation.navigate("Tchat");
-                      }}
-                    >
-                      <Text>Contacter</Text>
-                    </TouchableOpacity>
-                  </View>
                 </View>
               )}
             />
@@ -119,7 +104,11 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     backgroundColor: "#f8f8f8"
   },
-  confirmButton: {
-    flexDirection: "row"
+
+  flatCard: {
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 10,
+    marginBottom: 10
   }
 });

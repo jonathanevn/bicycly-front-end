@@ -35,7 +35,7 @@ class SignIn extends React.Component {
   onPress = () => {
     const { firstName, lastName, email, password } = this.state;
     axios
-      .post("http://192.168.86.134:3100/api/user/sign_up", {
+      .post("http://localhost:3100/api/user/sign_up", {
         firstName: firstName,
         lastName: lastName,
         email: email,

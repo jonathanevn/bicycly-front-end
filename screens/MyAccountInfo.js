@@ -82,7 +82,7 @@ class MyAccountInfo extends React.Component {
     console.log("Mes params", params);
     axios
       .post(
-        "http://192.168.86.134:3100/api/user/update",
+        "http://localhost:3100/api/user/update",
 
         {
           email: this.state.email,

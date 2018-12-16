@@ -29,7 +29,7 @@ class Tchat extends React.Component {
         () => {
           axios
             .get(
-              "http://192.168.86.134:3100/api/tchat/message/" +
+              "http://localhost:3100/api/tchat/message/" +
                 this.state.bikeId +
                 "/" +
                 this.state.userId +
@@ -60,7 +60,7 @@ class Tchat extends React.Component {
                   bike: response.data.bike
                 },
                 () => {
-                  this.ws = new WebSocket("ws://192.168.86.134:3100");
+                  this.ws = new WebSocket("ws://localhost:3100");
                   this.ws.onmessage = e => {
                     const message = JSON.parse(e.data);
                     this.setState({
