@@ -19,42 +19,42 @@ class AuthLoadingScreen extends React.Component {
   };
 
   state = {
-    isAuthenticated: false
+    isAuthenticated: null
   };
 
   render() {
-    if (this.state.isAuthenticated === true) {
-      return this.props.navigation.navigate("Home");
-    }
-    return (
-      <View style={styles.container}>
-        <View style={styles.text}>
-          {/* <Text style={text.brand}>bicycly</Text>
+    if (this.state.isAuthenticated === false) {
+      return (
+        <View style={styles.container}>
+          <View style={styles.text}>
+            {/* <Text style={text.brand}>bicycly</Text>
           <Text numberOfLines={2} style={text.h3}>
             Louez votre vélo entre particuliers
           </Text> */}
-          <Header />
+            <Header />
+          </View>
+          <View style={styles.clickButton}>
+            <TouchableOpacity
+              style={[button.primary, styles.connect]}
+              onPress={() => {
+                this.props.navigation.navigate("LogIn");
+              }}
+            >
+              <Text style={text.textButton}>Se connecter</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={button.secondary}
+              onPress={() => {
+                this.props.navigation.navigate("SignIn");
+              }}
+            >
+              <Text style={text.textButton}>S'inscrire</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.clickButton}>
-          <TouchableOpacity
-            style={[button.primary, styles.connect]}
-            onPress={() => {
-              this.props.navigation.navigate("LogIn");
-            }}
-          >
-            <Text style={text.textButton}>Se connecter</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={button.secondary}
-            onPress={() => {
-              this.props.navigation.navigate("SignIn");
-            }}
-          >
-            <Text style={text.textButton}>S'inscrire</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
+      );
+    }
+    return null;
   }
 
   //   this.state.navigate.params.token
@@ -64,8 +64,17 @@ class AuthLoadingScreen extends React.Component {
 
       if (value[0][1]) {
         // [[token: null]] pour accéder à 'null' ou au token
+        this.setState(
+          {
+            isAuthenticated: true
+          },
+          () => {
+            this.props.navigation.navigate("Home");
+          }
+        );
+      } else {
         this.setState({
-          isAuthenticated: true
+          isAuthenticated: false
         });
       }
     });
