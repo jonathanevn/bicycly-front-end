@@ -37,48 +37,42 @@ class BikeDetails extends React.Component {
 
   state = {
     bikeId: this.props.navigation.state.params.bikeId,
-    userId: [],
-    propId: [],
+    userId: "",
+    propId: "",
 
     bike: {},
     thread: {},
-    user: [],
+    user: {},
 
     isLoading: false
   };
 
   componentDidMount() {
-    AsyncStorage.getItem("id").then(value => {
-      console.log("userId ===>", value);
-      this.setState({
-        userId: value
+    AsyncStorage.multiGet(["token", "id"]).then(value => {
+      this.setState({ token: value[0][1], userId: value[1][1] }, () => {
+        axios
+          .get(
+            "http://192.168.86.134:3100/api/bike/" +
+              // "https://bicycly.herokuapp.com/api/bike/"
+              this.props.navigation.state.params.bikeId,
+            { headers: { Authorization: "Bearer " + this.state.token } }
+          )
+          .then(response => {
+            console.log(response.data);
+
+            if (response.data) {
+              this.setState({
+                bike: response.data.bike,
+                thread: response.data.thread,
+                isLoading: true
+              });
+            }
+          })
+          .catch(error => {
+            console.log("ERROR3", error.response);
+          });
       });
     });
-    console.log(
-      "bikeID on details ===>",
-      this.props.navigation.state.params.bikeId
-    );
-
-    axios
-      .get(
-        "http://localhost:3100/api/bike/" +
-          // "https://bicycly.herokuapp.com/api/bike/"
-          this.props.navigation.state.params.bikeId
-      )
-      .then(response => {
-        console.log(response.data);
-
-        if (response.data) {
-          this.setState({
-            bike: response.data.bike,
-            thread: response.data.thread,
-            isLoading: true
-          });
-        }
-      })
-      .catch(error => {
-        console.log("ERROR3", error.response);
-      });
   }
 
   renderRentButton() {
@@ -97,7 +91,7 @@ class BikeDetails extends React.Component {
             } else {
               axios
                 .get(
-                  `http://localhost:3100/api/tchat/message/${
+                  `http://192.168.86.134:3100/api/tchat/message/${
                     this.props.navigation.state.params.bikeId
                   }/${this.state.userId}`
                 )
@@ -123,7 +117,26 @@ class BikeDetails extends React.Component {
         </TouchableOpacity>
       );
     }
-    return null;
+    // Le code suivant devra être remplacé par `return null`
+    return (
+      <TouchableOpacity
+        style={button.primary}
+        onPress={() => {
+          if (this.state.thread) {
+            this.props.navigation.navigate("Tchat", {
+              bikeId: this.props.navigation.state.params.bikeId,
+              threadId: "5c1634ecb0f53e31846c415b",
+              userId: this.state.userId,
+              propId: this.state.propId
+            });
+          }
+        }}
+      >
+        <Text style={text.textButton}>
+          (TEST) Accéder à un chat avec l'utilisateur Farid
+        </Text>
+      </TouchableOpacity>
+    );
   }
 
   render() {
