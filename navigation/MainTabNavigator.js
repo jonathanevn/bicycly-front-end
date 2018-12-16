@@ -100,9 +100,8 @@ AccountStack.navigationOptions = {
 };
 
 const BottomTabNavigator = createBottomTabNavigator({
-  ReservationStack,
   HomeStack,
-
+  ReservationStack,
   MyBikesStack,
   AccountStack
 });
