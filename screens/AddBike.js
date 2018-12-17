@@ -177,10 +177,13 @@ class AddBike extends React.Component {
               />
             </View>
 
-            <Text style={[text.h3, styles.title]}>Mon Vélo</Text>
+            <Text style={[text.h2, styles.title]}>Mon Vélo</Text>
             <TextInput
-              style={[styles.textInput, { borderTopWidth: 0.5 }]}
-              style={[styles.textInput, { borderBottomWidth: 0 }]}
+              style={[
+                styles.textInput,
+                { borderTopWidth: 0.5 },
+                { borderBottomWidth: 0 }
+              ]}
               placeholder="Marque"
               placeholderTextColor={Colors.lightGrey}
               name="bikeBrand"
@@ -201,13 +204,13 @@ class AddBike extends React.Component {
               }}
             />
             <View>
-              <Text style={[text.h3, styles.title]}> Catégorie</Text>
+              <Text style={[text.h2, styles.title]}>Catégorie</Text>
               <RNPickerSelect
                 placeholder={{
                   label: "Choisir une catégorie...",
-                  value: null,
-                  color: "#c2c2c2"
+                  value: null
                 }}
+                placeholderTextColor="#c2c2c2"
                 items={this.state.bikeCategory}
                 onValueChange={value => {
                   this.setState({
@@ -228,7 +231,7 @@ class AddBike extends React.Component {
               />
             </View>
 
-            <Text style={[text.h3, styles.title]}>Adresse</Text>
+            <Text style={[text.h2, styles.title]}>Adresse</Text>
             <GooglePlacesAutocomplete
               placeholder="Ajouter une adresse "
               placeholderTextColor={Colors.lightGrey}
@@ -263,10 +266,11 @@ class AddBike extends React.Component {
                 textInput: {
                   marginLeft: 0,
                   marginRight: 0,
-                  height: 38,
+                  height: 50,
                   color: "#c2c2c2",
                   fontSize: 15,
-                  fontFamily: "Karla-Regular"
+                  fontFamily: "Karla-Regular",
+                  paddingVertical: 15
                 },
                 description: {
                   fontFamily: "Karla-Bold",
@@ -288,11 +292,11 @@ class AddBike extends React.Component {
               debounce={200}
             />
 
-            <Text style={[text.h3, styles.title]}>Accessoires</Text>
+            <Text style={[text.h2, styles.title]}>Accessoires</Text>
             <Accessories handleAccessories={this.handleAccessories} />
 
             <View style={styles.sectionDescription}>
-              <Text style={[text.h3, styles.title]}>Description</Text>
+              <Text style={[text.h2, styles.title]}>Description</Text>
               <TextInput
                 style={styles.textInput}
                 editable={true}
@@ -306,7 +310,7 @@ class AddBike extends React.Component {
               />
             </View>
 
-            <Text style={[text.h3, styles.title]}>Tarification</Text>
+            <Text style={[text.h2, styles.title]}>Tarification</Text>
             <View style={styles.priceSection}>
               <TextInput
                 style={styles.numberInput}
@@ -341,7 +345,8 @@ const pickerSelectStyles = StyleSheet.create({
     borderColor: "#f1f1f1",
     backgroundColor: "white",
     color: "#262626",
-    fontFamily: "Karla-Regular"
+    fontFamily: "Karla-Regular",
+    borderRadius: 5
   }
 });
 const styles = StyleSheet.create({
@@ -351,7 +356,7 @@ const styles = StyleSheet.create({
   },
 
   container: {
-    marginHorizontal: 10
+    marginHorizontal: 15
   },
 
   sectionPhoto: {
@@ -359,8 +364,8 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    marginTop: 25,
-    marginBottom: 5
+    marginTop: 30,
+    marginBottom: 8
   },
 
   textInput: {
@@ -373,7 +378,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 5,
     fontFamily: "Karla-Regular",
-    color: Colors.darkGrey
+    color: Colors.darkGrey,
+    fontSize: 15
   },
 
   numberInput: {
@@ -399,8 +405,8 @@ const styles = StyleSheet.create({
   },
 
   buttonSection: {
-    marginVertical: 30,
-    width: width,
+    marginVertical: 50,
+    width: "100%",
     justifyContent: "center",
     alignItems: "center"
   }
