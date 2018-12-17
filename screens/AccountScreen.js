@@ -16,6 +16,7 @@ import { button, text, avatar } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
 import { createIconSetFromIcoMoon } from "@expo/vector-icons";
 import icoMoonConfig from "../assets/fonts/selection.json";
+import Avatar from "../components/Avatar";
 const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 
 export default class AccountScreen extends React.Component {
@@ -68,27 +69,27 @@ export default class AccountScreen extends React.Component {
     });
   };
 
-  renderImage() {
-    if (this.state.account.photos[0]) {
-      console.log("avatar", this.state.account.photos[0]);
-      return (
-        <View>
-          <Image
-            style={[avatar.medium]}
-            source={{
-              uri: this.state.account.photos[0].secure_url
-            }}
-          />
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.image}>
-          <Icon name="cyclist" size={45} color="#ffc200" />
-        </View>
-      );
-    }
-  }
+  //   renderImage() {
+  //     if (this.state.account.photos[0]) {
+  //       console.log("avatar", this.state.account.photos[0]);
+  //       return (
+  //         <View>
+  //           <Image
+  //             style={[avatar.medium]}
+  //             source={{
+  //               uri: this.state.account.photos[0].secure_url
+  //             }}
+  //           />
+  //         </View>
+  //       );
+  //     } else {
+  //       return (
+  //         <View style={styles.image}>
+  //           <Icon name="cyclist" size={45} color="#ffc200" />
+  //         </View>
+  //       );
+  //     }
+  //   }
 
   render() {
     const { firstName, lastName, email, token, account } = this.state;
@@ -99,7 +100,10 @@ export default class AccountScreen extends React.Component {
         {this.state.account.photos === undefined ? null : (
           <View style={styles.container}>
             <View style={styles.profil}>
-              <View style={styles.picture}>{this.renderImage()}</View>
+              {/* <View style={styles.picture}>{this.renderImage()}</View> */}
+              <View style={styles.picture}>
+                <Avatar photos={this.state.account.photos[0]} />
+              </View>
               <View>
                 <Text style={text.h3}>
                   {this.state.firstName} {this.state.lastName[0] + "."}
@@ -123,13 +127,13 @@ export default class AccountScreen extends React.Component {
                 });
               }}
             >
-              <Text style={[text.placeholder]}>Mes infos</Text>
+              <Text style={[text.inputCompleted]}>Mes infos</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.textInput, { borderBottomWidth: 0 }]}
             >
-              <Text style={[text.placeholder]}>Mes paiements</Text>
+              <Text style={[text.inputCompleted]}>Mes paiements</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.textInput, { marginBottom: 20 }]}
@@ -137,22 +141,22 @@ export default class AccountScreen extends React.Component {
                 this.props.navigation.navigate("PaymentMethods");
               }}
             >
-              <Text style={[text.placeholder]}>
+              <Text style={[text.inputCompleted]}>
                 Moyens de paiement enregistrés
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.textInput, { borderBottomWidth: 0 }]}
             >
-              <Text style={[text.placeholder]}>Aide</Text>
+              <Text style={[text.inputCompleted]}>Aide</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.textInput, { borderBottomWidth: 0 }]}
             >
-              <Text style={[text.placeholder]}>Contact</Text>
+              <Text style={[text.inputCompleted]}>Contact</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.textInput, { marginBottom: 30 }]}>
-              <Text style={[text.placeholder]}>A propos</Text>
+              <Text style={[text.inputCompleted]}>A propos</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
