@@ -178,7 +178,7 @@ class BikeDetails extends React.Component {
               style={styles.photo}
             />
             <View style={styles.priceAvatar}>
-              <Text style={text.fullPrice}>30€</Text>
+              <Text style={text.fullPrice}>{bike.pricePerDay}€</Text>
               <Text style={text.pricePerDay}>{bike.pricePerDay}€ /jour</Text>
             </View>
           </View>
@@ -236,7 +236,7 @@ class BikeDetails extends React.Component {
                   <Text style={text.rate}>
                     {" "}
                     {"  "}
-                    {bike.user.reviews} avis
+                    {bike.user.reviews} 2 avis
                   </Text>
                 </View>
                 <Text style={styles.acceptation}>Taux d'acceptation : bon</Text>

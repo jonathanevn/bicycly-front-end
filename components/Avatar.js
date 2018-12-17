@@ -10,7 +10,6 @@ const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 class Avatar extends React.Component {
   renderImage() {
     if (this.props.photos) {
-      console.log("avatar", this.props.photos);
       return (
         <View>
           <Image
