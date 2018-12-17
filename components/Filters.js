@@ -42,8 +42,6 @@ const categories = [
   { category: "autres", name: "Autres", iconName: "Autres", size: 22 }
 ];
 
-const categoriesSelected = [];
-
 class Filters extends React.Component {
   state = {
     modalFilterVisible: false,
@@ -88,12 +86,9 @@ class Filters extends React.Component {
   };
 
   handleSubmit = () => {
-    const categoriesSelected = [...this.state.categoriesFilter];
+    const categoriesSelected = [];
     for (let i = 0; i < this.state.categoriesRange.length; i++) {
       if (this.state.categoriesRange[i].selected === true) {
-        this.state.categoriesFilter.push(
-          this.state.categoriesRange[i].category
-        );
         categoriesSelected.push(this.state.categoriesRange[i].category);
       }
     }
