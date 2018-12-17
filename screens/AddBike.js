@@ -10,15 +10,20 @@ import {
   AsyncStorage
 } from "react-native";
 import { button, text } from "../constants/Styles";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { width, height } from "../constants/Layout";
 import RNPickerSelect from "react-native-picker-select";
 import { Constants } from "expo";
 import axios from "axios";
 import Accessories from "../components/Accessories";
 import UploadPhoto from "../components/UploadPhoto";
+import Colors from "../constants/Colors";
+
 class AddBike extends React.Component {
   static navigationOptions = {
-    title: "Nom du vélo",
+    title: "Ajouter un vélo",
+    headerBackTitle: null,
+    headerTintColor: "#262626",
     headerTitleStyle: {
       fontFamily: "Karla-Bold",
       fontSize: 18,
@@ -94,7 +99,8 @@ class AddBike extends React.Component {
       accessories: [],
       photos: [],
       pricePerDay: "",
-      token: ""
+      token: "",
+      loc: []
     };
   }
   componentDidMount() {
@@ -118,7 +124,8 @@ class AddBike extends React.Component {
       CateVelo,
       description,
       photos,
-      pricePerDay
+      pricePerDay,
+      loc
     } = this.state;
 
     axios
@@ -131,7 +138,8 @@ class AddBike extends React.Component {
           bikeCategory: CateVelo,
           description: description,
           photos: photos,
-          pricePerDay: pricePerDay
+          pricePerDay: pricePerDay,
+          loc: loc
         },
         { headers: { Authorization: this.state.token } }
       )
@@ -159,9 +167,9 @@ class AddBike extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <KeyboardAvoidingView behavior="padding" style={styles.container}>
+          <View>
             <View style={styles.sectionPhoto}>
               <UploadPhoto
                 handleImagePick={this.handleImagePick}
@@ -169,11 +177,12 @@ class AddBike extends React.Component {
               />
             </View>
 
-            <Text>Mon Vélo</Text>
+            <Text style={[text.h3, styles.title]}>Mon Vélo</Text>
             <TextInput
               style={[styles.textInput, { borderTopWidth: 0.5 }]}
               style={[styles.textInput, { borderBottomWidth: 0 }]}
               placeholder="Marque"
+              placeholderTextColor={Colors.lightGrey}
               name="bikeBrand"
               value={this.state.bikeBrand}
               onChangeText={value => {
@@ -184,19 +193,20 @@ class AddBike extends React.Component {
               style={[styles.textInput, { borderTopWidth: 0.5 }]}
               style={[styles.textInput, { borderBottomWidth: 0.5 }]}
               placeholder="Modèle"
+              placeholderTextColor={Colors.lightGrey}
               name="bikeModel"
               value={this.state.bikeModel}
               onChangeText={value => {
                 this.setState({ bikeModel: value });
               }}
             />
-            <View style={styles.container}>
-              <Text> Catégorie du vélo</Text>
+            <View>
+              <Text style={[text.h3, styles.title]}> Catégorie</Text>
               <RNPickerSelect
                 placeholder={{
-                  label: "Select a Category...",
+                  label: "Choisir une catégorie...",
                   value: null,
-                  color: "#9EA0A4"
+                  color: "#c2c2c2"
                 }}
                 items={this.state.bikeCategory}
                 onValueChange={value => {
@@ -218,91 +228,178 @@ class AddBike extends React.Component {
               />
             </View>
 
-            <Text>Accessoires</Text>
+            <Text style={[text.h3, styles.title]}>Adresse</Text>
+            <GooglePlacesAutocomplete
+              placeholder="Ajouter une adresse "
+              placeholderTextColor={Colors.lightGrey}
+              minLength={2}
+              autoFocus={false}
+              returnKeyType={"search"}
+              fetchDetails={true}
+              renderDescription={row => row.description}
+              onPress={(data, details = null) => {
+                const location = [];
+                location.push(Number(details.geometry.location.lng)),
+                  location.push(Number(details.geometry.location.lat)),
+                  this.setState(
+                    {
+                      loc: location
+                    },
+                    () => console.log("loooc", this.state.loc)
+                  );
+              }}
+              query={{
+                key: "AIzaSyChBhCJi-Dg_aDGRuBFO3zDKlhx918kPuQ",
+                language: "fr", // language of the results
+                types: ["(address)", "(regions)", "geocode"] // default: 'geocode'
+              }}
+              styles={{
+                textInputContainer: {
+                  backgroundColor: "rgba(0,0,0,0)",
+                  color: "#c2c2c2",
+                  borderTopWidth: 0,
+                  borderBottomWidth: 0
+                },
+                textInput: {
+                  marginLeft: 0,
+                  marginRight: 0,
+                  height: 38,
+                  color: "#c2c2c2",
+                  fontSize: 15,
+                  fontFamily: "Karla-Regular"
+                },
+                description: {
+                  fontFamily: "Karla-Bold",
+                  color: "#262626",
+                  fontSize: 11
+                },
+                predefinedPlacesDescription: {
+                  color: Colors.darkGrey,
+                  fontFamily: "Karla-Bold",
+                  fontSize: 15
+                }
+              }}
+              currentLocation={false}
+              filterReverseGeocodingByTypes={[
+                "address",
+                "locality",
+                "administrative_area_level_3"
+              ]}
+              debounce={200}
+            />
+
+            <Text style={[text.h3, styles.title]}>Accessoires</Text>
             <Accessories handleAccessories={this.handleAccessories} />
+
             <View style={styles.sectionDescription}>
-              <Text>Description</Text>
+              <Text style={[text.h3, styles.title]}>Description</Text>
               <TextInput
-                style={[styles.textInput, { borderTopWidth: 0.5 }]}
-                style={[styles.textInput, { borderBottomWidth: 0.5 }]}
+                style={styles.textInput}
+                editable={true}
                 value={this.state.description}
                 onChangeText={value => {
                   this.setState({ description: value });
                 }}
                 name="description"
                 multiline={true}
-                placeholder="Dites pourquoi votre vélo est le plus beau des vélos!"
+                placeholder="Dites nous pourquoi votre vélo est le plus beau des vélos!"
               />
             </View>
 
-            <View>
-              <Text>Tarification</Text>
+            <Text style={[text.h3, styles.title]}>Tarification</Text>
+            <View style={styles.priceSection}>
               <TextInput
-                style={[styles.textInput, { borderTopWidth: 0.5 }]}
-                style={[styles.textInput, { borderBottomWidth: 0 }]}
-                placeholder="Prix par jour €"
+                style={styles.numberInput}
+                placeholder="Prix"
                 value={this.state.pricePerDay}
                 onChangeText={value => {
                   this.setState({ pricePerDay: value });
                 }}
               />
+              <Text style={[text.p, styles.pricePerDay]}>€ par jour</Text>
             </View>
+
             <View style={styles.buttonSection}>
               <TouchableOpacity style={button.primary} onPress={this.onPress}>
-                <Text>Valider</Text>
+                <Text style={text.textButton}>Valider</Text>
               </TouchableOpacity>
             </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ScrollView>
     );
   }
 }
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    fontSize: 16,
-    paddingTop: 13,
+    fontSize: 15,
     paddingLeft: 15,
-    marginRight: 50,
     borderWidth: 0.5,
-    width: 350,
+    width: "100%",
     height: 50,
     borderColor: "#f1f1f1",
     backgroundColor: "white",
-    color: "black"
+    color: "#262626",
+    fontFamily: "Karla-Regular"
   }
 });
 const styles = StyleSheet.create({
   contentContainer: {
-    paddingTop: 30,
     backgroundColor: "#f8f8f8",
-    justifyContent: "center",
-    paddingHorizontal: 10
+    justifyContent: "center"
   },
+
+  container: {
+    marginHorizontal: 10
+  },
+
   sectionPhoto: {
     justifyContent: "center"
   },
-  containerCheckBox: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: "#fff"
+
+  title: {
+    marginTop: 25,
+    marginBottom: 5
   },
-  sectionDescription: {
-    marginVertical: 10
-  },
+
   textInput: {
     borderWidth: 0.5,
-    width: 350,
+    width: "100%",
     height: 50,
-    paddingLeft: 15,
+    paddingHorizontal: 15,
+    paddingVertical: 15,
     borderColor: "#f1f1f1",
-    backgroundColor: "white"
+    backgroundColor: "white",
+    borderRadius: 5,
+    fontFamily: "Karla-Regular",
+    color: Colors.darkGrey
   },
+
+  numberInput: {
+    borderWidth: 0.5,
+    width: 80,
+    height: 40,
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+    borderColor: "#f1f1f1",
+    backgroundColor: "white",
+    borderRadius: 5,
+    fontFamily: "Karla-Regular",
+    textAlign: "right"
+  },
+
+  priceSection: {
+    alignItems: "center",
+    flexDirection: "row"
+  },
+
+  pricePerDay: {
+    marginLeft: 10
+  },
+
   buttonSection: {
-    marginVertical: 20,
+    marginVertical: 30,
     width: width,
     justifyContent: "center",
     alignItems: "center"
