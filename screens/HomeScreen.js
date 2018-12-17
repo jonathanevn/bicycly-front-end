@@ -274,14 +274,13 @@ export default class HomeScreen extends React.Component {
         <TouchableOpacity
           style={styles.listButton}
           onPress={() => {
-            console.log("ça clic!");
             this.props.navigation.navigate("List", {
               region: this.state.region,
               bikes: this.state.bikes
             });
           }}
         >
-          <View /* style={styles.listButtonContainer} */>
+          <View>
             <ListButton name="list" size={25} label="Liste" />
           </View>
         </TouchableOpacity>
