@@ -43,7 +43,6 @@ export default class ReservationScreen extends React.Component {
           headers: { Authorization: "Bearer " + this.state.token }
         })
         .then(response => {
-          console.log("on a bien les vélos ? ====> ", response.data);
           this.setState({ bikes: response.data });
         })
         .catch(err => err);
@@ -51,7 +50,6 @@ export default class ReservationScreen extends React.Component {
   }
 
   render() {
-    console.log("Les states de la page ====>", this.state);
     return (
       <View style={styles.container}>
         <ScrollView
@@ -77,6 +75,10 @@ export default class ReservationScreen extends React.Component {
                         ownerOrUserName={
                           item.user.firstName + " " + item.user.lastName
                         }
+                        bikeId={item.bike._id}
+                        threadId={item._id}
+                        userId={this.state.id}
+                        propId={item.owner._id}
                       />
                     </View>
                   );
