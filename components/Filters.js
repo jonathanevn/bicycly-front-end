@@ -170,7 +170,8 @@ class Filters extends React.Component {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#f8f8f8"
+    backgroundColor: "#f8f8f8",
+    marginTop: 10
   },
 
   container: {
