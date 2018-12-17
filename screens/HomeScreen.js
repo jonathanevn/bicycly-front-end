@@ -130,10 +130,9 @@ export default class HomeScreen extends React.Component {
 
   handleFilters = categories => {
     const categoriesSplitted = categories.join(" ");
-    this.setState({ categorieSelected: categoriesSplitted }, () => {
-      console.log("categorieeees", this.state.categorieSelected);
+    this.setState({ categoriesSelected: categoriesSplitted }, () => {
+      this.onLocationChange();
     });
-    this.onLocationChange();
   };
 
   pickLocationHandler = (event, index) => {
