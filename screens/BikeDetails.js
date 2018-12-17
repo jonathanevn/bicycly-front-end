@@ -125,7 +125,7 @@ class BikeDetails extends React.Component {
           if (this.state.thread) {
             this.props.navigation.navigate("Tchat", {
               bikeId: this.props.navigation.state.params.bikeId,
-              threadId: "5c1634ecb0f53e31846c415b",
+              threadId: this.state.thread,
               userId: this.state.userId,
               propId: this.state.propId
             });
