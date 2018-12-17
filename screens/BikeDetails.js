@@ -15,6 +15,7 @@ import Colors from "../constants/Colors";
 import axios from "axios";
 import StarRating from "react-native-star-rating";
 import { height, width } from "../constants/Layout";
+import Avatar from "../components/Avatar";
 const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 
 class BikeDetails extends React.Component {
@@ -139,6 +140,27 @@ class BikeDetails extends React.Component {
     );
   }
 
+  renderImage() {
+    if (this.state.bike.user.account.photos[0]) {
+      return (
+        <View>
+          <Image
+            style={[avatar.medium]}
+            source={{
+              uri: this.state.bike.user.account.photos[0].secure_url
+            }}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.image}>
+          <Icon name="cyclist" size={45} color="#ffc200" />
+        </View>
+      );
+    }
+  }
+
   render() {
     const { bike } = this.state;
     if (this.state.isLoading === false) {
@@ -156,7 +178,7 @@ class BikeDetails extends React.Component {
               style={styles.photo}
             />
             <View style={styles.priceAvatar}>
-              <Text style={text.fullPrice}>30€</Text>
+              <Text style={text.fullPrice}>{bike.pricePerDay}€</Text>
               <Text style={text.pricePerDay}>{bike.pricePerDay}€ /jour</Text>
             </View>
           </View>
@@ -193,19 +215,13 @@ class BikeDetails extends React.Component {
             </View>
 
             <View style={styles.profileUser}>
-              {/* <Image
-                source={{
-                  uri: "data:image/jpeg;base64," + bike.user.photos[0]
-                }}
-                style={avatar.medium}
-              /> */}
+              {this.state.bike.user.account.photos === undefined ? null : (
+                <View style={styles.picture}>{this.renderImage()}</View>
+              )}
               <View style={styles.profileUserInfo}>
                 <View style={styles.username}>
-                  <Text style={styles.firstname}>{bike.user.firstName}</Text>
-                  <Text style={styles.lastname}>
-                    {" "}
-                    {""}
-                    {bike.user.lastName}
+                  <Text style={styles.firstname}>
+                    {bike.user.firstName} {bike.user.lastName[0] + "."}
                   </Text>
                 </View>
                 <View style={styles.ratingReview}>
@@ -220,7 +236,7 @@ class BikeDetails extends React.Component {
                   <Text style={text.rate}>
                     {" "}
                     {"  "}
-                    {bike.user.reviews} avis
+                    {bike.user.reviews} 2 avis
                   </Text>
                 </View>
                 <Text style={styles.acceptation}>Taux d'acceptation : bon</Text>

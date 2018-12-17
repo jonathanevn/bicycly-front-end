@@ -27,7 +27,8 @@ class AddBike extends React.Component {
     headerStyle: {
       backgroundColor: "#f8f8f8",
       borderBottomColor: "#f8f8f8"
-    }
+    },
+    headerTintColor: "black"
   };
 
   constructor(props) {

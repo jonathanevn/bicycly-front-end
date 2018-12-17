@@ -19,7 +19,7 @@ class BikeCard extends React.Component {
               resizeMode="cover"
             />
             <View style={styles.priceAvatar}>
-              <Text style={text.fullPrice}>30€</Text>
+              <Text style={text.fullPrice}>{this.props.pricePerDay}€</Text>
               <Text style={text.pricePerDay}>
                 {this.props.pricePerDay}€ /jour
               </Text>
