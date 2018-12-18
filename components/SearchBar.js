@@ -5,10 +5,10 @@ import {
   View,
   Platform,
   Modal,
+  SafeAreaView,
   TouchableOpacity
 } from "react-native";
-import { text, button, background } from "../constants/Styles";
-import apiKey from "../apiKey";
+import { text, button } from "../constants/Styles";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Ionicons, createIconSetFromIcoMoon } from "@expo/vector-icons";
 import icoMoonConfig from "../assets/fonts/selection.json";
@@ -65,7 +65,6 @@ class SearchBar extends React.Component {
         renderDescription={row => row.description} // custom description render
         onPress={(data, details = null) => {
           this.setState(
-            /* console.log("latDeltaSelected", LATITUDE_DELTA), */
             {
               addressSelected: details.name,
               citySelected: details.vicinity
@@ -94,17 +93,18 @@ class SearchBar extends React.Component {
         }}
         styles={{
           textInputContainer: {
-            width: "100%",
+            width: width - 30,
             backgroundColor: "white",
             borderTopWidth: 0,
             borderBottomWidth: 1,
             borderBottomColor: Colors.midGrey,
-            height: 50
+            height: 60
           },
           textInput: {
             fontFamily: "Karla-Bold",
             color: "#262626",
-            fontSize: 20
+            fontSize: 20,
+            height: 40
           },
           description: {
             fontFamily: "Karla-Bold",
@@ -157,7 +157,7 @@ class SearchBar extends React.Component {
             this.setModalAddressVisible(false);
           }}
         >
-          <View style={styles.containerAddressModal}>
+          <SafeAreaView style={styles.containerAddressModal}>
             <TouchableOpacity
               onPress={() => {
                 this.setModalAddressVisible(!this.state.modalAddressVisible);
@@ -171,7 +171,7 @@ class SearchBar extends React.Component {
             </TouchableOpacity>
 
             <View style={{ flex: 1 }}>{this.GooglePlacesInput()}</View>
-          </View>
+          </SafeAreaView>
         </Modal>
 
         <Modal
@@ -275,7 +275,7 @@ class SearchBar extends React.Component {
 const styles = StyleSheet.create({
   searchBar: {
     height: 60,
-    width: 330,
+    width: width - 30,
     backgroundColor: "white",
     flexDirection: "row",
     alignItems: "center",
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    marginTop: 50,
+    marginTop: 10,
     marginHorizontal: 20
   },
 

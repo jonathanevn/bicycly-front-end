@@ -32,7 +32,8 @@ class AddBike extends React.Component {
     headerStyle: {
       backgroundColor: "#f8f8f8",
       borderBottomColor: "#f8f8f8"
-    }
+    },
+    headerTintColor: "black"
   };
 
   constructor(props) {
@@ -130,7 +131,9 @@ class AddBike extends React.Component {
 
     axios
       .post(
-        "http://localhost:3100/api/bike/publish",
+
+        "https://bicycly.herokuapp.com/api/bike/publish",
+
         {
           bikeBrand: bikeBrand,
           bikeModel: bikeModel,

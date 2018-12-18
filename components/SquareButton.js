@@ -39,8 +39,6 @@ class FilterButton extends React.Component {
 
 const styles = StyleSheet.create({
   button: {
-    position: "absolute",
-    top: 200,
     height: 52,
     width: 52,
     backgroundColor: "#ffc200",
