@@ -2,7 +2,13 @@ import React from "react";
 import SearchBar from "../components/SearchBar";
 import axios from "axios";
 import Carousel from "react-native-snap-carousel";
-import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  TouchableNativeFeedback
+} from "react-native";
 import { MapView, Permissions } from "expo";
 import { height, width } from "../constants/Layout";
 
@@ -63,7 +69,10 @@ export default class HomeScreen extends React.Component {
           },
           () => {
             axios
-              .get("http://localhost:3100/api/bike/around", {
+
+
+              .get("https://bicycly.herokuapp.com/api/bike/around", {
+
                 params: {
                   longitude: this.state.region.longitude,
                   latitude: this.state.region.latitude,
@@ -102,7 +111,10 @@ export default class HomeScreen extends React.Component {
   onLocationChange = region => {
     this.setState(region, () =>
       axios
-        .get("http://localhost:3100/api/bike/around", {
+
+
+        .get("https://bicycly.herokuapp.com/api/bike/around", {
+
           params: {
             longitude: this.state.region.longitude,
             latitude: this.state.region.latitude,
@@ -124,10 +136,9 @@ export default class HomeScreen extends React.Component {
 
   handleFilters = categories => {
     const categoriesSplitted = categories.join(" ");
-    this.setState({ categorieSelected: categoriesSplitted }, () => {
-      console.log("categorieeees", this.state.categorieSelected);
+    this.setState({ categoriesSelected: categoriesSplitted }, () => {
+      this.onLocationChange();
     });
-    this.onLocationChange();
   };
 
   pickLocationHandler = (event, index) => {
@@ -191,7 +202,7 @@ export default class HomeScreen extends React.Component {
         <MapView
           style={styles.map}
           region={this.state.region}
-          // provider={MapView.PROVIDER_GOOGLE}
+          provider={MapView.PROVIDER_GOOGLE}
           zoomEnabled={true}
           customMapStyle={generatedMapStyle}
           showsUserLocation={true}
@@ -208,9 +219,9 @@ export default class HomeScreen extends React.Component {
                 onPress={e => this.pickLocationHandler(e.nativeEvent, i)}
               >
                 {this.state.markerSelected === i ? (
-                  <Icon name="bike" size={23} style={styles.selectedIcon} />
+                  <Icon name="bike" size={25} style={styles.selectedIcon} />
                 ) : (
-                  <Icon name="bike" size={10} color={Colors.midGrey} />
+                  <Icon name="bike" size={15} color={Colors.midGrey} />
                 )}
               </MapView.Marker>
             );
@@ -264,18 +275,20 @@ export default class HomeScreen extends React.Component {
         <View style={styles.filterButton}>
           <Filters categoriesSelected={this.handleFilters} />
         </View>
-        <View style={styles.listButton}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate("List", {
-                region: this.state.region,
-                bikes: this.state.bikes
-              });
-            }}
-          >
+
+        <TouchableOpacity
+          style={styles.listButton}
+          onPress={() => {
+            this.props.navigation.navigate("List", {
+              region: this.state.region,
+              bikes: this.state.bikes
+            });
+          }}
+        >
+          <View>
             <ListButton name="list" size={25} label="Liste" />
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -347,15 +360,25 @@ const styles = StyleSheet.create({
 
   filterButton: {
     position: "absolute",
-    top: 85,
-    right: 70
+    top: height / 2.5,
+    right: 15
   },
 
   listButton: {
     position: "absolute",
+    top: height / 2,
+    right: 15,
+    height: 52,
+    width: 52
+  }
+
+  /*  listButtonContainer: {
+    height: 52,
+    width: 52,
+    position: "absolute",
     top: 150,
     right: 70
-  }
+  } */
 });
 
 const generatedMapStyle = [

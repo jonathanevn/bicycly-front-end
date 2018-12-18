@@ -89,7 +89,9 @@ export default class Calendar extends Component {
 const styles = StyleSheet.create({
   container: {
     /*     flex: 1, */
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#FFFFFF",
+
+    width: width
   },
   date: {
     flexDirection: "row",

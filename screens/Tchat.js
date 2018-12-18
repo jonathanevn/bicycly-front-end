@@ -1,6 +1,7 @@
 import React from "react";
 import { GiftedChat, MessageText } from "react-native-gifted-chat";
 import axios from "axios";
+import CardTchat from "../components/CardTchat";
 import { View, Text, AsyncStorage } from "react-native";
 import CardTchat from "../components/CardTchat";
 class Tchat extends React.Component {
@@ -64,9 +65,14 @@ class Tchat extends React.Component {
                   this.ws = new WebSocket("ws://localhost:3100");
                   this.ws.onmessage = e => {
                     const message = JSON.parse(e.data);
-                    this.setState({
-                      messages: GiftedChat.append(this.state.messages, message)
-                    });
+                    if (message.threadId === this.state.thread) {
+                      this.setState({
+                        messages: GiftedChat.append(
+                          this.state.messages,
+                          message
+                        )
+                      });
+                    }
                   };
                 }
               );
@@ -98,6 +104,7 @@ class Tchat extends React.Component {
 
     return (
       <GiftedChat
+        // bottomOffset={81}
         //id du User -b qui recois donc propriétaire
         user={{ _id: this.state.userId }}
         renderMessageText={props => {

@@ -56,7 +56,7 @@ class MyAccountInfo extends React.Component {
               updatedPhotos.splice(0, 1);
               this.setState({ photos: updatedPhotos });
             }}
-            style={[avatar.medium, (backgroundColor = "red")]}
+            style={[avatar.big, (backgroundColor = "red")]}
             source={{
               uri: this.props.navigation.state.params.account.photos[0]
                 .secure_url
@@ -138,9 +138,9 @@ class MyAccountInfo extends React.Component {
             >
               <Text style={[text.p2]}>Voir mes vélos</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={text.p2} onPress={this.onPress}>
-                Enregistrer les modifications
+            <TouchableOpacity style={button.primary}>
+              <Text style={text.textButton} onPress={this.onPress}>
+                Enregistrer
               </Text>
             </TouchableOpacity>
           </View>
