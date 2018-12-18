@@ -19,6 +19,8 @@ import { createIconSetFromIcoMoon } from "@expo/vector-icons";
 import icoMoonConfig from "../assets/fonts/selection.json";
 import Filters from "../components/Filters";
 
+import moment from "moment/min/moment-with-locales";
+
 const ASPECT_RATIO = width / height;
 const LATITUDE = 0;
 const LONGITUDE = 0;
@@ -49,7 +51,8 @@ export default class HomeScreen extends React.Component {
     },
     markerSelected: null,
     categoriesSelected: "",
-    modalFilterVisible: false
+    modalFilterVisible: false,
+    numberOfDays: ""
   };
 
   componentDidMount() {
@@ -172,9 +175,9 @@ export default class HomeScreen extends React.Component {
     // console.log("markerData", markerData);
     /*  const mapRef = this._mapView;
 
-    if (!markerData || !mapRef) {
-      return;
-    }*/
+            if (!markerData || !mapRef) {
+                return;
+            }*/
     this.map.animateToRegion(
       {
         longitude: markerData.loc[0],
@@ -197,6 +200,12 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
+    const start = moment(this.state.selectedDate.startDate);
+    const end = moment(this.state.selectedDate.endDate);
+
+    const numberOfDays = end.diff(start, "days") + 1;
+    // console.log(numberOfDays);
+
     return (
       <View style={styles.container}>
         <MapView
@@ -249,7 +258,9 @@ export default class HomeScreen extends React.Component {
                 this.props.navigation.navigate("BikeDetails", {
                   bikeId: item._id,
                   bikeBrand: item.bikeBrand,
-                  bikeModel: item.bikeModel
+                  bikeModel: item.bikeModel,
+                  pricePerDay: item.pricePerDay,
+                  numberOfDays: numberOfDays
                 });
               }}
             >
@@ -259,6 +270,11 @@ export default class HomeScreen extends React.Component {
                 picture={item.photos[0]}
                 category={item.bikeCategory}
                 pricePerDay={item.pricePerDay}
+                fullPrice={
+                  isNaN(numberOfDays)
+                    ? item.pricePerDay
+                    : item.pricePerDay * numberOfDays
+                }
               />
             </TouchableOpacity>
           )}

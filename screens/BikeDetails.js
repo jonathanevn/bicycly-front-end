@@ -44,6 +44,7 @@ class BikeDetails extends React.Component {
     bike: {},
     thread: {},
     user: {},
+    numberOfDays: this.props.navigation.state.params.numberOfDays,
 
     isLoading: false
   };
@@ -162,7 +163,7 @@ class BikeDetails extends React.Component {
   }
 
   render() {
-    const { bike } = this.state;
+    const { bike, numberOfDays } = this.state;
     if (this.state.isLoading === false) {
       return <Text>isLoading...</Text>;
       // } else if (this.state.bike.photos === undefined) {
@@ -178,7 +179,12 @@ class BikeDetails extends React.Component {
               style={styles.photo}
             />
             <View style={styles.priceAvatar}>
-              <Text style={text.fullPrice}>{bike.pricePerDay}€</Text>
+              <Text style={text.fullPrice}>
+                {isNaN(numberOfDays)
+                  ? bike.pricePerDay
+                  : bike.pricePerDay * numberOfDays}
+                €
+              </Text>
               <Text style={text.pricePerDay}>{bike.pricePerDay}€ /jour</Text>
             </View>
           </View>
