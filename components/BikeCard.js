@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
 
   photo: {
-    width: 350,
+    width: width - 40,
     height: 130
   },
 
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     width: 66,
     borderRadius: 66 / 2,
     bottom: -35,
-    right: 40
+    right: 15
   },
 
   bikeBrandModel: {
