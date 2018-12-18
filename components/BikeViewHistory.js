@@ -15,6 +15,7 @@ class BikeViewHistory extends React.Component {
                 bikeId: this.props.bikeId,
                 threadId: this.props.threadId,
                 userId: this.props.userId,
+                userRent: this.props.ownerOrUserName,
                 propId: this.props.propId
               });
             }}

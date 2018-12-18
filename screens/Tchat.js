@@ -14,7 +14,11 @@ class Tchat extends React.Component {
     thread: this.props.navigation.state.params.threadId,
     userId: this.props.navigation.state.params.userId,
     bikeId: this.props.navigation.state.params.bikeId,
-    propId: this.props.navigation.state.params.propId
+    propId: this.props.navigation.state.params.propId,
+    numberOfDays: this.props.navigation.state.params.numberOfDays,
+    startDate: this.props.navigation.state.params.startDate,
+    endDate: this.props.navigation.state.params.endDate,
+    userRent: this.props.navigation.state.params.userRent
   };
 
   componentDidMount() {
@@ -62,7 +66,7 @@ class Tchat extends React.Component {
                   bike: response.data.bike
                 },
                 () => {
-                  this.ws = new WebSocket("ws://https://bicycly.herokuapp.com");
+                  this.ws = new WebSocket("ws://bicycly.herokuapp.com");
                   this.ws.onmessage = e => {
                     const message = JSON.parse(e.data);
                     if (message.threadId === this.state.thread) {
@@ -124,11 +128,18 @@ class Tchat extends React.Component {
                 <MessageText {...props} />
                 <View>
                   <CardTchat
-                    user={this.state.bike.user.firstName}
+                    user={this.state.userRent}
                     bikePhoto={this.state.bike.photos[0].secure_url}
                     bike={this.state.bike.bikeBrand}
                     bikeModel={this.state.bike.bikeModel}
                     bikePrice={this.state.bike.pricePerDay}
+                    fullPrice={
+                      isNaN(this.state.numberOfDays)
+                        ? this.state.bike.pricePerDay
+                        : this.state.bike.pricePerDay * this.state.numberOfDays
+                    }
+                    debut={this.state.bike.startDate}
+                    fin={this.state.bike.endDate}
                   />
                 </View>
               </React.Fragment>

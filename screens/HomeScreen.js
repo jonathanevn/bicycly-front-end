@@ -73,9 +73,7 @@ export default class HomeScreen extends React.Component {
           () => {
             axios
 
-
               .get("https://bicycly.herokuapp.com/api/bike/around", {
-
                 params: {
                   longitude: this.state.region.longitude,
                   latitude: this.state.region.latitude,
@@ -115,9 +113,7 @@ export default class HomeScreen extends React.Component {
     this.setState(region, () =>
       axios
 
-
         .get("https://bicycly.herokuapp.com/api/bike/around", {
-
           params: {
             longitude: this.state.region.longitude,
             latitude: this.state.region.latitude,
@@ -260,7 +256,9 @@ export default class HomeScreen extends React.Component {
                   bikeBrand: item.bikeBrand,
                   bikeModel: item.bikeModel,
                   pricePerDay: item.pricePerDay,
-                  numberOfDays: numberOfDays
+                  numberOfDays: numberOfDays,
+                  startDate: this.state.selectedDate.startDate,
+                  endDate: this.state.selectedDate.endDate
                 });
               }}
             >
