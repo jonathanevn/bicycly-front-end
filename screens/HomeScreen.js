@@ -71,7 +71,6 @@ export default class HomeScreen extends React.Component {
             axios
 
               .get("https://bicycly.herokuapp.com/api/bike/around", {
-
                 params: {
                   longitude: this.state.region.longitude,
                   latitude: this.state.region.latitude,
@@ -112,7 +111,6 @@ export default class HomeScreen extends React.Component {
       axios
 
         .get("https://bicycly.herokuapp.com/api/bike/around", {
-
           params: {
             longitude: this.state.region.longitude,
             latitude: this.state.region.latitude,
@@ -217,9 +215,9 @@ export default class HomeScreen extends React.Component {
                 onPress={e => this.pickLocationHandler(e.nativeEvent, i)}
               >
                 {this.state.markerSelected === i ? (
-                  <Icon name="bike" size={23} style={styles.selectedIcon} />
+                  <Icon name="bike" size={25} style={styles.selectedIcon} />
                 ) : (
-                  <Icon name="bike" size={10} color={Colors.midGrey} />
+                  <Icon name="bike" size={15} color={Colors.midGrey} />
                 )}
               </MapView.Marker>
             );
