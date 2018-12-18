@@ -45,7 +45,8 @@ class BikeDetails extends React.Component {
     thread: {},
     user: {},
     numberOfDays: this.props.navigation.state.params.numberOfDays,
-
+    // startDate: this.props.navigation.state.params.startDate,
+    // endDate: this.props.navigation.state.params.endDate,
     isLoading: false
   };
 
@@ -88,7 +89,10 @@ class BikeDetails extends React.Component {
                 bikeId: this.props.navigation.state.params.bikeId,
                 threadId: this.state.thread._id,
                 userId: this.state.userId,
-                propId: this.state.propId
+                propId: this.state.propId,
+                numberOfDays: this.state.numberOfDays
+                // startDate: this.state.startDate,
+                // endDate: this.state.endDate
               });
             } else {
               axios
@@ -104,6 +108,9 @@ class BikeDetails extends React.Component {
                       threadId: response.data._id,
                       userId: this.state.userId,
                       propId: this.state.propId
+                      // numberOfDays: this.state.numberOfDays
+                      // startDate: this.state.startDate,
+                      // endDate: this.state.endDate
                     });
                   } else {
                     alert("Une erreur est survenue");
@@ -130,6 +137,9 @@ class BikeDetails extends React.Component {
               threadId: this.state.thread,
               userId: this.state.userId,
               propId: this.state.propId
+              // numberOfDays: this.state.numberOfDays,
+              // startDate: this.state.startDate,
+              // endDate: this.state.endDate
             });
           }
         }}
@@ -139,6 +149,7 @@ class BikeDetails extends React.Component {
         </Text>
       </TouchableOpacity>
     );
+    // return null;
   }
 
   renderImage() {

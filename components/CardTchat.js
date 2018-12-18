@@ -29,13 +29,13 @@ class CardTchat extends React.Component {
                 <Text style={styles.nameBike}>{this.props.bikeModel}</Text>
               </View>
               <View>
-                <Text style={styles.dates}>début : 9 nov. 12:30</Text>
-                <Text style={styles.dates}>fin : 23 nov. 10:30</Text>
+                <Text style={styles.dates}>début : {this.props.debut}</Text>
+                <Text style={styles.dates}>fin : {this.props.fin}</Text>
               </View>
 
               <View style={styles.prices}>
                 <Text style={styles.nameBike}>
-                  {this.props.bikePrice}€ {"  "}
+                  {this.props.fullPrice}€ {"  "}
                 </Text>
                 <Text style={text.pricePerDay}>
                   {this.props.bikePrice}€/jour
@@ -64,7 +64,7 @@ class CardTchat extends React.Component {
               <TouchableOpacity
                 style={styles.button}
                 // style={button.secondary}
-                onPress={this.useLibraryHandler}
+                // onPress={this.useLibraryHandler}
               >
                 <Text>Accepter</Text>
               </TouchableOpacity>
