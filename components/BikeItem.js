@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   },
 
   photo: {
-    width: 350,
+    width: width - 30,
     height: 170
   },
 
