@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { createIconSetFromIcoMoon } from "@expo/vector-icons";
 import icoMoonConfig from "../assets/fonts/selection.json";
 import { text, button } from "../constants/Styles";
@@ -16,16 +16,17 @@ class CardTchat extends React.Component {
       <View style={styles.container}>
         <View style={styles.body}>
           <View style={styles.titleSection}>
-            <Text style={styles.title}>La demande de Vincent</Text>
+            <Text style={styles.title}>La demande de {this.props.user}</Text>
           </View>
           <View style={styles.wrapper}>
-            <View style={styles.photo} />
+            <Image
+              style={styles.photo}
+              source={{ uri: this.props.bikePhoto }}
+            />
             <View style={styles.information}>
               <View style={styles.nameBikeModel}>
-                <Text style={styles.nameBike}>SCOTT {""}</Text>
-                <Text style={styles.nameBike}>
-                  Contessa Speedster Gravel 25
-                </Text>
+                <Text style={styles.nameBike}>{this.props.bike}</Text>
+                <Text style={styles.nameBike}>{this.props.bikeModel}</Text>
               </View>
               <View>
                 <Text style={styles.dates}>début : 9 nov. 12:30</Text>
@@ -33,20 +34,24 @@ class CardTchat extends React.Component {
               </View>
 
               <View style={styles.prices}>
-                <Text style={styles.nameBike}>30€ {"  "}</Text>
-                <Text style={text.pricePerDay}>17€/jour</Text>
+                <Text style={styles.nameBike}>
+                  {this.props.bikePrice}€ {"  "}
+                </Text>
+                <Text style={text.pricePerDay}>
+                  {this.props.bikePrice}€/jour
+                </Text>
               </View>
             </View>
           </View>
 
           {this.state.accepted === false ? (
             <View style={styles.button}>
-              <TouchableOpacity style={styles.buttonLeft}>
+              {/* <TouchableOpacity style={styles.buttonLeft}>
                 <Text style={styles.textButton}>Refuser</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.buttonRight}>
                 <Text style={styles.textButton}>Accepter</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           ) : (
             <View>
@@ -106,7 +111,7 @@ const styles = StyleSheet.create({
   },
 
   photo: {
-    backgroundColor: "grey",
+    // backgroundColor: "grey",
     width: 46,
     height: 46,
     borderRadius: 46 / 2,
