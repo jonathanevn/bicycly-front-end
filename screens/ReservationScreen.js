@@ -39,9 +39,12 @@ export default class ReservationScreen extends React.Component {
       this.setState({ token: value[0][1], id: value[1][1] });
 
       axios
-        .get("http://localhost:3100/api/user/anyThread/" + this.state.id, {
-          headers: { Authorization: "Bearer " + this.state.token }
-        })
+        .get(
+          "https://bicycly.herokuapp.com/api/user/anyThread/" + this.state.id,
+          {
+            headers: { Authorization: "Bearer " + this.state.token }
+          }
+        )
         .then(response => {
           this.setState({ bikes: response.data });
         })
