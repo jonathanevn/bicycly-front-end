@@ -30,6 +30,7 @@ class List extends React.Component {
               <TouchableOpacity
                 onPress={() => {
                   this.props.navigation.navigate("BikeDetails", {
+                    myLoc: params.myLoc,
                     bikeId: item._id,
                     bikeBrand: item.bikeBrand,
                     bikeModel: item.bikeModel
@@ -42,6 +43,13 @@ class List extends React.Component {
                   picture={item.photos[0].secure_url}
                   category={item.bikeCategory}
                   pricePerDay={item.pricePerDay}
+                  distance={geolib.getDistance(
+                    {
+                      latitude: params.myLoc.latitude,
+                      longitude: params.myLoc.longitude
+                    },
+                    { latitude: item.loc[1], longitude: item.loc[0] }
+                  )}
                 />
               </TouchableOpacity>
             )}

@@ -10,6 +10,7 @@ import {
   TouchableNativeFeedback
 } from "react-native";
 import { MapView, Permissions } from "expo";
+import geolib from "geolib";
 import { height, width } from "../constants/Layout";
 
 import { ListButton, FilterButton } from "../components/SquareButton";
@@ -37,6 +38,10 @@ export default class HomeScreen extends React.Component {
   };
 
   state = {
+    myLoc: {
+      longitude: LONGITUDE,
+      latitude: LATITUDE
+    },
     region: {
       longitude: LONGITUDE,
       latitude: LATITUDE,
@@ -63,6 +68,10 @@ export default class HomeScreen extends React.Component {
       position => {
         this.setState(
           {
+            myLoc: {
+              longitude: position.coords.longitude,
+              latitude: position.coords.latitude
+            },
             region: {
               longitude: position.coords.longitude,
               latitude: position.coords.latitude,
@@ -199,7 +208,6 @@ export default class HomeScreen extends React.Component {
     const end = moment(this.state.selectedDate.endDate);
 
     const numberOfDays = end.diff(start, "days") + 1;
-    // console.log(numberOfDays);
 
     return (
       <View style={styles.container}>
@@ -251,6 +259,7 @@ export default class HomeScreen extends React.Component {
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("BikeDetails", {
+                  myLoc: this.state.myLoc,
                   bikeId: item._id,
                   bikeBrand: item.bikeBrand,
                   bikeModel: item.bikeModel,
@@ -270,6 +279,13 @@ export default class HomeScreen extends React.Component {
                     ? item.pricePerDay
                     : item.pricePerDay * numberOfDays
                 }
+                distance={geolib.getDistance(
+                  {
+                    latitude: this.state.myLoc.latitude,
+                    longitude: this.state.myLoc.longitude
+                  },
+                  { latitude: item.loc[1], longitude: item.loc[0] }
+                )}
               />
             </TouchableOpacity>
           )}
@@ -291,6 +307,7 @@ export default class HomeScreen extends React.Component {
           style={styles.listButton}
           onPress={() => {
             this.props.navigation.navigate("List", {
+              myLoc: this.state.myLoc,
               region: this.state.region,
               bikes: this.state.bikes
             });

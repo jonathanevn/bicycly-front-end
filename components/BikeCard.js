@@ -53,7 +53,7 @@ class BikeCard extends React.Component {
                   color={Colors.lightGrey}
                   style={{ paddingRight: 8, paddingLeft: 20 }}
                 />
-                <Text style={text.localisation}>300m</Text>
+                <Text style={text.localisation}>{this.props.distance} m</Text>
               </View>
             </View>
           </View>
