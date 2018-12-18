@@ -16,7 +16,7 @@ export default class UploadPhoto extends React.Component {
     return (
       <View style={styles.buttonSection}>
         <TouchableOpacity
-          style={button.secondary}
+          style={[button.secondary, this.props.style]}
           onPress={this.useLibraryHandler}
         >
           <Text>Ajouter une photo</Text>

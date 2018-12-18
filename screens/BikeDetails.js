@@ -44,6 +44,7 @@ class BikeDetails extends React.Component {
     bike: {},
     thread: {},
     user: {},
+    numberOfDays: this.props.navigation.state.params.numberOfDays,
 
     isLoading: false
   };
@@ -53,8 +54,8 @@ class BikeDetails extends React.Component {
       this.setState({ token: value[0][1], userId: value[1][1] }, () => {
         axios
           .get(
-            "http://192.168.86.134:3100/api/bike/" +
-              // "https://bicycly.herokuapp.com/api/bike/"
+            // "http://192.168.86.134:3100/api/bike/" +
+            "https://bicycly.herokuapp.com/api/bike/" +
               this.props.navigation.state.params.bikeId,
             { headers: { Authorization: "Bearer " + this.state.token } }
           )
@@ -92,7 +93,7 @@ class BikeDetails extends React.Component {
             } else {
               axios
                 .get(
-                  `http://192.168.86.134:3100/api/tchat/message/${
+                  `https://bicycly.herokuapp.com/api/tchat/message/${
                     this.props.navigation.state.params.bikeId
                   }/${this.state.userId}`
                 )
@@ -126,7 +127,7 @@ class BikeDetails extends React.Component {
           if (this.state.thread) {
             this.props.navigation.navigate("Tchat", {
               bikeId: this.props.navigation.state.params.bikeId,
-              threadId: "5c1634ecb0f53e31846c415b",
+              threadId: this.state.threadId,
               userId: this.state.userId,
               propId: this.state.propId
             });
@@ -162,7 +163,7 @@ class BikeDetails extends React.Component {
   }
 
   render() {
-    const { bike } = this.state;
+    const { bike, numberOfDays } = this.state;
     if (this.state.isLoading === false) {
       return <Text>isLoading...</Text>;
       // } else if (this.state.bike.photos === undefined) {
@@ -178,7 +179,12 @@ class BikeDetails extends React.Component {
               style={styles.photo}
             />
             <View style={styles.priceAvatar}>
-              <Text style={text.fullPrice}>{bike.pricePerDay}€</Text>
+              <Text style={text.fullPrice}>
+                {isNaN(numberOfDays)
+                  ? bike.pricePerDay
+                  : bike.pricePerDay * numberOfDays}
+                €
+              </Text>
               <Text style={text.pricePerDay}>{bike.pricePerDay}€ /jour</Text>
             </View>
           </View>
