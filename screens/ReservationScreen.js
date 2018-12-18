@@ -75,6 +75,7 @@ export default class ReservationScreen extends React.Component {
                         ownerOrUserName={
                           item.user.firstName + " " + item.user.lastName
                         }
+                        contact={true}
                         bikeId={item.bike._id}
                         threadId={item._id}
                         userId={this.state.id}
@@ -94,6 +95,7 @@ export default class ReservationScreen extends React.Component {
                         ownerOrUserName={
                           item.owner.firstName + " " + item.owner.lastName
                         }
+                        contact={true}
                         bikeId={item.bike._id}
                         threadId={item._id}
                         userId={this.state.id}

@@ -5,6 +5,29 @@ import { text } from "../constants/Styles";
 import { withNavigation } from "react-navigation";
 
 class BikeViewHistory extends React.Component {
+  renderingButton = () => {
+    if (this.props.contact) {
+      return (
+        <View style={styles.confirmButton}>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate("Tchat", {
+                bikeId: this.props.bikeId,
+                threadId: this.props.threadId,
+                userId: this.props.userId,
+                propId: this.props.propId
+              });
+            }}
+          >
+            <Text style={text.p}>Contacter</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return null;
+    }
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -25,21 +48,7 @@ class BikeViewHistory extends React.Component {
             <Text style={text.p}>{this.props.ownerOrUser}</Text>
             <Text style={styles.name}>{this.props.ownerOrUserName}</Text>
           </View>
-
-          <View style={styles.confirmButton}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("Tchat", {
-                  bikeId: this.props.bikeId,
-                  threadId: this.props.threadId,
-                  userId: this.props.userId,
-                  propId: this.props.propId
-                });
-              }}
-            >
-              <Text style={text.p}>Contacter</Text>
-            </TouchableOpacity>
-          </View>
+          {this.renderingButton()}
         </View>
       </View>
     );
@@ -52,12 +61,14 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   leftPart: {
-    marginRight: 20
+    marginRight: 20,
+    flex: 3
   },
   rightPart: {
     marginLeft: 20,
     marginRight: 20,
-    marginBottom: 20
+    marginBottom: 20,
+    flex: 5
   },
   bikePictureHistory: {
     height: 100,

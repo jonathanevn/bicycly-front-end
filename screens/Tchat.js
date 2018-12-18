@@ -2,6 +2,7 @@ import React from "react";
 import { GiftedChat, MessageText } from "react-native-gifted-chat";
 import axios from "axios";
 import { View, Text, AsyncStorage } from "react-native";
+import CardTchat from "../components/CardTchat";
 class Tchat extends React.Component {
   static navigationOptions = {
     title: "Message au propriétaire"
@@ -115,7 +116,7 @@ class Tchat extends React.Component {
               <React.Fragment>
                 <MessageText {...props} />
                 <View>
-                  <Text>Vélo à louer</Text>
+                  <CardTchat />
                 </View>
               </React.Fragment>
             );
