@@ -3,7 +3,7 @@ import { GiftedChat, MessageText } from "react-native-gifted-chat";
 import axios from "axios";
 import CardTchat from "../components/CardTchat";
 import { View, Text, AsyncStorage } from "react-native";
-import CardTchat from "../components/CardTchat";
+
 class Tchat extends React.Component {
   static navigationOptions = {
     title: "Message au propriétaire"
