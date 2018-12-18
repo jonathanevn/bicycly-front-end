@@ -53,7 +53,7 @@ class BikeDetails extends React.Component {
       this.setState({ token: value[0][1], userId: value[1][1] }, () => {
         axios
           .get(
-            "http://localhost:3100/api/bike/" +
+            "https://bicycly.herokuapp.com/api/bike/" +
               // "https://bicycly.herokuapp.com/api/bike/"
               this.props.navigation.state.params.bikeId,
             { headers: { Authorization: "Bearer " + this.state.token } }
@@ -92,7 +92,7 @@ class BikeDetails extends React.Component {
             } else {
               axios
                 .get(
-                  `http://localhost:3100/api/tchat/message/${
+                  `https://bicycly.herokuapp.com/api/tchat/message/${
                     this.props.navigation.state.params.bikeId
                   }/${this.state.userId}`
                 )

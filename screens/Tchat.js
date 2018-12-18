@@ -31,7 +31,7 @@ class Tchat extends React.Component {
         () => {
           axios
             .get(
-              "http://localhost:3100/api/tchat/message/" +
+              "https://bicycly.herokuapp.com/api/tchat/message/" +
                 this.state.bikeId +
                 "/" +
                 this.state.userId +
@@ -62,7 +62,7 @@ class Tchat extends React.Component {
                   bike: response.data.bike
                 },
                 () => {
-                  this.ws = new WebSocket("ws://localhost:3100");
+                  this.ws = new WebSocket("ws://https://bicycly.herokuapp.com");
                   this.ws.onmessage = e => {
                     const message = JSON.parse(e.data);
                     if (message.threadId === this.state.thread) {
