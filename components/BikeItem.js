@@ -66,14 +66,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "flex-start",
     height: 240,
-    width: 330,
-    borderRadius: 12,
+    width: width - 30,
+    borderRadius: 10,
     shadowColor: "rgba(93, 93, 93, 0.25)",
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.9,
     shadowRadius: 12,
     /*   marginHorizontal: 8, */
-    elevation: 3,
+    /*  elevation: 3, */
     overflow: "hidden",
     marginHorizontal: 10,
     marginBottom: 15
@@ -82,13 +82,13 @@ const styles = StyleSheet.create({
   content: {
     alignItems: "flex-start",
     justifyContent: "flex-end",
-    width: 150,
+    width: 120,
     marginLeft: 20,
     marginTop: 12
   },
 
   photo: {
-    width: 350,
+    width: width - 30,
     height: 170
   },
 
@@ -101,12 +101,12 @@ const styles = StyleSheet.create({
     width: 66,
     borderRadius: 66 / 2,
     bottom: -35,
-    right: 40
+    right: 20
   },
 
   bikeBrandModel: {
     flexDirection: "row",
-    paddingBottom: 8
+    paddingBottom: 5
   },
   bikeCategoryLoc: {
     flexDirection: "row"
