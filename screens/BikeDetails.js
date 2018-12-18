@@ -173,8 +173,31 @@ class BikeDetails extends React.Component {
     }
   }
 
+  renderDistance() {
+    if (this.props.navigation.state.params.myLoc) {
+      return (
+        <Text style={text.localisation}>
+          {geolib.getDistance(
+            {
+              latitude: this.props.navigation.state.params.myLoc.latitude,
+              longitude: this.props.navigation.state.params.myLoc.longitude
+            },
+            {
+              latitude: this.state.bike.loc[1],
+              longitude: this.state.bike.loc[0]
+            }
+          )}{" "}
+          m
+        </Text>
+      );
+    } else {
+      return <Text> 0 m</Text>;
+    }
+  }
+
   render() {
     const { bike, numberOfDays } = this.state;
+
     if (this.state.isLoading === false) {
       return <Text>isLoading...</Text>;
       // } else if (this.state.bike.photos === undefined) {
@@ -227,7 +250,7 @@ class BikeDetails extends React.Component {
                   color={Colors.lightGrey}
                   style={{ paddingRight: 8, paddingLeft: 20 }}
                 />
-                <Text style={text.localisation}>300m</Text>
+                {this.renderDistance()}
               </View>
             </View>
 
