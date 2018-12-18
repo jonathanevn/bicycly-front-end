@@ -3,6 +3,7 @@ import { GiftedChat, MessageText } from "react-native-gifted-chat";
 import axios from "axios";
 import CardTchat from "../components/CardTchat";
 import { View, Text, AsyncStorage } from "react-native";
+
 class Tchat extends React.Component {
   static navigationOptions = {
     title: "Message au propriétaire"
@@ -30,7 +31,7 @@ class Tchat extends React.Component {
         () => {
           axios
             .get(
-              "http://192.168.86.134:3100/api/tchat/message/" +
+              "https://bicycly.herokuapp.com/api/tchat/message/" +
                 this.state.bikeId +
                 "/" +
                 this.state.userId +
@@ -61,7 +62,7 @@ class Tchat extends React.Component {
                   bike: response.data.bike
                 },
                 () => {
-                  this.ws = new WebSocket("ws://192.168.86.134:3100");
+                  this.ws = new WebSocket("ws://https://bicycly.herokuapp.com");
                   this.ws.onmessage = e => {
                     const message = JSON.parse(e.data);
                     if (message.threadId === this.state.thread) {
@@ -122,7 +123,13 @@ class Tchat extends React.Component {
               <React.Fragment>
                 <MessageText {...props} />
                 <View>
-                  <CardTchat />
+                  <CardTchat
+                    user={this.state.bike.user.firstName}
+                    bikePhoto={this.state.bike.photos[0].secure_url}
+                    bike={this.state.bike.bikeBrand}
+                    bikeModel={this.state.bike.bikeModel}
+                    bikePrice={this.state.bike.pricePerDay}
+                  />
                 </View>
               </React.Fragment>
             );

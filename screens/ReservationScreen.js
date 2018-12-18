@@ -4,8 +4,13 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  FlatList,
+  AsyncStorage
 } from "react-native";
+import axios from "axios";
+import BikeViewHistory from "../components/BikeViewHistory";
+
 import { text } from "../constants/Styles";
 import CardTchat from "../components/CardTchat";
 
@@ -23,50 +28,108 @@ export default class ReservationScreen extends React.Component {
     }
   };
 
+  state = {
+    token: "",
+    id: "",
+    bikes: []
+  };
+
+  componentDidMount() {
+    AsyncStorage.multiGet(["token", "id"]).then(value => {
+      this.setState({ token: value[0][1], id: value[1][1] });
+
+      axios
+        .get(
+          "https://bicycly.herokuapp.com/api/user/anyThread/" + this.state.id,
+          {
+            headers: { Authorization: "Bearer " + this.state.token }
+          }
+        )
+        .then(response => {
+          this.setState({ bikes: response.data });
+        })
+        .catch(err => err);
+    });
+  }
+
   render() {
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.container}>
-          <ScrollView
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-          >
-            <View style={styles.welcomeContainer}>
-              <CardTchat />
-              <Text>This is the Reservation screen with the map</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate("StartRent");
-                }}
-              >
-                <Text>Demarrer</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate("EndRent");
-                }}
-              >
-                <Text>Terminer</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate("BikeDetails");
-                }}
-              >
-                <Text>Détails</Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        </View>
-      </ScrollView>
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
+        >
+          <View style={styles.welcomeContainer}>
+            <Text style={text.h1}>Locations à venir</Text>
+
+            <FlatList
+              data={this.state.bikes}
+              keyExtractor={item => item._id}
+              renderItem={({ item }) => {
+                if (item.owner._id === this.state.id) {
+                  return (
+                    <View style={styles.flatCard}>
+                      <BikeViewHistory
+                        picture={item.bike.photos[0].secure_url}
+                        brand={item.bike.bikeBrand}
+                        mod={item.bike.bikeModel}
+                        price={item.bike.pricePerDay}
+                        ownerOrUser={"Loué à "}
+                        ownerOrUserName={
+                          item.user.firstName + " " + item.user.lastName
+                        }
+                        contact={true}
+                        bikeId={item.bike._id}
+                        threadId={item._id}
+                        userId={this.state.id}
+                        propId={item.owner._id}
+                      />
+                    </View>
+                  );
+                } else {
+                  return (
+                    <View style={styles.flatCard}>
+                      <BikeViewHistory
+                        picture={item.bike.photos[0].secure_url}
+                        brand={item.bike.bikeBrand}
+                        mod={item.bike.bikeModel}
+                        price={item.bike.pricePerDay}
+                        ownerOrUser={"Loué par "}
+                        ownerOrUserName={
+                          item.owner.firstName + " " + item.owner.lastName
+                        }
+                        contact={true}
+                        bikeId={item.bike._id}
+                        threadId={item._id}
+                        userId={this.state.id}
+                        propId={item.owner._id}
+                      />
+                    </View>
+                  );
+                }
+              }}
+            />
+          </View>
+        </ScrollView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  welcomeContainer: {
+    margin: 10
+  },
   container: {
     flex: 1,
     paddingTop: 15,
     backgroundColor: "#f8f8f8"
+  },
+
+  flatCard: {
+    marginLeft: 10,
+    marginRight: 20,
+    marginTop: 20,
+    marginBottom: 10
   }
 });

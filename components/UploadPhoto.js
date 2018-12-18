@@ -9,6 +9,13 @@ import {
 } from "react-native";
 import { ImagePicker, Permissions } from "expo";
 import { button, text } from "../constants/Styles";
+import { createIconSetFromIcoMoon } from "@expo/vector-icons";
+import icoMoonConfig from "../assets/fonts/selection.json";
+
+import Colors from "../constants/Colors";
+
+const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
+
 export default class UploadPhoto extends React.Component {
   render() {
     const { photos } = this.props;
@@ -16,10 +23,11 @@ export default class UploadPhoto extends React.Component {
     return (
       <View style={styles.buttonSection}>
         <TouchableOpacity
-          style={[button.secondary, this.props.style]}
+          style={styles.addImage}
           onPress={this.useLibraryHandler}
         >
-          <Text>Ajouter une photo</Text>
+          <Icon name={"image-add-button"} size={60} color={Colors.darkGrey} />
+          {/* <Text style={text.p}>Ajouter une photo</Text> */}
         </TouchableOpacity>
         {/* {image && (
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
@@ -62,8 +70,15 @@ export default class UploadPhoto extends React.Component {
 const styles = StyleSheet.create({
   buttonSection: {
     justifyContent: "center",
-    marginVertical: 20,
-
+    marginTop: 20,
+    alignItems: "center"
+  },
+  addImage: {
+    backgroundColor: "white",
+    height: 140,
+    width: 140,
+    borderRadius: 140 / 2,
+    justifyContent: "center",
     alignItems: "center"
   }
 });

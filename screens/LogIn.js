@@ -36,7 +36,9 @@ class LogIn extends React.Component {
   onPress = () => {
     const { email, password } = this.state;
     axios
+
       .post("https://bicycly.herokuapp.com/api/user/log_in", {
+
         email: email,
         password: password
       })

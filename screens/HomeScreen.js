@@ -72,7 +72,10 @@ export default class HomeScreen extends React.Component {
           },
           () => {
             axios
+
+
               .get("https://bicycly.herokuapp.com/api/bike/around", {
+
                 params: {
                   longitude: this.state.region.longitude,
                   latitude: this.state.region.latitude,
@@ -111,7 +114,10 @@ export default class HomeScreen extends React.Component {
   onLocationChange = region => {
     this.setState(region, () =>
       axios
+
+
         .get("https://bicycly.herokuapp.com/api/bike/around", {
+
           params: {
             longitude: this.state.region.longitude,
             latitude: this.state.region.latitude,
@@ -133,10 +139,9 @@ export default class HomeScreen extends React.Component {
 
   handleFilters = categories => {
     const categoriesSplitted = categories.join(" ");
-    this.setState({ categorieSelected: categoriesSplitted }, () => {
-      console.log("categorieeees", this.state.categorieSelected);
+    this.setState({ categoriesSelected: categoriesSplitted }, () => {
+      this.onLocationChange();
     });
-    this.onLocationChange();
   };
 
   pickLocationHandler = (event, index) => {
@@ -206,7 +211,7 @@ export default class HomeScreen extends React.Component {
         <MapView
           style={styles.map}
           region={this.state.region}
-          // provider={MapView.PROVIDER_GOOGLE}
+          provider={MapView.PROVIDER_GOOGLE}
           zoomEnabled={true}
           customMapStyle={generatedMapStyle}
           showsUserLocation={true}
@@ -223,9 +228,9 @@ export default class HomeScreen extends React.Component {
                 onPress={e => this.pickLocationHandler(e.nativeEvent, i)}
               >
                 {this.state.markerSelected === i ? (
-                  <Icon name="bike" size={23} style={styles.selectedIcon} />
+                  <Icon name="bike" size={25} style={styles.selectedIcon} />
                 ) : (
-                  <Icon name="bike" size={10} color={Colors.midGrey} />
+                  <Icon name="bike" size={15} color={Colors.midGrey} />
                 )}
               </MapView.Marker>
             );

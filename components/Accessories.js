@@ -85,27 +85,25 @@ const styles = StyleSheet.create({
   container: {
     flexWrap: "wrap",
     alignItems: "center",
-    marginBottom: 5,
-    marginRight: 10,
+    marginBottom: 8,
+    marginHorizontal: 5,
     borderRadius: 12,
     backgroundColor: "white",
-    paddingHorizontal: 5,
-    width: 110
+    paddingHorizontal: 5
   },
 
   containerAccessories: {
     justifyContent: "center",
     flexDirection: "row",
     marginVertical: 10,
-    flexWrap: "wrap",
-    width: width
+    flexWrap: "wrap"
   },
 
   textButton: {
-    paddingTop: 10,
-    paddingVertical: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
     fontFamily: "Karla-Regular",
-    fontSize: 16,
+    fontSize: 14,
     color: "#262626"
   },
   iconButton: {

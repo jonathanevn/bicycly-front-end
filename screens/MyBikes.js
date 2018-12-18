@@ -5,10 +5,12 @@ import {
   View,
   Text,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  AsyncStorage
 } from "react-native";
+import axios from "axios";
+import BikeViewHistory from "../components/BikeViewHistory";
 
-//import { ListButton } from "../components/SquareButton";
 import SearchBar from "../components/SearchBar";
 import { text, button, avatar } from "../constants/Styles";
 import { width, height } from "../constants/Layout";
@@ -27,29 +29,29 @@ export default class MyBikesScreen extends React.Component {
     }
   };
 
-  /* 
-  componentDidMount() {
- 
+  state = {
+    token: "",
+    id: "",
+    bikes: []
+  };
 
+  componentDidMount() {
     AsyncStorage.multiGet(["token", "id"]).then(value => {
       this.setState({ token: value[0][1], id: value[1][1] });
 
       axios
-        .get("https://bicycly.herokuapp.com/api/user/" + this.state.id, {
-          headers: { Authorization: "Bearer " + this.state.token }
-        })
+        .get(
+          "https://bicycly.herokuapp.com/api/user/myBikesList/" + this.state.id,
+          {
+            headers: { Authorization: "Bearer " + this.state.token }
+          }
+        )
         .then(response => {
-          this.setState({
-            account: response.data.account,
-            firstName: response.data.firstName,
-            lastName: response.data.lastName,
-            reviews: response.data.reviews
-          });
-          console.log("cdm", response.data);
+          this.setState({ bikes: response.data[0].account.bikes });
         })
-        .catch(err => ("wtf", err));
+        .catch(err => err);
     });
-  } */
+  }
 
   render() {
     return (
@@ -59,35 +61,28 @@ export default class MyBikesScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.welcomeContainer}>
-            <Text>This is the My Bikes screen with the map</Text>
+            <Text style={text.h1}>Mes Vélos</Text>
+            <FlatList
+              data={this.state.bikes}
+              keyExtractor={item => item._id}
+              renderItem={({ item }) => (
+                <View style={styles.flatCard}>
+                  <BikeViewHistory
+                    picture={item.photos[0].secure_url}
+                    brand={item.bikeBrand}
+                    mod={item.bikeModel}
+                    price={item.pricePerDay}
+                  />
+                </View>
+              )}
+            />
 
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("StartRent");
-              }}
-            >
-              <Text>Demarrer</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("EndRent");
-              }}
-            >
-              <Text>Terminer</Text>
-            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 this.props.navigation.navigate("AddBike");
               }}
             >
               <Text>Ajouter un vélo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.navigate("Tchat");
-              }}
-            >
-              <Text>Contacter</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -96,9 +91,19 @@ export default class MyBikesScreen extends React.Component {
   }
 }
 const styles = StyleSheet.create({
+  welcomeContainer: {
+    margin: 10
+  },
   container: {
     flex: 1,
     paddingTop: 15,
     backgroundColor: "#f8f8f8"
+  },
+
+  flatCard: {
+    marginLeft: 10,
+    marginRight: 20,
+    marginTop: 20,
+    marginBottom: 10
   }
 });
