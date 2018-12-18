@@ -1,12 +1,29 @@
 import React from "react";
-import { GiftedChat, MessageText } from "react-native-gifted-chat";
+import {
+  GiftedChat,
+  MessageText,
+  Send,
+  Bubble,
+  InputToolbar
+} from "react-native-gifted-chat";
 import axios from "axios";
 import CardTchat from "../components/CardTchat";
 import { View, Text, AsyncStorage } from "react-native";
 
 class Tchat extends React.Component {
   static navigationOptions = {
-    title: "Message au propriétaire"
+    title: "Message au propriétaire",
+    headerBackTitle: null,
+    headerTintColor: "#262626",
+    headerTitleStyle: {
+      fontFamily: "Karla-Bold",
+      fontSize: 16,
+      color: "#262626"
+    },
+    headerStyle: {
+      backgroundColor: "#f8f8f8",
+      borderBottomColor: "#f8f8f8"
+    }
   };
   state = {
     messages: [],
@@ -97,54 +114,95 @@ class Tchat extends React.Component {
     }));
   }
 
+  renderSend(props) {
+    return (
+      <Send
+        {...props}
+        textStyle={{
+          color: "#262626",
+          paddingVertical: 10,
+          paddingHorizontal: 20
+        }}
+      />
+    );
+  }
+
+  renderInputToolbar(props) {
+    return (
+      <InputToolbar
+        {...props}
+        textStyle={{ color: "#262626", fontFamily: "Karla-Regular" }}
+      />
+    );
+  }
+
+  renderBubble(props) {
+    return (
+      <Bubble
+        {...props}
+        textStyle={{ right: { color: "#262626" } }}
+        wrapperStyle={{
+          right: { backgroundColor: "rgb(247, 195, 67)" }
+        }}
+      />
+    );
+  }
+
   render() {
     console.log("state.userId ===>", this.state.userId);
     // console.log("state.messages ===>", this.state.messages);
     // console.log("Have we got a thread ? ===>", this.state.thread);
 
     return (
-      <GiftedChat
-        // bottomOffset={81}
-        //id du User -b qui recois donc propriétaire
-        user={{ _id: this.state.userId }}
-        renderMessageText={props => {
-          // console.log("props.currentMessage", props.currentMessage);
+      <View style={{ backgroundColor: "#f8f8f8", flex: 1 }}>
+        <GiftedChat
+          // bottomOffset={81}
+          //id du User -b qui recois donc propriétaire
+          user={{ _id: this.state.userId }}
+          placeholder="Ecrivez votre message..."
+          renderSend={this.renderSend}
+          isAnimated={true}
+          renderBubble={this.renderBubble}
+          renderInputToolbar={this.renderInputToolbar}
+          renderMessageText={props => {
+            // console.log("props.currentMessage", props.currentMessage);
 
-          // console.log("render tchat");
-          // console.log(props.currentMessage.thread.bike.user);
-          // console.log(this.state.userId);
+            // console.log("render tchat");
+            // console.log(props.currentMessage.thread.bike.user);
+            // console.log(this.state.userId);
 
-          if (
-            props.currentMessage.isRequest === true &&
-            this.state.bike.user._id === this.state.userId //User -b Est-ce que je suis le propriétaire du vélo ?
-          ) {
-            return (
-              //la demande de location avec l'acceptation ou le refus
-              <React.Fragment>
-                <MessageText {...props} />
-                <View>
-                  <CardTchat
-                    user={this.state.bike.user.firstName}
-                    bikePhoto={this.state.bike.photos[0].secure_url}
-                    bike={this.state.bike.bikeBrand}
-                    bikeModel={this.state.bike.bikeModel}
-                    bikePrice={this.state.bike.pricePerDay}
-                  />
-                </View>
-              </React.Fragment>
-            );
-          } else {
-            return (
-              //sinon retourne le message
-              <React.Fragment>
-                <MessageText {...props} />
-              </React.Fragment>
-            );
-          }
-        }}
-        messages={this.state.messages}
-        onSend={messages => this.onSend(messages)}
-      />
+            if (
+              props.currentMessage.isRequest === true &&
+              this.state.bike.user._id === this.state.userId //User -b Est-ce que je suis le propriétaire du vélo ?
+            ) {
+              return (
+                //la demande de location avec l'acceptation ou le refus
+                <React.Fragment>
+                  <MessageText {...props} />
+                  <View>
+                    <CardTchat
+                      user={this.state.bike.user.firstName}
+                      bikePhoto={this.state.bike.photos[0].secure_url}
+                      bike={this.state.bike.bikeBrand}
+                      bikeModel={this.state.bike.bikeModel}
+                      bikePrice={this.state.bike.pricePerDay}
+                    />
+                  </View>
+                </React.Fragment>
+              );
+            } else {
+              return (
+                //sinon retourne le message
+                <React.Fragment>
+                  <MessageText {...props} />
+                </React.Fragment>
+              );
+            }
+          }}
+          messages={this.state.messages}
+          onSend={messages => this.onSend(messages)}
+        />
+      </View>
     );
   }
 }
