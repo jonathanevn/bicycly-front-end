@@ -63,7 +63,7 @@ export default class HomeScreen extends React.Component {
           },
           () => {
             axios
-              .get("http://192.168.86.134:3100/api/bike/around", {
+              .get("http://localhost:3100/api/bike/around", {
                 params: {
                   longitude: this.state.region.longitude,
                   latitude: this.state.region.latitude,
@@ -102,7 +102,7 @@ export default class HomeScreen extends React.Component {
   onLocationChange = region => {
     this.setState(region, () =>
       axios
-        .get("http://192.168.86.134:3100/api/bike/around", {
+        .get("http://localhost:3100/api/bike/around", {
           params: {
             longitude: this.state.region.longitude,
             latitude: this.state.region.latitude,
@@ -191,7 +191,7 @@ export default class HomeScreen extends React.Component {
         <MapView
           style={styles.map}
           region={this.state.region}
-          // provider={MapView.PROVIDER_GOOGLE}
+          provider={MapView.PROVIDER_GOOGLE}
           zoomEnabled={true}
           customMapStyle={generatedMapStyle}
           showsUserLocation={true}

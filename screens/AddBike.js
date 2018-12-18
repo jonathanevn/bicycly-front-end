@@ -130,7 +130,7 @@ class AddBike extends React.Component {
 
     axios
       .post(
-        "http://192.168.86.134:3100/api/bike/publish",
+        "http://localhost:3100/api/bike/publish",
         {
           bikeBrand: bikeBrand,
           bikeModel: bikeModel,
@@ -145,10 +145,10 @@ class AddBike extends React.Component {
       )
 
       .then(response => {
-        console.log(
+        /*  console.log(
           "​AddBike -> onPress -> response.data.photos.map(photo => photo.secure_url)",
           response.data.photos.map(photo => photo.secure_url)
-        );
+        ); */
         this.props.navigation.navigate("BikeDetails", {
           bikeId: response.data._id,
           bikeBrand: response.data.bikeBrand,
@@ -244,12 +244,9 @@ class AddBike extends React.Component {
                 const location = [];
                 location.push(Number(details.geometry.location.lng)),
                   location.push(Number(details.geometry.location.lat)),
-                  this.setState(
-                    {
-                      loc: location
-                    },
-                    () => console.log("loooc", this.state.loc)
-                  );
+                  this.setState({
+                    loc: location
+                  });
               }}
               query={{
                 key: "AIzaSyChBhCJi-Dg_aDGRuBFO3zDKlhx918kPuQ",
@@ -298,7 +295,7 @@ class AddBike extends React.Component {
             <View style={styles.sectionDescription}>
               <Text style={[text.h2, styles.title]}>Description</Text>
               <TextInput
-                style={styles.textInput}
+                style={styles.textInputDesc}
                 editable={true}
                 value={this.state.description}
                 onChangeText={value => {
@@ -306,7 +303,7 @@ class AddBike extends React.Component {
                 }}
                 name="description"
                 multiline={true}
-                placeholder="Dites nous pourquoi votre vélo est le plus beau des vélos!"
+                placeholder="Dites nous pourquoi votre vélo est le plus beau des vélos !"
               />
             </View>
 
@@ -374,6 +371,20 @@ const styles = StyleSheet.create({
     height: 50,
     paddingHorizontal: 15,
     paddingVertical: 15,
+    borderColor: "#f1f1f1",
+    backgroundColor: "white",
+    borderRadius: 5,
+    fontFamily: "Karla-Regular",
+    color: Colors.darkGrey,
+    fontSize: 15
+  },
+
+  textInputDesc: {
+    borderWidth: 0.5,
+    width: "100%",
+    height: 100,
+    paddingHorizontal: 15,
+    paddingVertical: 30,
     borderColor: "#f1f1f1",
     backgroundColor: "white",
     borderRadius: 5,

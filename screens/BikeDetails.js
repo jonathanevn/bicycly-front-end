@@ -58,7 +58,7 @@ class BikeDetails extends React.Component {
             { headers: { Authorization: "Bearer " + this.state.token } }
           )
           .then(response => {
-            console.log(response.data);
+            /*   console.log(response.data); */
 
             if (response.data) {
               this.setState({
