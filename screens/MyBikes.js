@@ -10,10 +10,9 @@ import {
 } from "react-native";
 import axios from "axios";
 import BikeViewHistory from "../components/BikeViewHistory";
-
+import { width, height } from "../constants/Layout";
 import SearchBar from "../components/SearchBar";
 import { text, button, avatar } from "../constants/Styles";
-import { width, height } from "../constants/Layout";
 
 export default class MyBikesScreen extends React.Component {
   static navigationOptions = {
@@ -55,13 +54,9 @@ export default class MyBikesScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View style={styles.container}>
           <View style={styles.welcomeContainer}>
-            <Text style={text.h1}>Mes Vélos</Text>
             <FlatList
               data={this.state.bikes}
               keyExtractor={item => item._id}
@@ -76,17 +71,19 @@ export default class MyBikesScreen extends React.Component {
                 </View>
               )}
             />
-
+          </View>
+          <View style={styles.buttonSection}>
             <TouchableOpacity
+              style={button.primary}
               onPress={() => {
                 this.props.navigation.navigate("AddBike");
               }}
             >
-              <Text>Ajouter un vélo</Text>
+              <Text style={text.textButton}>Ajouter un vélo</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -94,10 +91,14 @@ const styles = StyleSheet.create({
   welcomeContainer: {
     margin: 10
   },
+  contentContainer: {
+    width: width,
+    flex: 1
+  },
   container: {
     flex: 1,
-    paddingTop: 15,
-    backgroundColor: "#f8f8f8"
+    backgroundColor: "#f8f8f8",
+    justifyContent: "space-between"
   },
 
   flatCard: {
@@ -105,5 +106,12 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 20,
     marginBottom: 10
+  },
+
+  buttonSection: {
+    width: width,
+    paddingVertical: 30,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });

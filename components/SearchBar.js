@@ -290,26 +290,32 @@ const styles = StyleSheet.create({
 
   searchAddressSection: {
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    flex: 3,
+    paddingHorizontal: 15
   },
 
   searchAddress: {
-    paddingLeft: 10,
-    width: 140
+    paddingLeft: 10
   },
 
   searchDateSection: {
-    borderLeftWidth: 0.5,
-    borderLeftColor: "#c2c2c2",
-    paddingLeft: 15,
+    /*    borderLeftWidth: 0.5,
+    borderLeftColor: "#c2c2c2", */
+    paddingHorizontal: 15,
     height: 30,
-    justifyContent: "center"
+    justifyContent: "center",
+    flex: 2
   },
 
   searchDate: {
     flexDirection: "row",
+    borderLeftWidth: 0.5,
+    borderLeftColor: "#c2c2c2",
     alignItems: "center",
-    marginRight: 5
+    marginRight: 5,
+    height: 30,
+    paddingLeft: 15
   },
 
   iconCalendar: {

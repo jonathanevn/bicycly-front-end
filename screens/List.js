@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
 
   mapButton: {
     position: "absolute",
-    top: height / 2,
+    bottom: 20,
     right: 15,
     height: 52,
     width: 52
