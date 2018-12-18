@@ -37,10 +37,13 @@ class BikeViewHistory extends React.Component {
             source={{ uri: this.props.picture }}
           />
         </View>
+
         <View style={styles.rightPart}>
-          <View style={styles.container}>
-            <Text style={[styles.label, text.h2]}>{this.props.brand}</Text>
-            <Text style={[styles.label, text.h2]}>{" " + this.props.mod}</Text>
+          <View style={styles.title}>
+            <Text style={[styles.label, text.h2]}>
+              {this.props.brand} {" " + this.props.mod}
+            </Text>
+            {/*   <Text style={[styles.label, text.h2]}>{" " + this.props.mod}</Text> */}
           </View>
 
           <Text style={text.p}>{this.props.price}€ / jour</Text>
@@ -62,20 +65,25 @@ const styles = StyleSheet.create({
   },
   leftPart: {
     marginRight: 20,
-    flex: 3
+    flex: 2.5
   },
   rightPart: {
     marginLeft: 20,
-    marginRight: 20,
     marginBottom: 20,
     flex: 5
   },
+
+  title: {
+    flexDirection: "row",
+    flexWrap: "wrap"
+  },
+
   bikePictureHistory: {
     height: 100,
     width: 100,
-    borderRadius: 50,
-    marginTop: 10
+    borderRadius: 50
   },
+
   confirmButton: {
     flexDirection: "row",
     marginTop: 30,
@@ -87,10 +95,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50
   },
-  color: {
-    color: "black",
-    fontSize: 14
-  },
+
   label: {
     fontSize: 16,
     fontWeight: "bold"
