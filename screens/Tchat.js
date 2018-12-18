@@ -123,7 +123,13 @@ class Tchat extends React.Component {
               <React.Fragment>
                 <MessageText {...props} />
                 <View>
-                  <CardTchat />
+                  <CardTchat
+                    user={this.state.bike.user.firstName}
+                    bikePhoto={this.state.bike.photos[0].secure_url}
+                    bike={this.state.bike.bikeBrand}
+                    bikeModel={this.state.bike.bikeModel}
+                    bikePrice={this.state.bike.pricePerDay}
+                  />
                 </View>
               </React.Fragment>
             );
