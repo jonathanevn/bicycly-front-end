@@ -132,7 +132,9 @@ class AddBike extends React.Component {
     axios
       .post(
 
+
         "https://bicycly.herokuapp.com/api/bike/publish",
+
 
         {
           bikeBrand: bikeBrand,
