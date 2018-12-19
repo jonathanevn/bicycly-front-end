@@ -182,7 +182,12 @@ class SearchBar extends React.Component {
             this.setModalDateVisible(false);
           }}
         >
-          <View style={styles.containerDateModal}>
+          <TouchableOpacity
+            style={styles.containerDateModal}
+            onPress={() => {
+              this.setModalDateVisible(false);
+            }}
+          >
             <View style={styles.halfDateModal}>
               <Calendar
                 onChangeDate={this.props.onChangeDate}
@@ -202,7 +207,7 @@ class SearchBar extends React.Component {
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </Modal>
 
         <View style={styles.searchBar}>
