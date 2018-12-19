@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     height: height
   },
   image: {
-    // marginTop: 20,
+    marginTop: 10,
     marginBottom: 20,
     alignItems: "center",
     justifyContent: "center"
