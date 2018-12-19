@@ -175,46 +175,46 @@ class Tchat extends React.Component {
             // console.log(props.currentMessage.thread.bike.user);
             // console.log(this.state.userId);
 
-
-          if (
-            props.currentMessage.isRequest === true &&
-            this.state.bike.user._id === this.state.userId //User -b Est-ce que je suis le propriétaire du vélo ?
-          ) {
-            return (
-              //la demande de location avec l'acceptation ou le refus
-              <React.Fragment>
-                <MessageText {...props} />
-                <View>
-                  <CardTchat
-                    user={this.state.userRent}
-                    bikePhoto={this.state.bike.photos[0].secure_url}
-                    bike={this.state.bike.bikeBrand}
-                    bikeModel={this.state.bike.bikeModel}
-                    bikePrice={this.state.bike.pricePerDay}
-                    fullPrice={
-                      isNaN(this.state.numberOfDays)
-                        ? this.state.bike.pricePerDay
-                        : this.state.bike.pricePerDay * this.state.numberOfDays
-                    }
-                    debut={this.state.bike.startDate}
-                    fin={this.state.bike.endDate}
-                  />
-                </View>
-              </React.Fragment>
-            );
-          } else {
-            return (
-              //sinon retourne le message
-              <React.Fragment>
-                <MessageText {...props} />
-              </React.Fragment>
-            );
-          }
-        }}
-        messages={this.state.messages}
-        onSend={messages => this.onSend(messages)}
-      />
-
+            if (
+              props.currentMessage.isRequest === true &&
+              this.state.bike.user._id === this.state.userId //User -b Est-ce que je suis le propriétaire du vélo ?
+            ) {
+              return (
+                //la demande de location avec l'acceptation ou le refus
+                <React.Fragment>
+                  <MessageText {...props} />
+                  <View>
+                    <CardTchat
+                      user={this.state.userRent}
+                      bikePhoto={this.state.bike.photos[0].secure_url}
+                      bike={this.state.bike.bikeBrand}
+                      bikeModel={this.state.bike.bikeModel}
+                      bikePrice={this.state.bike.pricePerDay}
+                      fullPrice={
+                        isNaN(this.state.numberOfDays)
+                          ? this.state.bike.pricePerDay
+                          : this.state.bike.pricePerDay *
+                            this.state.numberOfDays
+                      }
+                      debut={this.state.bike.startDate}
+                      fin={this.state.bike.endDate}
+                    />
+                  </View>
+                </React.Fragment>
+              );
+            } else {
+              return (
+                //sinon retourne le message
+                <React.Fragment>
+                  <MessageText {...props} />
+                </React.Fragment>
+              );
+            }
+          }}
+          messages={this.state.messages}
+          onSend={messages => this.onSend(messages)}
+        />
+      </View>
     );
   }
 }
