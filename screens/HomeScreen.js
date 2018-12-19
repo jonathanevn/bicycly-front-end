@@ -241,6 +241,13 @@ export default class HomeScreen extends React.Component {
               </MapView.Marker>
             );
           })}
+
+          <MapView.Marker
+            coordinate={{
+              longitude: this.state.region.longitude,
+              latitude: this.state.region.latitude
+            }}
+          />
         </MapView>
 
         <Carousel
