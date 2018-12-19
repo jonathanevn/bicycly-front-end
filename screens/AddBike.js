@@ -13,7 +13,7 @@ import { button, text } from "../constants/Styles";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { width, height } from "../constants/Layout";
 import RNPickerSelect from "react-native-picker-select";
-import { Constants } from "expo";
+
 import axios from "axios";
 import Accessories from "../components/Accessories";
 import UploadPhoto from "../components/UploadPhoto";
@@ -131,10 +131,7 @@ class AddBike extends React.Component {
 
     axios
       .post(
-
-
         "https://bicycly.herokuapp.com/api/bike/publish",
-
 
         {
           bikeBrand: bikeBrand,
@@ -217,6 +214,7 @@ class AddBike extends React.Component {
                 }}
                 placeholderTextColor="#c2c2c2"
                 items={this.state.bikeCategory}
+                useNativeAndroidPickerStyle={false}
                 onValueChange={value => {
                   this.setState({
                     CateVelo: value
@@ -242,6 +240,7 @@ class AddBike extends React.Component {
               placeholderTextColor={Colors.lightGrey}
               minLength={2}
               autoFocus={false}
+              listViewDisplayed="false"
               returnKeyType={"search"}
               fetchDetails={true}
               renderDescription={row => row.description}
@@ -272,7 +271,7 @@ class AddBike extends React.Component {
                   color: "#c2c2c2",
                   fontSize: 15,
                   fontFamily: "Karla-Regular",
-                  paddingVertical: 15
+                  paddingLeft: 15
                 },
                 description: {
                   fontFamily: "Karla-Bold",
@@ -349,6 +348,19 @@ const pickerSelectStyles = StyleSheet.create({
     color: "#262626",
     fontFamily: "Karla-Regular",
     borderRadius: 5
+  },
+
+  inputAndroid: {
+    fontSize: 15,
+    paddingLeft: 15,
+    borderWidth: 0.5,
+    width: "100%",
+    height: 50,
+    borderColor: "#f1f1f1",
+    backgroundColor: "white",
+    color: "#262626",
+    fontFamily: "Karla-Regular",
+    borderRadius: 5
   }
 });
 const styles = StyleSheet.create({
@@ -403,7 +415,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 40,
     paddingHorizontal: 15,
-    paddingVertical: 15,
+    /* paddingVertical: 10, */
     borderColor: "#f1f1f1",
     backgroundColor: "white",
     borderRadius: 5,
