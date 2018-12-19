@@ -40,7 +40,9 @@ export default class HomeScreen extends React.Component {
   state = {
     myLoc: {
       longitude: LONGITUDE,
-      latitude: LATITUDE
+      latitude: LATITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
     },
     region: {
       longitude: LONGITUDE,
@@ -119,9 +121,9 @@ export default class HomeScreen extends React.Component {
   };
 
   onLocationChange = region => {
-    this.setState(region, () =>
+    console.log("region", region);
+    this.setState({ region: region.region, myLoc: region.myLoc }, () =>
       axios
-
         .get("https://bicycly.herokuapp.com/api/bike/around", {
           params: {
             longitude: this.state.region.longitude,
@@ -284,10 +286,10 @@ export default class HomeScreen extends React.Component {
                 }
                 distance={geolib.getDistance(
                   {
-                    latitude: this.state.myLoc.latitude,
-                    longitude: this.state.myLoc.longitude
+                    longitude: this.state.myLoc.longitude,
+                    latitude: this.state.myLoc.latitude
                   },
-                  { latitude: item.loc[1], longitude: item.loc[0] }
+                  { longitude: item.loc[0], latitude: item.loc[1] }
                 )}
               />
             </TouchableOpacity>
