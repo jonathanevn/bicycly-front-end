@@ -196,8 +196,8 @@ class Tchat extends React.Component {
                           : this.state.bike.pricePerDay *
                             this.state.numberOfDays
                       }
-                      debut={this.state.bike.startDate}
-                      fin={this.state.bike.endDate}
+                      debut={this.state.startDate}
+                      fin={this.state.endDate}
                     />
                   </View>
                 </React.Fragment>

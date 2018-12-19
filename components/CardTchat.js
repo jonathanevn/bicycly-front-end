@@ -25,8 +25,10 @@ class CardTchat extends React.Component {
             />
             <View style={styles.information}>
               <View style={styles.nameBikeModel}>
-                <Text style={styles.nameBike}>{this.props.bike}</Text>
-                <Text style={styles.nameBike}>{this.props.bikeModel}</Text>
+                <Text style={styles.nameBike}>
+                  {this.props.bike} {""}
+                  {this.props.bikeModel}
+                </Text>
               </View>
               <View>
                 <Text style={styles.dates}>début : {this.props.debut}</Text>
@@ -81,8 +83,8 @@ const styles = StyleSheet.create({
     height: 200,
     backgroundColor: "white",
     marginVertical: 10,
-    borderRadius: 15,
-    marginRight: 60
+    borderRadius: 15
+    // marginRight: 60
   },
   body: {
     paddingTop: 15,
@@ -90,6 +92,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     width: "100%",
     height: "100%"
+    // backgroundColor: "yellow"
   },
   titleSection: {
     alignItems: "center"
