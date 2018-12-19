@@ -45,7 +45,8 @@ class BikeDetails extends React.Component {
     thread: {},
     user: {},
     numberOfDays: this.props.navigation.state.params.numberOfDays,
-
+    startDate: this.props.navigation.state.params.startDate,
+    endDate: this.props.navigation.state.params.endDate,
     isLoading: false
   };
 
@@ -88,7 +89,10 @@ class BikeDetails extends React.Component {
                 bikeId: this.props.navigation.state.params.bikeId,
                 threadId: this.state.thread._id,
                 userId: this.state.userId,
-                propId: this.state.propId
+                propId: this.state.propId,
+                numberOfDays: this.state.numberOfDays,
+                startDate: this.state.startDate,
+                endDate: this.state.endDate
               });
             } else {
               axios
@@ -103,7 +107,10 @@ class BikeDetails extends React.Component {
                       bikeId: this.props.navigation.state.params.bikeId,
                       threadId: response.data._id,
                       userId: this.state.userId,
-                      propId: this.state.propId
+                      propId: this.state.propId,
+                      numberOfDays: this.state.numberOfDays,
+                      startDate: this.state.startDate,
+                      endDate: this.state.endDate
                     });
                   } else {
                     alert("Une erreur est survenue");
@@ -129,7 +136,10 @@ class BikeDetails extends React.Component {
               bikeId: this.props.navigation.state.params.bikeId,
               threadId: this.state.thread,
               userId: this.state.userId,
-              propId: this.state.propId
+              propId: this.state.propId,
+              numberOfDays: this.state.numberOfDays,
+              startDate: this.state.startDate,
+              endDate: this.state.endDate
             });
           }
         }}
@@ -139,6 +149,7 @@ class BikeDetails extends React.Component {
         </Text>
       </TouchableOpacity>
     );
+    // return null;
   }
 
   renderImage() {
@@ -162,8 +173,31 @@ class BikeDetails extends React.Component {
     }
   }
 
+  renderDistance() {
+    if (this.props.navigation.state.params.myLoc) {
+      return (
+        <Text style={text.localisation}>
+          {geolib.getDistance(
+            {
+              latitude: this.props.navigation.state.params.myLoc.latitude,
+              longitude: this.props.navigation.state.params.myLoc.longitude
+            },
+            {
+              latitude: this.state.bike.loc[1],
+              longitude: this.state.bike.loc[0]
+            }
+          )}{" "}
+          m
+        </Text>
+      );
+    } else {
+      return <Text> 0 m</Text>;
+    }
+  }
+
   render() {
     const { bike, numberOfDays } = this.state;
+
     if (this.state.isLoading === false) {
       return <Text>isLoading...</Text>;
       // } else if (this.state.bike.photos === undefined) {
@@ -216,7 +250,7 @@ class BikeDetails extends React.Component {
                   color={Colors.lightGrey}
                   style={{ paddingRight: 8, paddingLeft: 20 }}
                 />
-                <Text style={text.localisation}>300m</Text>
+                {this.renderDistance()}
               </View>
             </View>
 
