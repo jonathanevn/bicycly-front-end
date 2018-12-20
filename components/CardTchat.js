@@ -46,32 +46,14 @@ class CardTchat extends React.Component {
             </View>
           </View>
 
-          {this.state.accepted === false ? (
-            <View style={styles.button}>
-              {/* <TouchableOpacity style={styles.buttonLeft}>
-                <Text style={styles.textButton}>Refuser</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.buttonRight}>
-                <Text style={styles.textButton}>Accepter</Text>
-              </TouchableOpacity> */}
-            </View>
-          ) : (
-            <View>
-              {/* <Icon
-                name="check"
-                size={15}
-                color={"#ffc200"}
-                style={{ paddingRight: 10 }}
-              /> */}
-              <TouchableOpacity
-                style={styles.button}
-                // style={button.secondary}
-                // onPress={this.useLibraryHandler}
-              >
-                <Text>Accepter</Text>
-              </TouchableOpacity>
-            </View>
-          )}
+          <View style={styles.button}>
+            <TouchableOpacity style={styles.buttonLeft}>
+              <Text style={styles.textButton}>Refuser</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonRight}>
+              <Text style={styles.textButton}>Accepter</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
