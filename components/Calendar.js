@@ -8,23 +8,21 @@ import Colors from "../constants/Colors";
 
 export default class Calendar extends Component {
   onDateChange = (date, type) => {
+    console.log(type, date, typeof date);
     if (type === "END_DATE") {
       this.props.onChangeDate({
         endDate: date
       });
     } else {
       this.props.onChangeDate({
-        startDate: date,
-        endDate: null
+        startDate: date
       });
     }
   };
 
   render() {
-    const startDate = this.props.startDate
-      ? this.props.startDate.toString()
-      : "";
-    const endDate = this.props.endDate ? this.props.endDate.toString() : "";
+    const startDate = this.props.startDate ? this.props.startDate : "";
+    const endDate = this.props.endDate ? this.props.endDate : "";
 
     const minDate = new Date(); // Today
     // const maxDate = new Date(2027, 6, 3);

@@ -150,10 +150,8 @@ class SearchBar extends React.Component {
   };
 
   render() {
-    const startDate = this.props.startDate
-      ? this.props.startDate.toString()
-      : "";
-    const endDate = this.props.endDate ? this.props.endDate.toString() : "";
+    const startDate = this.props.startDate ? this.props.startDate : "";
+    const endDate = this.props.endDate ? this.props.endDate : "";
 
     return (
       <View>
