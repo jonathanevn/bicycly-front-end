@@ -64,14 +64,14 @@ class SearchBar extends React.Component {
         fetchDetails={true}
         renderDescription={row => row.description} // custom description render
         onPress={(data, details = null) => {
-          console.log("long", details.geometry.location.lng);
-          console.log("latitude", details.geometry.location.lat);
+          /*    console.log("long", details.geometry.location.lng);
+          console.log("latitude", details.geometry.location.lat); */
           this.setState(
             {
               addressSelected: details.name,
               citySelected: details.vicinity
             },
-            () => {
+            () =>
               this.props.onLocationChange({
                 region: {
                   longitude: details.geometry.location.lng,
@@ -85,11 +85,13 @@ class SearchBar extends React.Component {
                   latitudeDelta: this.state.latDeltaSelected,
                   longitudeDelta: this.state.longDeltaSelected
                 }
-              });
-            }
-          );
-
-          this.setModalAddressVisible(!this.state.modalAddressVisible);
+              }),
+            this.props.onAddressChange({
+              addressSelected: details.name,
+              citySelected: details.vicinity
+            })
+          ),
+            this.setModalAddressVisible(!this.state.modalAddressVisible);
           // 'details' is provided when fetchDetails = true
         }}
         getDefaultValue={() => ""}
@@ -225,18 +227,18 @@ class SearchBar extends React.Component {
               }}
             >
               <View style={styles.searchAddress}>
-                {this.state.addressSelected === null ? (
+                {this.props.addressSelected === null ? (
                   <Text style={text.h3}>Position actuelle</Text>
                 ) : (
                   <Text numberOfLines={1} style={text.h3}>
-                    {this.state.addressSelected}
+                    {this.props.addressSelected}
                   </Text>
                 )}
-                {this.state.citySelected === null ? (
+                {this.props.citySelected === null ? (
                   <Text style={text.pricePerDay}>Paris</Text>
                 ) : (
                   <Text style={text.pricePerDay}>
-                    {this.state.citySelected}
+                    {this.props.citySelected}
                   </Text>
                 )}
               </View>

@@ -59,7 +59,9 @@ export default class HomeScreen extends React.Component {
     markerSelected: null,
     categoriesSelected: "",
     modalFilterVisible: false,
-    numberOfDays: ""
+    numberOfDays: "",
+    addressSelected: null,
+    citySelected: null
   };
 
   componentDidMount() {
@@ -121,7 +123,6 @@ export default class HomeScreen extends React.Component {
   };
 
   onLocationChange = region => {
-    console.log("region", region);
     this.setState({ region: region.region, myLoc: region.myLoc }, () =>
       axios
         .get("https://bicycly.herokuapp.com/api/bike/around", {
@@ -142,6 +143,13 @@ export default class HomeScreen extends React.Component {
           console.log(error);
         })
     );
+  };
+
+  onAddressChange = newAddress => {
+    this.setState({
+      addressSelected: newAddress.addressSelected,
+      citySelected: newAddress.citySelected
+    });
   };
 
   handleFilters = categories => {
@@ -319,6 +327,9 @@ export default class HomeScreen extends React.Component {
             onChangeDate={this.onChangeDate}
             startDate={this.state.selectedDate.startDate}
             endDate={this.state.selectedDate.endDate}
+            onAddressChange={this.onAddressChange}
+            addressSelected={this.state.addressSelected}
+            citySelected={this.state.citySelected}
           />
         </View>
         <View style={styles.filterButton}>
@@ -333,7 +344,9 @@ export default class HomeScreen extends React.Component {
               region: this.state.region,
               bikes: this.state.bikes,
               startDate: this.state.selectedDate.startDate,
-              endDate: this.state.selectedDate.endDate
+              endDate: this.state.selectedDate.endDate,
+              addressSelected: this.state.addressSelected,
+              citySelected: this.state.citySelected
             });
           }}
         >

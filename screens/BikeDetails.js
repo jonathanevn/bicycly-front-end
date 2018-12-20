@@ -56,13 +56,10 @@ class BikeDetails extends React.Component {
         axios
           .get(
             "https://bicycly.herokuapp.com/api/bike/" +
-              // "https://bicycly.herokuapp.com/api/bike/"
               this.props.navigation.state.params.bikeId,
             { headers: { Authorization: "Bearer " + this.state.token } }
           )
           .then(response => {
-            /*   console.log(response.data); */
-
             if (response.data) {
               this.setState({
                 bike: response.data.bike,
@@ -195,6 +192,12 @@ class BikeDetails extends React.Component {
     }
   }
 
+  Capitalize(str) {
+    if (str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+  }
+
   render() {
     const { bike, numberOfDays } = this.state;
 
@@ -241,7 +244,9 @@ class BikeDetails extends React.Component {
                   color={Colors.yellow}
                   style={{ paddingRight: 8 }}
                 />
-                <Text style={text.bikeCategory}>{bike.bikeCategory}</Text>
+                <Text style={text.bikeCategory}>
+                  {this.Capitalize(bike.bikeCategory.toString())}
+                </Text>
               </View>
               <View style={styles.locTextIcon}>
                 <Icon

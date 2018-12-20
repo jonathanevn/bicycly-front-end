@@ -24,6 +24,8 @@ class List extends React.Component {
               onLocationChange={this.onLocationChange}
               startDate={params.startDate}
               endDate={params.endDate}
+              addressSelected={params.addressSelected}
+              citySelected={params.citySelected}
             />
           </View>
           <FlatList
