@@ -16,7 +16,7 @@ import CardTchat from "../components/CardTchat";
 
 export default class ReservationScreen extends React.Component {
   static navigationOptions = {
-    title: "Mes reservations",
+    title: "Mes réservations",
     headerTitleStyle: {
       fontFamily: "Karla-Bold",
       fontSize: 18,
@@ -73,7 +73,9 @@ export default class ReservationScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.welcomeContainer}>
-            <Text style={text.h1}>Propriétaire</Text>
+            <Text style={text.h1}>
+              {this.state.myBikes.length !== 0 ? "Propriétaire" : ""}
+            </Text>
             <FlatList
               data={this.state.myBikes}
               keyExtractor={item => item._id}
@@ -97,7 +99,9 @@ export default class ReservationScreen extends React.Component {
                 </View>
               )}
             />
-            <Text style={text.h1}>Locataire</Text>
+            <Text style={text.h1}>
+              {this.state.otherBikes.length !== 0 ? "Locataire" : ""}
+            </Text>
             <FlatList
               data={this.state.otherBikes}
               keyExtractor={item => item._id}
