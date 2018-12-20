@@ -37,7 +37,6 @@ export default class UploadPhoto extends React.Component {
             // console.log("​UploadPhoto -> render -> imageBase64", imageBase64);
 
             return (
-              //
               <Image
                 source={{ uri: "data:image/jpeg;base64," + imageBase64 }}
                 style={[{ width: 200, height: 200 }, this.props.size]}
@@ -75,9 +74,9 @@ const styles = StyleSheet.create({
   },
   addImage: {
     backgroundColor: "white",
-    height: 140,
-    width: 140,
-    borderRadius: 140 / 2,
+    height: 122,
+    width: 122,
+    borderRadius: 122 / 2,
     justifyContent: "center",
     alignItems: "center"
   }

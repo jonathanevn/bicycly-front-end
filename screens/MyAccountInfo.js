@@ -44,7 +44,7 @@ class MyAccountInfo extends React.Component {
   };
 
   renderImage() {
-    /*     console.log("ici", this.props.navigation.state.params); */
+
     if (this.props.navigation.state.params.account.photos[0]) {
       //   console.log(this.props.navigation.state.params.account.photos);
       return (
@@ -159,8 +159,10 @@ const styles = StyleSheet.create({
     height: height
   },
   image: {
+
     marginTop: 5,
     marginBottom: 15,
+
     alignItems: "center",
     justifyContent: "center"
   },

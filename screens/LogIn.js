@@ -38,7 +38,6 @@ class LogIn extends React.Component {
     axios
 
       .post("https://bicycly.herokuapp.com/api/user/log_in", {
-
         email: email,
         password: password
       })
@@ -108,7 +107,14 @@ class LogIn extends React.Component {
                   this.props.navigation.navigate("SignIn");
                 }}
               >
-                <Text style={[text.p2, { marginTop: 10 }]}>Inscription</Text>
+                <Text
+                  style={[
+                    text.p2,
+                    { marginTop: 10, textDecorationLine: "underline" }
+                  ]}
+                >
+                  Inscription
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -124,7 +130,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // justifyContent: "center",
     backgroundColor: "#f8f8f8",
-    height: height
+    height: height,
+    width: width
   },
   title: {
     marginTop: 60,

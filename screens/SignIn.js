@@ -37,7 +37,6 @@ class SignIn extends React.Component {
     axios
 
       .post("https://bicycly.herokuapp.com/api/user/sign_up", {
-
         firstName: firstName,
         lastName: lastName,
         email: email,
@@ -131,7 +130,14 @@ class SignIn extends React.Component {
                   this.props.navigation.navigate("LogIn");
                 }}
               >
-                <Text style={[text.p2, { marginTop: 10 }]}>Connexion</Text>
+                <Text
+                  style={[
+                    text.p2,
+                    { marginTop: 10, textDecorationLine: "underline" }
+                  ]}
+                >
+                  Connexion
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

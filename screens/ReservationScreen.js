@@ -16,7 +16,7 @@ import CardTchat from "../components/CardTchat";
 
 export default class ReservationScreen extends React.Component {
   static navigationOptions = {
-    title: "Mes reservations",
+    title: "Mes réservations",
     headerTitleStyle: {
       fontFamily: "Karla-Bold",
       fontSize: 18,
@@ -31,10 +31,13 @@ export default class ReservationScreen extends React.Component {
   state = {
     token: "",
     id: "",
-    bikes: []
+    myBikes: [],
+    otherBikes: []
   };
 
   componentDidMount() {
+    const myBikes = [];
+    const otherBikes = [];
     AsyncStorage.multiGet(["token", "id"]).then(value => {
       this.setState({ token: value[0][1], id: value[1][1] });
 
@@ -46,7 +49,17 @@ export default class ReservationScreen extends React.Component {
           }
         )
         .then(response => {
-          this.setState({ bikes: response.data });
+          // axios renvoie toutes les threads où le user est référencé, avec  pour chaque thread un "populate" sur le vélo, le user et le owner
+          for (let i = 0; i < response.data.length; i++) {
+            if (response.data[i].owner._id === this.state.id) {
+              // si le user est référencé en tant que propriétaire
+              myBikes.push(response.data[i]);
+            } else {
+              // si le user est référencé en tant que locataire
+              otherBikes.push(response.data[i]);
+            }
+          }
+          this.setState({ myBikes: myBikes, otherBikes: otherBikes });
         })
         .catch(err => err);
     });
@@ -60,54 +73,57 @@ export default class ReservationScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.welcomeContainer}>
-            <Text style={text.h1}>Locations à venir</Text>
-
+            <Text style={text.h1}>
+              {this.state.myBikes.length !== 0 ? "Propriétaire" : ""}
+            </Text>
             <FlatList
-              data={this.state.bikes}
+              data={this.state.myBikes}
               keyExtractor={item => item._id}
-              renderItem={({ item }) => {
-                if (item.owner._id === this.state.id) {
-                  return (
-                    <View style={styles.flatCard}>
-                      <BikeViewHistory
-                        picture={item.bike.photos[0].secure_url}
-                        brand={item.bike.bikeBrand}
-                        mod={item.bike.bikeModel}
-                        price={item.bike.pricePerDay}
-                        ownerOrUser={"Loué à "}
-                        ownerOrUserName={
-                          item.user.firstName + " " + item.user.lastName
-                        }
-                        contact={true}
-                        bikeId={item.bike._id}
-                        threadId={item._id}
-                        userId={this.state.id}
-                        propId={item.owner._id}
-                      />
-                    </View>
-                  );
-                } else {
-                  return (
-                    <View style={styles.flatCard}>
-                      <BikeViewHistory
-                        picture={item.bike.photos[0].secure_url}
-                        brand={item.bike.bikeBrand}
-                        mod={item.bike.bikeModel}
-                        price={item.bike.pricePerDay}
-                        ownerOrUser={"Loué par "}
-                        ownerOrUserName={
-                          item.owner.firstName + " " + item.owner.lastName
-                        }
-                        contact={true}
-                        bikeId={item.bike._id}
-                        threadId={item._id}
-                        userId={this.state.id}
-                        propId={item.owner._id}
-                      />
-                    </View>
-                  );
-                }
-              }}
+              renderItem={({ item }) => (
+                <View style={styles.flatCard}>
+                  <BikeViewHistory
+                    picture={item.bike.photos[0].secure_url}
+                    brand={item.bike.bikeBrand}
+                    mod={item.bike.bikeModel}
+                    price={item.bike.pricePerDay}
+                    ownerOrUser={"Loué à "}
+                    ownerOrUserName={
+                      item.user.firstName + " " + item.user.lastName
+                    }
+                    contact={true} // propriété faisant apparaître le bouton contact, les 4 props qui suivent sont alors utiles pour le "navigate" du bouton "Contacter"
+                    bikeId={item.bike._id}
+                    threadId={item._id}
+                    userId={this.state.id}
+                    propId={item.owner._id}
+                  />
+                </View>
+              )}
+            />
+            <Text style={text.h1}>
+              {this.state.otherBikes.length !== 0 ? "Locataire" : ""}
+            </Text>
+            <FlatList
+              data={this.state.otherBikes}
+              keyExtractor={item => item._id}
+              renderItem={({ item }) => (
+                <View style={styles.flatCard}>
+                  <BikeViewHistory
+                    picture={item.bike.photos[0].secure_url}
+                    brand={item.bike.bikeBrand}
+                    mod={item.bike.bikeModel}
+                    price={item.bike.pricePerDay}
+                    ownerOrUser={"Loué par "}
+                    ownerOrUserName={
+                      item.owner.firstName + " " + item.owner.lastName
+                    }
+                    contact={true} // propriété faisant apparaître le bouton contact, les 4 props qui suivent sont alors utiles pour le "navigate" du bouton "Contacter"
+                    bikeId={item.bike._id}
+                    threadId={item._id}
+                    userId={this.state.id}
+                    propId={item.owner._id}
+                  />
+                </View>
+              )}
             />
           </View>
         </ScrollView>
