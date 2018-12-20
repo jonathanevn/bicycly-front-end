@@ -20,7 +20,11 @@ class List extends React.Component {
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <View style={styles.yellowBackground} />
           <View style={styles.searchBar}>
-            <SearchBar onLocationChange={this.onLocationChange} />
+            <SearchBar
+              onLocationChange={this.onLocationChange}
+              startDate={params.startDate}
+              endDate={params.endDate}
+            />
           </View>
           <FlatList
             style={styles.listItems}

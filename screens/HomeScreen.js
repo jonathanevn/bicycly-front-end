@@ -146,12 +146,25 @@ export default class HomeScreen extends React.Component {
 
   handleFilters = categories => {
     const categoriesSplitted = categories.join(" ");
-    this.setState(
-      {
-        categoriesSelected: categoriesSplitted
-      } /* , () => {
-      this.onLocationChange();
-    } */
+    this.setState({ categoriesSelected: categoriesSplitted }, () =>
+      axios
+        .get("https://bicycly.herokuapp.com/api/bike/around", {
+          params: {
+            longitude: this.state.region.longitude,
+            latitude: this.state.region.latitude,
+            category: this.state.categoriesSelected
+          }
+        })
+        .then(response => {
+          if (response.data) {
+            this.setState({
+              bikes: response.data
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
     );
   };
 
@@ -238,7 +251,7 @@ export default class HomeScreen extends React.Component {
                 onPress={e => this.pickLocationHandler(e.nativeEvent, i)}
               >
                 {this.state.markerSelected === i ? (
-                  <Icon name="bike" size={25} style={styles.selectedIcon} />
+                  <Icon name="bike" size={20} style={styles.selectedIcon} />
                 ) : (
                   <Icon name="bike" size={15} color={Colors.midGrey} />
                 )}
@@ -318,7 +331,9 @@ export default class HomeScreen extends React.Component {
             this.props.navigation.navigate("List", {
               myLoc: this.state.myLoc,
               region: this.state.region,
-              bikes: this.state.bikes
+              bikes: this.state.bikes,
+              startDate: this.state.selectedDate.startDate,
+              endDate: this.state.selectedDate.endDate
             });
           }}
         >
