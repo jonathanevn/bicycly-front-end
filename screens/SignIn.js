@@ -130,7 +130,14 @@ class SignIn extends React.Component {
                   this.props.navigation.navigate("LogIn");
                 }}
               >
-                <Text style={[text.p2, { marginTop: 10 }]}>Connexion</Text>
+                <Text
+                  style={[
+                    text.p2,
+                    { marginTop: 10, textDecorationLine: "underline" }
+                  ]}
+                >
+                  Connexion
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
