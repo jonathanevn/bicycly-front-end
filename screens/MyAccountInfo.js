@@ -22,12 +22,11 @@ class MyAccountInfo extends React.Component {
       fontFamily: "Karla-Bold",
       fontSize: 18,
       color: "#262626"
+    },
+    headerStyle: {
+      backgroundColor: "#f8f8f8",
+      borderBottomColor: "#f8f8f8"
     }
-
-    // headerStyle: {
-    //   backgroundColor: "#f8f8f8",
-    //   borderBottomColor: "#f8f8f8"
-    // }
   };
 
   state = {
@@ -45,7 +44,7 @@ class MyAccountInfo extends React.Component {
   };
 
   renderImage() {
-    // console.log("ici", this.props.navigation.state.params);
+
     if (this.props.navigation.state.params.account.photos[0]) {
       //   console.log(this.props.navigation.state.params.account.photos);
       return (
@@ -131,7 +130,7 @@ class MyAccountInfo extends React.Component {
               }}
             />
             <TouchableOpacity
-              style={[styles.textInput, { marginBottom: 50 }]}
+              style={[styles.textInput, { marginBottom: 30 }]}
               onPress={() => {
                 this.props.navigation.navigate("MyBikes");
               }}
@@ -160,8 +159,10 @@ const styles = StyleSheet.create({
     height: height
   },
   image: {
-    marginTop: 10,
-    marginBottom: 20,
+
+    marginTop: 5,
+    marginBottom: 15,
+
     alignItems: "center",
     justifyContent: "center"
   },

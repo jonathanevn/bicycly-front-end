@@ -8,6 +8,13 @@ import { height, width } from "../constants/Layout";
 const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 
 class BikeCard extends React.Component {
+  Capitalize(str) {
+    console.log(str);
+    if (str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -43,7 +50,9 @@ class BikeCard extends React.Component {
                 color={Colors.yellow}
                 style={{ paddingRight: 8 }}
               />
-              <Text style={text.bikeCategory}>{this.props.category}</Text>
+              <Text style={text.bikeCategory}>
+                {this.Capitalize(this.props.category.toString())}
+              </Text>
             </View>
             <View style={styles.locTextIcon}>
               <Icon

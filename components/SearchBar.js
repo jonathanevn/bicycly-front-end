@@ -20,14 +20,14 @@ import moment from "moment/min/moment-with-locales";
 
 const Icon = createIconSetFromIcoMoon(icoMoonConfig, "icomoon");
 
-const homePlace = {
+/* const homePlace = {
   description: "Home",
   geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }
 };
 const workPlace = {
   description: "Work",
   geometry: { location: { lat: 48.8496818, lng: 2.2940881 } }
-};
+}; */
 
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
@@ -64,24 +64,34 @@ class SearchBar extends React.Component {
         fetchDetails={true}
         renderDescription={row => row.description} // custom description render
         onPress={(data, details = null) => {
+          /*    console.log("long", details.geometry.location.lng);
+          console.log("latitude", details.geometry.location.lat); */
           this.setState(
             {
               addressSelected: details.name,
               citySelected: details.vicinity
             },
-            () => {
+            () =>
               this.props.onLocationChange({
                 region: {
-                  latitude: details.geometry.location.lat,
                   longitude: details.geometry.location.lng,
+                  latitude: details.geometry.location.lat,
+                  latitudeDelta: this.state.latDeltaSelected,
+                  longitudeDelta: this.state.longDeltaSelected
+                },
+                myLoc: {
+                  longitude: details.geometry.location.lng,
+                  latitude: details.geometry.location.lat,
                   latitudeDelta: this.state.latDeltaSelected,
                   longitudeDelta: this.state.longDeltaSelected
                 }
-              });
-            }
-          );
-
-          this.setModalAddressVisible(!this.state.modalAddressVisible);
+              }),
+            this.props.onAddressChange({
+              addressSelected: details.name,
+              citySelected: details.vicinity
+            })
+          ),
+            this.setModalAddressVisible(!this.state.modalAddressVisible);
           // 'details' is provided when fetchDetails = true
         }}
         getDefaultValue={() => ""}
@@ -117,8 +127,8 @@ class SearchBar extends React.Component {
             fontSize: 15
           }
         }}
-        currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-        currentLocationLabel="Current location"
+        currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+        /*  currentLocationLabel="Current location" */
         nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
         GoogleReverseGeocodingQuery={
           {
@@ -135,17 +145,15 @@ class SearchBar extends React.Component {
           "locality",
           "administrative_area_level_3"
         ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-        predefinedPlaces={[homePlace, workPlace]}
+        /* predefinedPlaces={[homePlace, workPlace]} */
         debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
       />
     );
   };
 
   render() {
-    const startDate = this.props.startDate
-      ? this.props.startDate.toString()
-      : "";
-    const endDate = this.props.endDate ? this.props.endDate.toString() : "";
+    const startDate = this.props.startDate ? this.props.startDate : "";
+    const endDate = this.props.endDate ? this.props.endDate : "";
 
     return (
       <View>
@@ -182,7 +190,12 @@ class SearchBar extends React.Component {
             this.setModalDateVisible(false);
           }}
         >
-          <View style={styles.containerDateModal}>
+          <TouchableOpacity
+            style={styles.containerDateModal}
+            onPress={() => {
+              this.setModalDateVisible(false);
+            }}
+          >
             <View style={styles.halfDateModal}>
               <Calendar
                 onChangeDate={this.props.onChangeDate}
@@ -202,7 +215,7 @@ class SearchBar extends React.Component {
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </Modal>
 
         <View style={styles.searchBar}>
@@ -214,18 +227,18 @@ class SearchBar extends React.Component {
               }}
             >
               <View style={styles.searchAddress}>
-                {this.state.addressSelected === null ? (
+                {this.props.addressSelected === null ? (
                   <Text style={text.h3}>Position actuelle</Text>
                 ) : (
                   <Text numberOfLines={1} style={text.h3}>
-                    {this.state.addressSelected}
+                    {this.props.addressSelected}
                   </Text>
                 )}
-                {this.state.citySelected === null ? (
+                {this.props.citySelected === null ? (
                   <Text style={text.pricePerDay}>Paris</Text>
                 ) : (
                   <Text style={text.pricePerDay}>
-                    {this.state.citySelected}
+                    {this.props.citySelected}
                   </Text>
                 )}
               </View>

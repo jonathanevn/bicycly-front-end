@@ -40,7 +40,9 @@ export default class HomeScreen extends React.Component {
   state = {
     myLoc: {
       longitude: LONGITUDE,
-      latitude: LATITUDE
+      latitude: LATITUDE,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
     },
     region: {
       longitude: LONGITUDE,
@@ -57,7 +59,9 @@ export default class HomeScreen extends React.Component {
     markerSelected: null,
     categoriesSelected: "",
     modalFilterVisible: false,
-    numberOfDays: ""
+    numberOfDays: "",
+    addressSelected: null,
+    citySelected: null
   };
 
   componentDidMount() {
@@ -119,9 +123,8 @@ export default class HomeScreen extends React.Component {
   };
 
   onLocationChange = region => {
-    this.setState(region, () =>
+    this.setState({ region: region.region, myLoc: region.myLoc }, () =>
       axios
-
         .get("https://bicycly.herokuapp.com/api/bike/around", {
           params: {
             longitude: this.state.region.longitude,
@@ -142,11 +145,35 @@ export default class HomeScreen extends React.Component {
     );
   };
 
+  onAddressChange = newAddress => {
+    this.setState({
+      addressSelected: newAddress.addressSelected,
+      citySelected: newAddress.citySelected
+    });
+  };
+
   handleFilters = categories => {
     const categoriesSplitted = categories.join(" ");
-    this.setState({ categoriesSelected: categoriesSplitted }, () => {
-      this.onLocationChange();
-    });
+    this.setState({ categoriesSelected: categoriesSplitted }, () =>
+      axios
+        .get("https://bicycly.herokuapp.com/api/bike/around", {
+          params: {
+            longitude: this.state.region.longitude,
+            latitude: this.state.region.latitude,
+            category: this.state.categoriesSelected
+          }
+        })
+        .then(response => {
+          if (response.data) {
+            this.setState({
+              bikes: response.data
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    );
   };
 
   pickLocationHandler = (event, index) => {
@@ -232,7 +259,7 @@ export default class HomeScreen extends React.Component {
                 onPress={e => this.pickLocationHandler(e.nativeEvent, i)}
               >
                 {this.state.markerSelected === i ? (
-                  <Icon name="bike" size={25} style={styles.selectedIcon} />
+                  <Icon name="bike" size={20} style={styles.selectedIcon} />
                 ) : (
                   <Icon name="bike" size={15} color={Colors.midGrey} />
                 )}
@@ -284,10 +311,10 @@ export default class HomeScreen extends React.Component {
                 }
                 distance={geolib.getDistance(
                   {
-                    latitude: this.state.myLoc.latitude,
-                    longitude: this.state.myLoc.longitude
+                    longitude: this.state.myLoc.longitude,
+                    latitude: this.state.myLoc.latitude
                   },
-                  { latitude: item.loc[1], longitude: item.loc[0] }
+                  { longitude: item.loc[0], latitude: item.loc[1] }
                 )}
               />
             </TouchableOpacity>
@@ -300,6 +327,9 @@ export default class HomeScreen extends React.Component {
             onChangeDate={this.onChangeDate}
             startDate={this.state.selectedDate.startDate}
             endDate={this.state.selectedDate.endDate}
+            onAddressChange={this.onAddressChange}
+            addressSelected={this.state.addressSelected}
+            citySelected={this.state.citySelected}
           />
         </View>
         <View style={styles.filterButton}>
@@ -312,7 +342,11 @@ export default class HomeScreen extends React.Component {
             this.props.navigation.navigate("List", {
               myLoc: this.state.myLoc,
               region: this.state.region,
-              bikes: this.state.bikes
+              bikes: this.state.bikes,
+              startDate: this.state.selectedDate.startDate,
+              endDate: this.state.selectedDate.endDate,
+              addressSelected: this.state.addressSelected,
+              citySelected: this.state.citySelected
             });
           }}
         >

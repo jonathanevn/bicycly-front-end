@@ -165,8 +165,8 @@ class Filters extends React.Component {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#f8f8f8",
-    marginTop: 10
+    backgroundColor: "#f8f8f8"
+    /* marginTop: 10 */
   },
 
   container: {
@@ -229,11 +229,11 @@ const styles = StyleSheet.create({
   },
 
   closeButton: {
-    marginLeft: 35
+    marginLeft: 25
   },
 
   title: {
-    marginLeft: 35,
+    marginLeft: 25,
     marginTop: 15
   }
 });

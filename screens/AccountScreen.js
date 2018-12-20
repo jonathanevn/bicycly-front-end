@@ -27,6 +27,10 @@ export default class AccountScreen extends React.Component {
       fontFamily: "Karla-Bold",
       fontSize: 18,
       color: "#262626"
+    },
+    headerStyle: {
+      backgroundColor: "#f8f8f8",
+      borderBottomColor: "#f8f8f8"
     }
 
     // headerStyle: {
