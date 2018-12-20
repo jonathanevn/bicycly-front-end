@@ -146,9 +146,13 @@ export default class HomeScreen extends React.Component {
 
   handleFilters = categories => {
     const categoriesSplitted = categories.join(" ");
-    this.setState({ categoriesSelected: categoriesSplitted }, () => {
+    this.setState(
+      {
+        categoriesSelected: categoriesSplitted
+      } /* , () => {
       this.onLocationChange();
-    });
+    } */
+    );
   };
 
   pickLocationHandler = (event, index) => {
@@ -241,13 +245,6 @@ export default class HomeScreen extends React.Component {
               </MapView.Marker>
             );
           })}
-
-          <MapView.Marker
-            coordinate={{
-              longitude: this.state.region.longitude,
-              latitude: this.state.region.latitude
-            }}
-          />
         </MapView>
 
         <Carousel
