@@ -7,13 +7,13 @@ import {
   InputToolbar
 } from "react-native-gifted-chat";
 import axios from "axios";
+import KeyboardSpacer from "react-native-keyboard-spacer";
 import CardTchat from "../components/CardTchat";
-import { View, Text, AsyncStorage } from "react-native";
+import { View, Text, AsyncStorage, StyleSheet } from "react-native";
 
 class Tchat extends React.Component {
   static navigationOptions = {
     title: "Message au propriétaire",
-    headerBackTitle: null,
     headerTintColor: "#262626",
     headerTitleStyle: {
       fontFamily: "Karla-Bold",
@@ -214,9 +214,16 @@ class Tchat extends React.Component {
           messages={this.state.messages}
           onSend={messages => this.onSend(messages)}
         />
+        <KeyboardSpacer topSpacing={-50} />
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+});
 
 export default Tchat;
