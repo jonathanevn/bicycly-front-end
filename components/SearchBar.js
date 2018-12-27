@@ -235,7 +235,7 @@ class SearchBar extends React.Component {
                   </Text>
                 )}
                 {this.props.citySelected === null ? (
-                  <Text style={text.pricePerDay}>Paris</Text>
+                  <Text style={text.pricePerDay}>Baud, Morbihan, France</Text>
                 ) : (
                   <Text style={text.pricePerDay}>
                     {this.props.citySelected}

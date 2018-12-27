@@ -124,9 +124,9 @@ class Tchat extends React.Component {
         {...props}
         textStyle={{
           color: "#262626",
-          paddingVertical: 10,
           paddingHorizontal: 20
         }}
+        label={"Envoyez"}
       />
     );
   }
