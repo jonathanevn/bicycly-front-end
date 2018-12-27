@@ -2,13 +2,7 @@ import React from "react";
 import SearchBar from "../components/SearchBar";
 import axios from "axios";
 import Carousel from "react-native-snap-carousel";
-import {
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  TouchableNativeFeedback
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { MapView, Permissions } from "expo";
 import geolib from "geolib";
 import { height, width } from "../constants/Layout";
